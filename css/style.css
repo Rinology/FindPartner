@@ -894,45 +894,18 @@ body.dark-mode .brand-title .logo-dark {
     background: rgba(255, 255, 255, 0.95);
 }
 
-/* [신규] 사이드 팝업 스타일 (중앙 배치용) */
-.side-popup .leaflet-popup-tip-container {
+/* 지도 중앙 팝업 - 꼬리 없는 클린 스타일 */
+.center-map-popup .leaflet-popup-tip-container {
     display: none;
-    /* 기본 하단 꼬리 숨김 */
 }
 
-.side-popup .leaflet-popup-content-wrapper::before {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-top: 15px solid transparent;
-    border-bottom: 15px solid transparent;
-    z-index: 1001;
+.center-map-popup .leaflet-popup-content-wrapper {
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+    border-radius: 18px;
 }
 
-/* 핀이 왼쪽에 있고 팝업이 중앙에 있을 때 (꼬리는 팝업의 왼쪽) */
-.popup-left-tail .leaflet-popup-content-wrapper::before {
-    left: -15px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-right: 15px solid rgba(255, 255, 255, 0.95);
-}
-
-/* 핀이 오른쪽에 있고 팝업이 중앙에 있을 때 (꼬리는 팝업의 오른쪽) */
-.popup-right-tail .leaflet-popup-content-wrapper::before {
-    right: -15px;
-    top: 50%;
-    transform: translateY(-50%);
-    border-left: 15px solid rgba(255, 255, 255, 0.95);
-}
-
-/* 다크모드 대응 */
-body.dark-mode .popup-left-tail .leaflet-popup-content-wrapper::before {
-    border-right-color: #1e1e1e;
-}
-
-body.dark-mode .popup-right-tail .leaflet-popup-content-wrapper::before {
-    border-left-color: #1e1e1e;
+body.dark-mode .center-map-popup .leaflet-popup-content-wrapper {
+    background: rgba(30, 30, 30, 0.97);
 }
 
 /* [신규] 모바일 커스텀 모달 스타일 */

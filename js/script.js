@@ -114,6 +114,12 @@ function initMap() {
     if (isClusteringEnabled) {
         map.addLayer(markerClusterGroup);
     }
+
+    // 지도 빈 곳 클릭 시 선택 해제 (핀 클릭은 _suppressMapClick 플래그로 구분)
+    map.on('click', function () {
+        if (_suppressMapClick) return;
+        clearSelection();
+    });
 }
 
 function getStoreLatLng(store) {
@@ -258,20 +264,14 @@ function updateMarkers(stores) {
             marker.bindPopup(popupContent);
 
             marker.on('click', () => {
-                const isMobile = window.innerWidth <= 900;
+                // 마커 클릭이 지도 click 이벤트로 전파되어 clearSelection이 호출되지 않도록 억제
+                _suppressMapClick = true;
+                setTimeout(() => { _suppressMapClick = false; }, 100);
 
-                if (isMobile) {
-                    // 모바일: 팝업도 띄우고 정보 바도 노출
-                    highlightListItem(store.name, false);
-                    showSelectedStore(store.name);
-                    setActivePin(marker);
-                    focusMarker(marker, pos, store); // 팝업 노출을 위해 추가
-                } else {
-                    // 데스크탑: 기존 동작 (팝업 + 리스트 강조 + 스크롤)
-                    highlightListItem(store.name, true);
-                    showSelectedStore(store.name);
-                    focusMarker(marker, pos, store);
-                }
+                const isMobile = window.innerWidth <= 900;
+                highlightListItem(store.name, !isMobile);
+                showSelectedStore(store.name);
+                focusMarker(marker, pos, store);
             });
 
             store.markerRef = marker;
@@ -506,12 +506,9 @@ function renderList(data) {
             if (map && targetPos) {
                 if (isClusteringEnabled && markerClusterGroup) {
                     markerClusterGroup.zoomToShowLayer(store.markerRef, () => {
-                        // [수정] 리스트 클릭 시에만 모달 띄우도록
-                        showMobileModal(store);
                         focusMarker(store.markerRef, targetPos, store);
                     });
                 } else {
-                    showMobileModal(store);
                     focusMarker(store.markerRef, targetPos, store);
                 }
             }
@@ -630,57 +627,62 @@ function clearSearch() {
 
 function filterData() { toggleClearBtn(); applyFilter(); }
 
-// [신규] 마커 및 팝업 포커싱 (모바일/데스크탑 모두 핀 좌우 정렬)
+// 마커 및 팝업 포커싱 (모바일/데스크탑 모두 지도 정중앙에 팝업)
 function focusMarker(marker, pos, storeData) {
     const isMobile = window.innerWidth <= 900;
     const zoomLevel = 16;
 
-    // 맵의 중심으로부터 핀이 어느 쪽에 있는지에 따라 꼬리 방향 결정
-    const mapCenter = map.getCenter();
-    const isLeftOfCenter = pos.lng < mapCenter.lng;
-
-    // 기본값은 핀이 왼쪽에 있고 팝업이 오른쪽에 오는 형태 (데스크탑 오프셋)
-    let offsetPixels = isMobile ? 0 : 220; // 모바일은 팝업 안 쓰므로 오프셋 무의미
-    let popupClass = 'side-popup popup-left-tail';
-    let moveDirection = 1;
-
-    if (!isLeftOfCenter) {
-        popupClass = 'side-popup popup-right-tail';
-        moveDirection = -1;
+    // 이전 moveend 리스너 제거
+    if (_pendingPopupFn) {
+        map.off('moveend', _pendingPopupFn);
+        _pendingPopupFn = null;
     }
 
-    // 모바일에서는 핀이 지도의 하단 쪽에 오도록 오프셋을 주어 팝업이 잘리지 않게 처리
+    const mapSize = map.getSize();
     const point = map.project([pos.lat, pos.lng], zoomLevel);
 
-    let offsetValueX = isMobile ? 0 : offsetPixels * moveDirection;
-    let offsetValueY = isMobile ? -100 : 0; // 모바일에서 지도를 위로 밀어 핀을 아래로 내림
-
-    const newPoint = point.add([offsetValueX, offsetValueY]);
-    const newCenter = map.unproject(newPoint, zoomLevel);
-
-    map.flyTo(newCenter, zoomLevel, { animate: true, duration: 1 });
-
-    // 데스크탑에서만 팝업 바인딩 및 오픈
-    if (!isMobile) {
-        const content = marker.getPopup().getContent();
-        marker.bindPopup(content, {
-            offset: [offsetPixels * moveDirection, 0],
-            className: popupClass,
-            closeOnClick: false
-        });
-
-        setTimeout(() => {
-            marker.openPopup();
-        }, 450);
+    let newPoint;
+    if (isMobile) {
+        // 모바일: 핀을 지도 수평 중앙에 배치 (수직 오프셋 없음)
+        newPoint = point.add([0, 0]);
+    } else {
+        // 데스크탑: 핀을 지도 패널 좌측 1/4에 배치 (팝업이 중앙에 올 공간 확보)
+        newPoint = point.add([-mapSize.x / 4, 0]);
     }
 
-    // 핀 강조는 모바일/데스크탑 모두 적용
+    const newCenter = map.unproject(newPoint, zoomLevel);
+    map.flyTo(newCenter, zoomLevel, { animate: true, duration: 1 });
+
+    // flyTo 완료 후 지도 패널 정중앙에 팝업 열기 (모바일/데스크탑 공통)
+    _pendingPopupFn = function () {
+        map.closePopup();
+        const content = marker.getPopup().getContent();
+        // offset Y: 팝업 박스 중앙이 지도 중앙에 오도록 조정
+        // 모바일 팝업 높이 ≈ 130px → offset 65 / 데스크탑 팝업 높이 ≈ 260px → offset 130
+        const popupOffset = isMobile ? 65 : 130;
+        L.popup({
+            closeOnClick: false,
+            autoClose: false,
+            autopan: false,
+            offset: [0, popupOffset],
+            className: 'center-map-popup'
+        })
+        .setLatLng(map.getCenter())
+        .setContent(content)
+        .openOn(map);
+        _pendingPopupFn = null;
+    };
+    map.once('moveend', _pendingPopupFn);
+
+    // 핀 강조
     setTimeout(() => {
         setActivePin(marker);
     }, 450);
 }
 
 let mobileMiniMap = null;
+let _pendingPopupFn = null;    // 지도 중앙 팝업용 moveend 리스너 참조
+let _suppressMapClick = false; // 마커 클릭 시 map click 이벤트 억제용 플래그
 
 // [신규] 모바일 전용 상세 모달 표시
 function showMobileModal(store) {
