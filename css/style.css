@@ -243,22 +243,23 @@ body.dark-mode .brand-title .logo-dark {
 }
 
 .premium-pin i {
-    font-size: 48px;
+    font-size: 40px;
     color: #FFD700;
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+    /* Gold */
+    filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.8));
     -webkit-text-stroke: 1px #B8860B;
-    animation: bouncePin 2s infinite;
+    animation: starPulse 2.5s infinite alternate;
 }
 
-@keyframes bouncePin {
-
-    0%,
-    100% {
-        transform: translateY(0);
+@keyframes starPulse {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
     }
 
-    50% {
-        transform: translateY(-8px);
+    100% {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 16px rgba(255, 215, 0, 1));
     }
 }
 
@@ -356,76 +357,145 @@ body.dark-mode .brand-title .logo-dark {
     display: flex;
 }
 
+/* ==============================================
+   통합 버튼 디자인 시스템 (control-btn + filter-btn 공통 베이스)
+   ============================================== */
+
+/* 지도 제어 버튼 영역 */
+.map-controls-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+}
+
+.map-controls-row::-webkit-scrollbar {
+    display: none;
+}
+
+/* 공통 스타일 베이스 - control-btn & filter-btn 둘 다 적용 */
+.control-btn,
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    /* 반투명 배경 */
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* 선명한 테두리 */
+    border: 1.5px solid rgba(0, 0, 0, 0.1);
+    /* 서브틀 셸도우 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    user-select: none;
+    text-decoration: none;
+}
+
+.control-btn:hover,
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+/* 아이콘 기본 색 */
+.control-btn i,
+.filter-btn i {
+    color: var(--text-secondary);
+    transition: color 0.2s;
+    font-size: 0.88rem;
+}
+
+/* === 콘트롤 버튼 활성화 상태 === */
+
+/* 핀 묶어보기 - 브랜드 다크 */
+.control-btn#btnCluster.active {
+    background: var(--quali-dark);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(35, 31, 32, 0.3);
+}
+
+.control-btn#btnCluster.active i {
+    color: #fff;
+}
+
+/* 내 위치 - 브랜드 블루 */
+.control-btn#btnMyLocation.active {
+    background: var(--quali-blue);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(47, 98, 134, 0.35);
+}
+
+.control-btn#btnMyLocation.active i {
+    color: #fff;
+}
+
+/* 다크모드 - 진한 네이비 */
+.control-btn#btnDarkMode.active {
+    background: #1a1a2e;
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(26, 26, 46, 0.4);
+}
+
+.control-btn#btnDarkMode.active i {
+    color: #f0c040;
+}
+
 /* 2행: 필터 버튼들 */
 .filter-buttons-row {
     display: flex;
     gap: 8px;
     overflow-x: auto;
     padding-bottom: 4px;
+    scrollbar-width: none;
 }
 
 .filter-buttons-row::-webkit-scrollbar {
     display: none;
 }
 
-/* [필터 버튼 스타일] */
-.filter-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-pill);
-    cursor: pointer;
-    background: var(--bg-input);
-    transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
-    font-size: 14px;
-    color: var(--text-primary);
-    white-space: nowrap;
-    user-select: none;
-    font-weight: 500;
-}
-
-.filter-btn:hover {
-    background: #d2d2d7;
-}
-
+/* filter-btn - control-btn의 공통 베이스를 활용하므로 별도 기본 선언 불필요 (filter-btn 독자 추가 속성만) */
 .filter-btn input {
     display: none;
 }
 
-.filter-btn i {
-    color: var(--text-secondary);
-    transition: color 0.3s;
-    font-size: 0.9rem;
-}
+/* === 필터 버튼 활성화 상태 === */
 
-/* [활성화 상태 디자인] */
-.filter-btn.premium-filter.active {
-    background-color: var(--system-black);
-    color: var(--system-white);
-}
-
-.filter-btn.premium-filter.active i {
-    color: #FFD700;
-}
-
+/* 원케어 - 브랜드 블루 */
 .filter-btn.onecare-filter.active {
-    background-color: var(--system-blue);
-    color: white;
+    background: var(--quali-blue);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(47, 98, 134, 0.35);
 }
 
 .filter-btn.onecare-filter.active i {
-    color: white;
+    color: #fff;
 }
 
+/* 시승 - 브랜드 그린 */
 .filter-btn.testride-filter.active {
-    background-color: var(--system-green);
-    color: white;
+    background: var(--quali-green);
+    border-color: transparent;
+    color: #1a1a1a;
+    box-shadow: 0 4px 12px rgba(114, 191, 68, 0.35);
 }
 
 .filter-btn.testride-filter.active i {
-    color: white;
+    color: #1a1a1a;
 }
 
 
@@ -540,7 +610,7 @@ body.dark-mode .brand-title .logo-dark {
 }
 
 
-/* 3행: 탭 영역 */
+/* 3행: 탭 영역 마스크 추가 */
 .tabs-container {
     display: flex;
     align-items: center;
@@ -548,6 +618,28 @@ body.dark-mode .brand-title .logo-dark {
     width: 100%;
     margin-top: 4px;
     padding-bottom: 4px;
+}
+
+.tabs-container::before,
+.tabs-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 32px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.tabs-container::before {
+    left: 24px;
+    /* scroll-btn width */
+    background: linear-gradient(to right, var(--bg-body, #fff), transparent);
+}
+
+.tabs-container::after {
+    right: 24px;
+    background: linear-gradient(to left, var(--bg-body, #fff), transparent);
 }
 
 .scroll-btn {
@@ -561,7 +653,8 @@ body.dark-mode .brand-title .logo-dark {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 2;
+    z-index: 10;
+    /* Above mask */
     flex-shrink: 0;
     transition: all 0.2s;
 }
@@ -582,6 +675,9 @@ body.dark-mode .brand-title .logo-dark {
     -ms-overflow-style: none;
     scrollbar-width: none;
     align-items: center;
+    padding-left: 16px;
+    /* Space for mask */
+    padding-right: 16px;
 }
 
 .category-tabs::-webkit-scrollbar {
@@ -648,11 +744,17 @@ body.dark-mode .brand-title .logo-dark {
     cursor: pointer;
 }
 
-.store-card:hover,
+.store-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
 .store-card.active-card {
     transform: scale(1.02);
-    box-shadow: var(--shadow-float);
+    box-shadow: 0 0 0 2px var(--system-blue), 0 12px 32px var(--glass-blue);
     border-color: transparent;
+    background-color: #f8fbff;
 }
 
 .store-card::before {
@@ -668,6 +770,7 @@ body.dark-mode .brand-title .logo-dark {
 
 .store-card.active-card::before {
     width: 6px;
+    box-shadow: 2px 0 8px rgba(47, 98, 134, 0.4);
 }
 
 .store-card.premium-card {
@@ -680,13 +783,18 @@ body.dark-mode .brand-title .logo-dark {
     width: 0;
 }
 
-.store-card.premium-card:hover::before,
-.store-card.premium-card.active-card::before {
+.store-card.premium-card:hover::before {
     width: 6px;
 }
 
-.store-card.active-card {
-    background-color: #f0f7ff;
+.store-card.premium-card.active-card {
+    box-shadow: 0 0 0 2px #FFD700, 0 12px 32px rgba(255, 215, 0, 0.15);
+    background-color: #fffefa;
+}
+
+.store-card.premium-card.active-card::before {
+    width: 6px;
+    box-shadow: 2px 0 8px rgba(255, 215, 0, 0.5);
 }
 
 .card-header {
@@ -877,13 +985,13 @@ body.dark-mode .brand-title .logo-dark {
         gap: 4px;
     }
 
-    .map-popup-btn,
-    .btn-map-link {
-        padding: 10px 0 !important;
-        /* 크기 키위기 */
-        font-size: 14.5px !important;
-        min-height: 44px !important;
-        /* 터치 영역 확보 */
+    /* 모바일 화면에서는 지도 진입 팝업 자체가 안 뜨므로 해당 스타일 필요 없음 */
+    /* 모바일 바텀시트 내 버튼만 멋지게 키워주기 */
+    .mobile-modal-container .map-popup-btn,
+    .mobile-modal-container .btn-map-link {
+        padding: 12px 0 !important;
+        font-size: 15px !important;
+        min-height: 48px !important;
         margin-top: 4px !important;
     }
 }
@@ -944,12 +1052,47 @@ body.dark-mode .center-map-popup .leaflet-popup-content-wrapper {
 #mobileMiniMap {
     width: 100%;
     height: 180px;
-    /* 원래대로 */
     border-radius: 12px;
-    margin-bottom: 16px;
-    /* 원래대로 */
-    background: #eee;
+    margin-bottom: 8px;
+    background: #ccc;
     z-index: 1;
+}
+
+/* 다크모드: 모바일 바텀시트 전체 스타일 */
+body.dark-mode .mobile-modal-overlay {
+    background: rgba(0, 0, 0, 0.75);
+}
+
+body.dark-mode .mobile-modal-container {
+    background: #1e1e1e;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .mobile-modal-container .map-popup-title {
+    color: #e0e0e0;
+}
+
+body.dark-mode .mobile-modal-container .map-popup-branch {
+    color: #aaa;
+}
+
+body.dark-mode .mobile-modal-container .map-popup-row {
+    color: #c0c0c0;
+}
+
+body.dark-mode .btn-close-modal {
+    background: #333;
+    color: #aaa;
+}
+
+body.dark-mode .mobile-modal-container .map-popup-btn {
+    background: #333;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+body.dark-mode .mobile-modal-container .map-popup-btn:hover {
+    background: #444;
 }
 
 
@@ -1091,8 +1234,13 @@ body.dark-mode .center-map-popup .leaflet-popup-content-wrapper {
 
 .map-popup-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    flex-direction: row;
+    /* 가로 배열로 변경 */
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+    /* 공간 부족 시 줄바꿈 */
 }
 
 .map-popup-row a {
@@ -1105,57 +1253,107 @@ body.dark-mode .center-map-popup .leaflet-popup-content-wrapper {
     color: #2f6286;
 }
 
-/* 지도 보기 버튼 (Secondary) - 회색/라인 스타일 */
+/* 네이버 지도로 보기 (Secondary) - 데스크탑 팝업 전용 슬림 버튼 */
 .map-popup-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 0;
-    width: 100%;
-    background: #f1f3f5;
-    /* 밝은 회색 */
-    color: #495057;
+    padding: 8px 14px;
+    width: auto;
+    /* 너비 자동 */
+    min-width: 110px;
+    background: rgba(0, 0, 0, 0.04);
+    color: var(--quali-blue);
     text-decoration: none;
     border-radius: 8px;
-    /* 둥글게 */
-    font-size: 14.5px;
+    font-size: 13px;
     font-weight: 600;
     transition: all 0.2s;
-    border: 1px solid #e9ecef;
-    margin-bottom: 6px;
-    min-height: 44px;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    min-height: 34px;
+    letter-spacing: -0.2px;
 }
 
 .map-popup-btn:hover {
-    background: #e9ecef;
-    color: #212529;
+    background: rgba(47, 98, 134, 0.06);
+    border-color: rgba(47, 98, 134, 0.2);
+    color: var(--quali-blue);
+}
+
+/* S등급 프리미엄 전용 팝업 헤더 스타일 (light mode) */
+.premium-popup-header {
+    background: linear-gradient(135deg, #fffef9, #fff7d6);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.15);
+}
+
+.premium-popup-title {
+    color: #B8860B;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
+
+/* S등급 뱃지 공통 스타일 (light mode) */
+.premium-badge {
+    background: #FFD700;
+    color: #000;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-bottom: 8px;
+    display: inline-block;
+    font-weight: 800;
+    letter-spacing: 0.2px;
 }
 
 /* 길찾기 버튼 (Primary) - 네이버 그린 */
 .btn-map-link {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 0;
-    width: 100%;
+    padding: 8px 14px;
+    width: auto;
+    /* 너비 자동 */
+    min-width: 110px;
     background: #03C75A;
-    /* 네이버 공식 그린 */
     color: white;
     text-decoration: none;
     border-radius: 8px;
-    /* 둥글게 */
-    font-size: 14.5px;
+    font-size: 13px;
     font-weight: 700;
     transition: all 0.2s;
-    box-shadow: 0 2px 4px rgba(3, 199, 90, 0.2);
+    box-shadow: 0 2px 6px rgba(3, 199, 90, 0.25);
     cursor: pointer;
-    min-height: 44px;
+    min-height: 34px;
+    gap: 6px;
+    letter-spacing: -0.2px;
 }
 
 .btn-map-link:hover {
     background: #02b351;
     box-shadow: 0 4px 8px rgba(3, 199, 90, 0.3);
     transform: translateY(-1px);
+}
+
+/* 다크모드 대응: S등급 프리미엄 헤더 */
+body.dark-mode .premium-popup-header {
+    background: linear-gradient(135deg, #2a2a20, #332e18);
+    border-color: rgba(255, 215, 0, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .premium-popup-title {
+    color: #FFD166;
+}
+
+body.dark-mode .premium-badge {
+    background: rgba(255, 215, 0, 0.2);
+    color: #FFD166;
+    border: 1px solid rgba(255, 215, 0, 0.4);
 }
 
 /* 다크모드 대응 */
@@ -1362,14 +1560,40 @@ body.dark-mode .map-popup-header {
     }
 }
 
-/* [신규] 선택된 핀 스타일 (빨간색 강조, 커짐) */
+/* [원복] 프리미엄 핀 스타일: 별 모양만 강조 */
+.premium-star-only i {
+    color: #FFD700;
+    /* 금색 */
+    font-size: 38px;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+    animation: premium-star-pulse 2s infinite ease-in-out;
+}
+
+@keyframes premium-star-pulse {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+    }
+
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+    }
+
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+    }
+}
+
+/* [신규] 선택된 핀 스타일 (더 세련된 강조) */
 .custom-pin.active-pin i {
     color: #ff3b30 !important;
     /* 강제 빨간색 */
-    transform: scale(1.3) translateY(-10px);
-    /* 커지고 살짝 위로 */
-    filter: drop-shadow(0 8px 12px rgba(255, 59, 48, 0.5));
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(1.15) translateY(-5px);
+    /* 적당히 커지고 살짝 위로 */
+    filter: drop-shadow(0 4px 10px rgba(255, 59, 48, 0.45));
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     z-index: 9999;
 }
 
@@ -1492,20 +1716,25 @@ body.dark-mode .filter-btn:hover {
     background: #444;
 }
 
-/* 다크모드 필터 버튼 활성화 상태 개선 */
+/* 다크모드 필터 버튼 활성화 상태 (다크모드에서도 브랜드켇러 유지) */
 body.dark-mode .filter-btn.onecare-filter.active {
-    background-color: #4a90e2;
+    background: var(--quali-blue);
+    color: white;
+    border-color: transparent;
+}
+
+body.dark-mode .filter-btn.onecare-filter.active i {
     color: white;
 }
 
 body.dark-mode .filter-btn.testride-filter.active {
-    background-color: #85e05d;
-    color: #121212;
-    /* 밝은 배경에는 어두운 텍스트 */
+    background: #4dbf2a;
+    color: #111;
+    border-color: transparent;
 }
 
 body.dark-mode .filter-btn.testride-filter.active i {
-    color: #121212;
+    color: #111;
 }
 
 /* 다크모드 하이퍼링크 색상 최적화 */
@@ -1556,82 +1785,28 @@ body.dark-mode .dark-mode-toggle:hover {
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* [신규] 지도 제어 버튼 통합 (Pill Style) */
-.map-controls-row {
-    display: flex;
-    gap: 8px;
-    /* 버튼 사이 간격 */
-    padding: 12px 16px;
-    background: #f8f9fa;
-    border-bottom: 1px solid var(--divider);
-    overflow-x: auto;
-    /* 화면 작을때 스크롤 */
-    white-space: nowrap;
-    justify-content: flex-start;
-    /* 왼쪽 정렬 */
-}
-
-/* 스크롤바 숨기기 */
-.map-controls-row::-webkit-scrollbar {
-    display: none;
-}
-
-.control-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    border-radius: 20px;
-    border: 1px solid #ddd;
-    background: white;
-    color: #555;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    flex-shrink: 0;
-}
-
-.control-btn i {
-    font-size: 14px;
-}
-
-.control-btn:hover {
-    background: #f0f0f0;
-}
-
-/* 활성 상태 (ON) */
-.control-btn.active {
-    background: #2f6286;
-    color: white;
-    border-color: #2f6286;
-    box-shadow: 0 2px 4px rgba(47, 98, 134, 0.3);
-}
-
-/* 다크모드 대응 */
-body.dark-mode .map-controls-row {
-    background: var(--bg-panel);
-    border-bottom: 1px solid var(--divider);
-}
-
-body.dark-mode .control-btn {
-    background: #333;
-    border-color: #555;
+/* 다크모드: 통합 버튼 시스템 (control-btn + filter-btn) */
+body.dark-mode .control-btn,
+body.dark-mode .filter-btn {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
     color: #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-body.dark-mode .control-btn:hover {
-    background: #444;
+body.dark-mode .control-btn:hover,
+body.dark-mode .filter-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
-body.dark-mode .control-btn.active {
-    background: #4a90e2;
-    /* 다크모드에서 더 잘 보이는 밝은 블루 */
-    border-color: #4a90e2;
-    color: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+body.dark-mode .control-btn i,
+body.dark-mode .filter-btn i {
+    color: rgba(255, 255, 255, 0.5);
 }
+
+/* 다크모드 활성화 상태는 라이트모드와 동일하게 브랜드컬러 유지 */
 
 /* 마커 클러스터 커스텀 스타일 */
 .marker-cluster-custom {
@@ -1672,5 +1847,132 @@ body.dark-mode .control-btn.active {
     100% {
         transform: scale(1);
         filter: drop-shadow(0 0 0 rgba(255, 69, 58, 0));
+    }
+}
+
+/* [신규] 모바일 상세 모달 스타일 */
+.mobile-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: flex-end;
+    /* Bottom sheet */
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mobile-modal-overlay.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.mobile-modal-container {
+    background: #fff;
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 28px 28px 0 0;
+    /* 더 둥글게 */
+    padding: 28px 24px 24px;
+    padding-bottom: env(safe-area-inset-bottom, 24px);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow-y: auto;
+}
+
+/* 상단 핸들바 효과 추가 */
+.mobile-modal-container::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 4px;
+    background: #e5e5ea;
+    border-radius: 2px;
+}
+
+.mobile-modal-overlay.show .mobile-modal-container {
+    transform: translateY(0);
+}
+
+.btn-close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    background: #f2f2f7;
+    border: none;
+    color: #8e8e93;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.btn-close-modal:active {
+    background: #e5e5ea;
+}
+
+#mobileMiniMap {
+    width: 100%;
+    height: 180px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    background: #e5e5ea;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Add scrolling support to mobile modal body */
+#mobileModalBody {
+    margin-top: 10px;
+    padding-bottom: 20px;
+}
+
+/* Leaflet Tooltip 커스텀 */
+.leaflet-tooltip {
+    background: rgba(0, 0, 0, 0.75) !important;
+    border: none !important;
+    border-radius: 6px !important;
+    color: white !important;
+    font-family: 'Paperlogy', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 4px 10px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.leaflet-tooltip-top:before {
+    border-top-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+/* 모바일 모달 내 버튼은 다시 가득 채우기 (터치 편의) */
+@media (max-width: 900px) {
+    .mobile-modal-container .map-popup-buttons {
+        flex-direction: column;
+    }
+
+    .mobile-modal-container .map-popup-btn,
+    .mobile-modal-container .btn-map-link {
+        width: 100%;
+        min-height: 48px;
+        font-size: 15px;
     }
 }

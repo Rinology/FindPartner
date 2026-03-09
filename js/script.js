@@ -77,10 +77,9 @@ function initMap() {
         zoom: 7,
         minZoom: 7,
         maxBounds: bounds,
-        maxBoundsViscosity: 1.0
+        maxBoundsViscosity: 1.0,
+        attributionControl: false // [신규] 오픈소스 지도 마크 삭제
     });
-
-    map.attributionControl.setPrefix(false);
 
     // [복구] OpenStreetMap (OSM)
     // 기본 타일 (Light)
@@ -148,32 +147,28 @@ function getStoreLatLng(store) {
 }
 
 function getMarkerIcon(category, isPremium) {
-    /* [주석처리] 프리미엄 아이콘 비활성화
     if (isPremium) {
+        // [원복] 프리미엄 핀: 별 모양만 나오게 디자인 (사용자 요청)
         return L.divIcon({
-            className: 'custom-pin premium-pin',
-            html: `<i class="fa-solid fa-crown"></i>`,
-            iconSize: [48, 48],
-            iconAnchor: [24, 48],
-            popupAnchor: [0, -50]
+            className: 'custom-pin premium-star-only',
+            html: `<i class="fa-solid fa-star"></i>`,
+            iconSize: [42, 42],
+            iconAnchor: [21, 21], // 중앙 정렬
+            popupAnchor: [0, -20]
         });
     }
-    */
 
-    const colors = {
-        '서울': '#2f6286', '경기': '#72bf44', '인천': '#00bcd4', '강원': '#03a9f4',
-        '충남': '#ff9800', '충북': '#ffc107', '세종': '#ffeb3b', '대전': '#ff5722',
-        '전남': '#9c27b0', '전북': '#673ab7', '경남': '#f44336', '경북': '#e53935',
-        '대구': '#d32f2f', '부산': '#c62828', '울산': '#b71c1c', '제주': '#ff5722'
-    };
-    const color = colors[category] || '#2f6286';
+    // 일반 핀: 카테고리에 맞춰 색상만 변경 (아이콘은 일관성 있게 location-dot 통일)
+    let color = '#2f6286'; // 기본 블루
+    if (category === 'testride') color = '#72bf44'; // 그린
+    if (category === 'onecare') color = '#3a86ff'; // 라이트블루
 
     return L.divIcon({
         className: 'custom-pin',
         html: `<i class="fa-solid fa-location-dot" style="color:${color};"></i>`,
-        iconSize: [40, 40],
-        iconAnchor: [20, 40],
-        popupAnchor: [0, -45]
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+        popupAnchor: [0, -32]
     });
 }
 
@@ -204,14 +199,11 @@ function updateMarkers(stores) {
         const pos = getStoreLatLng(store);
 
         if (pos) {
-            // [주석처리] 프리미엄 로직 비활성화
-            const isPremium = false;
+            const isPremium = store.grade === 'S';
             const customIcon = getMarkerIcon(store.category, isPremium);
             const marker = L.marker([pos.lat, pos.lng], { icon: customIcon });
 
-
-            // const badgeHtml = isPremium ? '<span style="background:#FFD700; color:#fff; padding:2px 5px; border-radius:3px; font-size:10px; margin-right:5px;">PREMIUM</span>' : '';
-            const badgeHtml = '';
+            const badgeHtml = isPremium ? '<span class="premium-badge"><i class="fa-solid fa-star" style="font-size:11px;"></i> S등급 우수 대리점</span><br>' : '';
 
             // [상세 정보 HTML 생성]
             let branchHtml = '';
@@ -220,7 +212,7 @@ function updateMarkers(stores) {
             }
 
             // [변경] 웹사이트(데스크탑)에서 정보를 모두 표시하기 위해 팝업 내용은 항상 전체 정보를 포함하도록 생성
-            // 모바일에서는 노출 시점(focusMarker)에서 팝업이 뜨지 않게 제어하므로, 데이터는 항상 전체를 바인딩해둡니다.
+            // 모바일에서는 노출 시점(focusMarker)에서 팝업이 뜨지 않게 제어하므로, 데이터는 항상 전체 바인딩해둡니다.
             let popupLinkBtn = '';
 
             // 네이버 지도로 보기 (상세)
@@ -239,20 +231,30 @@ function updateMarkers(stores) {
                 </a>
             `;
 
-            const addressHtml = `<div class="map-popup-row popup-mobile-hide"><i class="fa-solid fa-location-dot"></i> ${store.address}</div>`;
-            const phoneHtml = store.phone ? `<div class="map-popup-row popup-mobile-hide"><i class="fa-solid fa-phone"></i> <a href="tel:${store.phone}">${store.phone}</a></div>` : '';
-            const closedHtml = `<div class="map-popup-row popup-mobile-hide"><i class="fa-regular fa-calendar-xmark"></i> 휴무: ${store.closed || '없음'}</div>`;
+            // 프리미엄일 경우 전용 클래스 부착
+            const headerClass = isPremium ? 'map-popup-header premium-popup-header' : 'map-popup-header';
+            const titleClass = isPremium ? 'map-popup-title premium-popup-title' : 'map-popup-title';
 
             const popupContent = `
                 <div class="map-popup-inner">
-                    <div class="map-popup-header">
-                        <h4 class="map-popup-title">${badgeHtml}${store.name}</h4>
+                    <div class="${headerClass}">
+                        ${badgeHtml}
+                        <h4 class="${titleClass}">${store.name}</h4>
                         ${branchHtml}
                     </div>
-                    <div class="map-popup-body">
-                        ${addressHtml}
-                        ${phoneHtml}
-                        ${closedHtml}
+                    <div class="map-popup-body popup-mobile-hide">
+                        <div class="map-popup-row">
+                            <i class="fa-solid fa-location-dot" style="color:var(--quali-blue);"></i> 
+                            <span>${store.address}</span>
+                        </div>
+                        <div class="map-popup-row">
+                            <i class="fa-solid fa-phone" style="color:var(--quali-blue);"></i> 
+                            <a href="tel:${store.phone}">${store.phone || '-'}</a>
+                        </div>
+                        <div class="map-popup-row">
+                            <i class="fa-regular fa-calendar-xmark" style="color:var(--system-red);"></i> 
+                            <span>휴무: ${store.closed || '없음'}</span>
+                        </div>
                     </div>
                     <div class="map-popup-buttons">
                         ${popupLinkBtn}
@@ -260,8 +262,21 @@ function updateMarkers(stores) {
                 </div>
             `;
 
-            // [수정] 모바일에서도 팝업을 다시 노출하되, CSS로 정보를 최적화하여 잘림 방지
-            marker.bindPopup(popupContent);
+            // [개선] 데스크탑에서만 팝업 바인딩 (모바일은 바텀시트만 사용)
+            // [신규] 데스크탑에서 마우스 호버 시 이름 툴팁 표시
+            const isMobile = window.innerWidth <= 900;
+            if (!isMobile) {
+                marker.bindPopup(popupContent, { minWidth: 260 });
+
+                // 핀 디자인(일반 vs 프리미엄)에 따라 툴팁 높이 조정
+                const tooltipOffset = isPremium ? [0, -25] : [0, -15];
+                marker.bindTooltip(store.name, {
+                    direction: 'top',
+                    offset: tooltipOffset,
+                    permanent: false,
+                    sticky: true
+                });
+            }
 
             marker.on('click', () => {
                 // 마커 클릭이 지도 click 이벤트로 전파되어 clearSelection이 호출되지 않도록 억제
@@ -514,10 +529,10 @@ function renderList(data) {
             }
         };
 
-        // [주석처리] 프리미엄 아이콘 비활성화
-        let locationIcon = /* isPremium
-            ? '<i class="fa-solid fa-crown" style="color:#FFD700;"></i>'
-            : */ (pos ? '<i class="fa-solid fa-location-dot" style="color:#e03131;"></i>' : '<i class="fa-solid fa-location-dot"></i>');
+        // 프리미엄 핀 리스트 내 아이콘 표시 (기존 지도 핀과 동일한 fa-star)
+        let locationIcon = isPremium
+            ? '<i class="fa-solid fa-star" style="color:#FFD700; filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.5));"></i>'
+            : (pos ? '<i class="fa-solid fa-location-dot" style="color:#e03131;"></i>' : '<i class="fa-solid fa-location-dot"></i>');
 
         card.innerHTML = `
             <div class="card-header">
@@ -643,33 +658,39 @@ function focusMarker(marker, pos, storeData) {
 
     let newPoint;
     if (isMobile) {
-        // 모바일: 핀을 지도 수평 중앙에 배치 (수직 오프셋 없음)
-        newPoint = point.add([0, 0]);
+        // 모바일: 바텀시트가 하단의 약 40%를 가리므로, 핀을 화면 상단 1/3 지점에 오게 설정
+        // 맵 컨테이너 높이의 약 1/4 정도 위로 올려줌
+        const mapHeight = map.getSize().y;
+        newPoint = point.add([0, -mapHeight * 0.25]); // 25% 정도 위로 옵셋
     } else {
         // 데스크탑: 핀을 지도 패널 좌측 1/4에 배치 (팝업이 중앙에 올 공간 확보)
         newPoint = point.add([-mapSize.x / 4, 0]);
     }
 
     const newCenter = map.unproject(newPoint, zoomLevel);
-    map.flyTo(newCenter, zoomLevel, { animate: true, duration: 1 });
+    // 모바일은 부드러운 이동을 위해 duration을 약간 늘림
+    const animDuration = isMobile ? 1.2 : 1;
+    map.flyTo(newCenter, zoomLevel, { animate: true, duration: animDuration, easeLinearity: 0.25 });
 
-    // flyTo 완료 후 지도 패널 정중앙에 팝업 열기 (모바일/데스크탑 공통)
+    // flyTo 완료 후: 모바일은 전용 모달 팝업 띄우고, 데스크탑은 지도 중앙 팝업 유지
     _pendingPopupFn = function () {
         map.closePopup();
-        const content = marker.getPopup().getContent();
-        // offset Y: 팝업 박스 중앙이 지도 중앙에 오도록 조정
-        // 모바일 팝업 높이 ≈ 130px → offset 65 / 데스크탑 팝업 높이 ≈ 260px → offset 130
-        const popupOffset = isMobile ? 65 : 130;
-        L.popup({
-            closeOnClick: false,
-            autoClose: false,
-            autopan: false,
-            offset: [0, popupOffset],
-            className: 'center-map-popup'
-        })
-        .setLatLng(map.getCenter())
-        .setContent(content)
-        .openOn(map);
+        if (isMobile) {
+            showMobileModal(storeData);
+        } else {
+            const content = marker.getPopup().getContent();
+            // offset Y: 데스크탑 팝업 높이 ≈ 260px → offset 130
+            L.popup({
+                closeOnClick: false,
+                autoClose: false,
+                autopan: false,
+                offset: [0, 130],
+                className: 'center-map-popup'
+            })
+                .setLatLng(map.getCenter())
+                .setContent(content)
+                .openOn(map);
+        }
         _pendingPopupFn = null;
     };
     map.once('moveend', _pendingPopupFn);
@@ -692,41 +713,52 @@ function showMobileModal(store) {
     const pos = getStoreLatLng(store);
 
     // 모달 내용에 미니 지도 영역 추가
-    let miniMapHtml = `<div id="mobileMiniMap"></div>`;
+    // 고해상도 타일을 위해 id 설정 (CSS에서 높이 관리), 바로 안내 문구 추가
+    let miniMapHtml = `
+        <div id="mobileMiniMap"></div>
+        <div style="font-size:12px; color:#8e8e93; text-align:center; margin-bottom:12px; display:flex; align-items:center; justify-content:center; gap:4px;">
+            <i class="fa-regular fa-hand-pointer"></i> 지도를 누르면 네이버 지도로 이동합니다
+        </div>
+    `;
+
+    const isPremium = store.grade === 'S';
+    const badgeHtml = isPremium ? '<span class="premium-badge"><i class="fa-solid fa-star" style="font-size:12px;"></i> S등급 우수 대리점</span><br>' : '';
 
     let branchHtml = '';
     if (store.branch && store.branch.trim() !== '') {
-        branchHtml = `<div class="map-popup-branch" style="margin-bottom:10px;">퀄리스포츠 ${store.branch}</div>`;
+        branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${store.branch}</div>`;
     }
 
     let popupLinkBtn = '';
-    if (store.link && store.link.trim() !== '' && store.link !== '#') {
-        popupLinkBtn += `
-            <a href="${store.link}" target="_blank" class="map-popup-btn">
-                네이버 지도로 보기
-            </a>
-        `;
-    }
+    // 모바일 바텀시트에서는 지도 자체가 클릭 시 네이버지도로 연결되므로, '네이버 지도로 보기' 버튼은 비활성화
+    // if (store.link && store.link.trim() !== '' && store.link !== '#') {
+    //     popupLinkBtn += `<a href="${store.link}" target="_blank" class="map-popup-btn">네이버 지도로 보기</a>`;
+    // }
     popupLinkBtn += `
         <a href="#" onclick="openNaverNavi(${pos.lat}, ${pos.lng}, '${store.name}'); return false;" class="btn-map-link">
             <i class="fa-solid fa-location-arrow"></i> 네이버 길찾기
         </a>
     `;
 
-    // 모바일 모달은 모든 정보 표시 (원래대로)
+    // 모바일 모달은 모든 정보 표시
+    // 프리미엄일 경우 커스텀 클래스 부착 (css/style.css 에서 스타일 제어)
+    const headerClass = isPremium ? 'map-popup-header premium-popup-header' : 'map-popup-header';
+    const titleClass = isPremium ? 'map-popup-title premium-popup-title' : 'map-popup-title';
+
     body.innerHTML = `
         <div class="map-popup-inner" style="padding:0;">
             ${miniMapHtml}
-            <div class="map-popup-header">
-                <h4 class="map-popup-title" style="font-size:20px;">${store.name}</h4>
+            <div class="${headerClass}">
+                ${badgeHtml}
+                <h4 class="${titleClass}" style="font-size:22px;">${store.name}</h4>
                 ${branchHtml}
             </div>
             <div class="map-popup-body" style="font-size:15px; margin: 15px 0;">
-                <div class="map-popup-row"><i class="fa-solid fa-location-dot"></i> ${store.address}</div>
-                <div class="map-popup-row"><i class="fa-solid fa-phone"></i> <a href="tel:${store.phone}">${store.phone || '-'}</a></div>
-                <div class="map-popup-row"><i class="fa-regular fa-calendar-xmark"></i> 휴무: ${store.closed || '없음'}</div>
+                <div class="map-popup-row" style="margin-bottom:10px; display:flex; align-items:flex-start; gap:8px;"><i class="fa-solid fa-location-dot" style="color:var(--system-blue); width:24px; text-align:center; padding-top:2px;"></i> <span style="flex:1; line-height:1.4;">${store.address}</span></div>
+                <div class="map-popup-row" style="margin-bottom:10px; display:flex; align-items:flex-start; gap:8px;"><i class="fa-solid fa-phone" style="color:var(--system-blue); width:24px; text-align:center; padding-top:2px;"></i> <a href="tel:${store.phone}" style="color:var(--text-primary); text-decoration:none; font-weight:500; display:block;">${store.phone || '-'}</a></div>
+                <div class="map-popup-row" style="margin-bottom:10px; display:flex; align-items:flex-start; gap:8px;"><i class="fa-regular fa-calendar-xmark" style="color:var(--system-red); width:24px; text-align:center; padding-top:2px;"></i> <span style="font-weight:500;">휴무: ${store.closed || '없음'}</span></div>
             </div>
-            <div class="map-popup-buttons" style="margin-top:20px;">
+            <div class="map-popup-buttons" style="margin-top:24px; display:flex; gap:8px;">
                 ${popupLinkBtn}
             </div>
         </div>
@@ -743,15 +775,19 @@ function showMobileModal(store) {
         }
         mobileMiniMap = L.map('mobileMiniMap', {
             center: [pos.lat, pos.lng],
-            zoom: 15,
+            zoom: 17, // 핀 주변을 가깝게 보여주기 (15 → 17)
             zoomControl: false,
             dragging: false,
             touchZoom: false,
             scrollWheelZoom: false,
-            doubleClickZoom: false
+            doubleClickZoom: false,
+            attributionControl: false // [신규] 오픈소스 지도 마크 삭제 (모바일 미니맵)
         });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mobileMiniMap);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            detectRetina: true, // 고해상도(레티나) 디스플레이에서 선명한 타일 로드 옵션
+            maxZoom: 19
+        }).addTo(mobileMiniMap);
 
         const miniIcon = L.divIcon({
             className: 'custom-pin',
