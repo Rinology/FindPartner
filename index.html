@@ -28,6 +28,15 @@
                 <img src="images/Xtron_x_Qualisports_Logo_Black.png" alt="Qualisports Logo" class="logo-light">
                 <img src="images/Xtron_x_Qualisports_Logo_White.png" alt="Qualisports Logo" class="logo-dark">
                 전국 대리점 안내
+                <!-- [신규] 데스크탑 헤더 버튼 -->
+                <div class="header-action-buttons desktop-only">
+                    <a href="#" id="headerKakaoBtn" target="_blank" class="btn-kakao-sm">
+                        <i class="fa-brands fa-kakao"></i> 카카오톡 1:1 상담하기
+                    </a>
+                    <a href="#" id="headerRegistBtn" target="_blank" class="btn-regist-sm">
+                        <i class="fa-solid fa-file-signature"></i> 제품등록센터
+                    </a>
+                </div>
             </div>
             <div class="header-info">가까운 공식 대리점을 검색해보세요</div>
         </div>
@@ -160,6 +169,16 @@
             <button class="btn-close-modal" onclick="closeMobileModal()"><i class="fa-solid fa-xmark"></i></button>
             <div id="mobileModalBody"></div>
         </div>
+    </div>
+
+    <!-- [신규] 모바일 플로팅 액션 버튼 (FAB) -->
+    <div class="mobile-fab-container mobile-only">
+        <a href="#" id="fabRegistBtn" target="_blank" class="fab-btn regist" title="제품등록센터">
+            <i class="fa-solid fa-file-signature"></i>
+        </a>
+        <a href="#" id="fabKakaoBtn" target="_blank" class="fab-btn kakao" title="카카오톡 1:1 상담하기">
+            <i class="fa-brands fa-kakao"></i>
+        </a>
     </div>
 
     <!-- 외부 라이브러리 (Local) -->

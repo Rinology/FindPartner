@@ -110,6 +110,14 @@
     -webkit-font-smoothing: antialiased;
 }
 
+/* 폼 요소 폰트 상속 이슈 해결 */
+input,
+button,
+select,
+textarea {
+    font-family: inherit;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -173,6 +181,67 @@ body.dark-mode .brand-title .logo-light {
 
 body.dark-mode .brand-title .logo-dark {
     display: block;
+}
+
+/* [신규] 헤더 버튼 스타일 (데스크탑) */
+.header-action-buttons {
+    display: flex;
+    align-items: center;
+    /* 버튼들의 수직 베이스라인 일치 */
+    gap: 10px;
+    margin-left: 24px;
+}
+
+.btn-kakao-sm,
+.btn-regist-sm {
+    height: 34px !important;
+    padding: 0 16px !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    transition: all 0.2s !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    line-height: normal !important;
+    /* 브라우저 기본값으로 초기화하여 flex 중앙 정렬 유지 */
+}
+
+.btn-kakao-sm {
+    background-color: #FEE500 !important;
+    color: #3C1E1E !important;
+}
+
+.btn-kakao-sm i {
+    font-size: 16px !important;
+    color: #3C1E1E !important;
+    display: inline-block !important;
+    margin: 0 !important;
+    line-height: inherit !important;
+}
+
+.btn-regist-sm {
+    background-color: var(--quali-blue) !important;
+    color: white !important;
+}
+
+.btn-regist-sm i {
+    font-size: 14px !important;
+    color: white !important;
+    display: inline-block !important;
+    margin: 0 !important;
+    line-height: inherit !important;
+}
+
+.btn-kakao-sm:hover,
+.btn-regist-sm:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .brand-title i {
@@ -256,7 +325,7 @@ body.dark-mode .brand-title .logo-dark {
 .grade-s-star i {
     color: #FFD700;
     /* 하얀 광택 효과를 위한 다중 텍스트 섀도우 */
-    text-shadow: 
+    text-shadow:
         0 0 5px rgba(255, 215, 0, 0.5),
         -1px -1px 0 rgba(255, 255, 255, 0.9) inset,
         1px 1px 2px rgba(255, 255, 255, 0.8);
@@ -282,13 +351,27 @@ body.dark-mode .brand-title .logo-dark {
 }
 
 @keyframes starPulseS {
-    0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 5px white); }
-    100% { transform: scale(1.18); filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)) drop-shadow(0 0 10px white); }
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 5px white);
+    }
+
+    100% {
+        transform: scale(1.18);
+        filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)) drop-shadow(0 0 10px white);
+    }
 }
 
 @keyframes starPulseAB {
-    0% { transform: scale(1); opacity: 0.9; }
-    100% { transform: scale(1.05); opacity: 1; }
+    0% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
 }
 
 .premium-pin i {
@@ -1412,7 +1495,7 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     gap: 6px;
     font-weight: 700;
     letter-spacing: -0.01em;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* 길찾기 버튼 (Primary) - 네이버 그린 */
@@ -1517,6 +1600,158 @@ body.dark-mode .map-popup-header {
 
 .btn-top:hover {
     transform: translateY(-4px);
+}
+
+/* [신규] 시승 안내 문구 스타일 */
+.test-ride-guide {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--divider);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.test-ride-guide i {
+    color: var(--quali-blue);
+    font-size: 14px;
+}
+
+/* [신규] 카카오톡 & 제품등록센터 버튼 스타일 */
+.btn-kakao,
+.btn-regist {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 140px;
+}
+
+.btn-kakao {
+    background-color: #FEE500;
+    color: #191919;
+}
+
+.btn-kakao:hover {
+    background-color: #fada0a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(254, 229, 0, 0.3);
+}
+
+.btn-regist {
+    background-color: var(--quali-blue);
+    color: white;
+}
+
+.btn-regist:hover {
+    background-color: #3b78a3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(47, 98, 134, 0.3);
+}
+
+/* 사이드바 전용 고정 버튼 컨테이너 */
+.sidebar-action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+/* 모바일 바텀시트에서의 버튼 크기 조정 */
+@media (max-width: 900px) {
+    .sidebar-action-buttons {
+        margin-top: 10px;
+    }
+
+    .btn-kakao,
+    .btn-regist {
+        height: 48px;
+        border-radius: 12px;
+    }
+}
+
+/* [신규] 모바일 플로팅 액션 버튼 (FAB) */
+.mobile-fab-container {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 2100;
+}
+
+.fab-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fab-btn.kakao {
+    background-color: #FEE500 !important;
+    color: #3C1E1E !important;
+    animation: fab-pulse 2.5s infinite !important;
+}
+
+.fab-btn.regist {
+    background-color: var(--quali-blue);
+    animation: fab-pulse-blue 2.5s infinite 1.25s;
+    /* 엇갈리게 애니메이션 */
+}
+
+.fab-btn i {
+    animation: fab-float 3s ease-in-out infinite;
+}
+
+.fab-btn.regist i {
+    animation-delay: 1.5s;
+}
+
+.fab-btn.kakao i {
+    font-size: 26px;
+    /* 모바일 FAB 내에서도 브랜드 아이콘을 크게 노출 */
+}
+
+.fab-btn:active {
+    transform: scale(0.85);
+    filter: brightness(0.9);
+}
+
+/* 유틸리티: 기기별 노출 */
+.desktop-only {
+    display: flex !important;
+}
+
+.mobile-only {
+    display: none !important;
+}
+
+@media (max-width: 900px) {
+    .desktop-only {
+        display: none !important;
+    }
+
+    .mobile-only {
+        display: flex !important;
+    }
 }
 
 @media (max-width: 900px) {

@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchData();
     requestInitialLocation(); // [신규] 페이지 진입 시 위치 권한 요청
     handleResponsiveLayout(); // [신규] 화면 크기에 따른 레이아웃 처리
+    applyConfigLinks();      // [신규] 설정 파일의 링크를 UI에 적용
 
     const listEl = document.getElementById('listContent');
     listEl.addEventListener('scroll', () => {
@@ -47,6 +48,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     window.addEventListener('resize', handleResponsiveLayout);
 });
+
+// [신규] 설정 파일의 링크를 실제 앨리먼트에 바인딩
+function applyConfigLinks() {
+    const headerKakao = document.getElementById('headerKakaoBtn');
+    const headerRegist = document.getElementById('headerRegistBtn');
+    const fabKakao = document.getElementById('fabKakaoBtn');
+    const fabRegist = document.getElementById('fabRegistBtn');
+
+    if (headerKakao) headerKakao.href = CONFIG.EXTERNAL_SERVICES.KAKAO_CHANNEL || '#';
+    if (headerRegist) headerRegist.href = CONFIG.EXTERNAL_SERVICES.REGIST_CENTER || '#';
+    if (fabKakao) fabKakao.href = CONFIG.EXTERNAL_SERVICES.KAKAO_CHANNEL || '#';
+    if (fabRegist) fabRegist.href = CONFIG.EXTERNAL_SERVICES.REGIST_CENTER || '#';
+}
 
 // [신규] 모바일 버전에서 컨트롤 영역을 헤더로 이동시키는 포털 기능
 function handleResponsiveLayout() {
@@ -244,6 +258,13 @@ function updateMarkers(stores) {
                 </a>
             `;
 
+            // [신규] 시승 안내 문구
+            const testRideGuideHtml = `
+                <div class="test-ride-guide">
+                    <i class="fa-solid fa-circle-info"></i> 시승 가능 여부는 해당 매장에 문의해 주시면 친절히 안내해 드립니다.
+                </div>
+            `;
+
             // 프리미엄일 경우 전용 클래스 부착
             const headerClass = isPremium ? 'map-popup-header premium-popup-header' : 'map-popup-header';
             const titleClass = isPremium ? 'map-popup-title premium-popup-title' : 'map-popup-title';
@@ -272,6 +293,7 @@ function updateMarkers(stores) {
                     <div class="map-popup-buttons">
                         ${popupLinkBtn}
                     </div>
+                    ${testRideGuideHtml}
                 </div>
             `;
 
@@ -514,6 +536,13 @@ function renderList(data) {
             </span>`;
         }
 
+        // [신규] 리스트용 시승 안내 문구
+        const listTestRideGuide = `
+            <div class="test-ride-guide" style="border-top:none; padding-top:0; margin-top:8px; justify-content:flex-start; font-size:12px;">
+                <i class="fa-solid fa-circle-info" style="font-size:12px;"></i> 시승 가능 여부는 해당 매장에 문의해 주시면 친절히 안내해 드립니다.
+            </div>
+        `;
+
         const phoneHtml = store.phone ? `<a href="tel:${store.phone}" class="phone-link" onclick="event.stopPropagation();">${store.phone}</a>` : '-';
 
         let branchHtml = '';
@@ -573,6 +602,7 @@ function renderList(data) {
                     휴무: ${store.closed || '없음'}
                 </div>
                 <div class="badge-group">${badgesHtml}</div>
+                ${listTestRideGuide}
             </div>
         `;
         container.appendChild(card);
@@ -763,6 +793,13 @@ function showMobileModal(store) {
         </a>
     `;
 
+    // [신규] 시승 안내 문구 (모바일)
+    const testRideGuideHtml = `
+        <div class="test-ride-guide">
+            <i class="fa-solid fa-circle-info"></i> 시승 가능 여부는 해당 매장에 문의해 주시면 친절히 안내해 드립니다.
+        </div>
+    `;
+
     // 모바일 모달은 모든 정보 표시
     // 프리미엄일 경우 커스텀 클래스 부착 (css/style.css 에서 스타일 제어)
     const headerClass = isPremium ? 'map-popup-header premium-popup-header' : 'map-popup-header';
@@ -776,14 +813,26 @@ function showMobileModal(store) {
                 <h4 class="${titleClass}" style="font-size:22px;">${store.name}</h4>
                 ${branchHtml}
             </div>
-            <div class="map-popup-body" style="font-size:15px; margin: 15px 0;">
-                <div class="map-popup-row" style="margin-bottom:10px; display:flex; align-items:flex-start; gap:8px;"><i class="fa-solid fa-location-dot" style="color:var(--system-blue); width:24px; text-align:center; padding-top:2px;"></i> <span style="flex:1; line-height:1.4;">${store.address}</span></div>
-                <div class="map-popup-row" style="margin-bottom:10px; display:flex; align-items:flex-start; gap:8px;"><i class="fa-solid fa-phone" style="color:var(--system-blue); width:24px; text-align:center; padding-top:2px;"></i> <a href="tel:${store.phone}" style="color:var(--text-primary); text-decoration:none; font-weight:500; display:block;">${store.phone || '-'}</a></div>
-                <div class="map-popup-row" style="margin-bottom:10px; display:flex; align-items:flex-start; gap:8px;"><i class="fa-regular fa-calendar-xmark" style="color:var(--system-red); width:24px; text-align:center; padding-top:2px;"></i> <span style="font-weight:500;">휴무: ${store.closed || '없음'}</span></div>
+            <div class="map-popup-body" style="font-size:15px; margin: 20px 0; display: flex; flex-direction: column; align-items: center;">
+                <div style="width: 100%; max-width: 280px;">
+                    <div class="map-popup-row" style="margin-bottom:12px; display:flex; align-items:flex-start; gap:10px;">
+                        <i class="fa-solid fa-location-dot" style="color:var(--system-blue); width:20px; text-align:center; padding-top:3px; font-size:16px;"></i> 
+                        <span style="flex:1; line-height:1.5; text-align:left; word-break:keep-all;">${store.address}</span>
+                    </div>
+                    <div class="map-popup-row" style="margin-bottom:12px; display:flex; align-items:flex-start; gap:10px;">
+                        <i class="fa-solid fa-phone" style="color:var(--system-blue); width:20px; text-align:center; padding-top:3px; font-size:16px;"></i> 
+                        <a href="tel:${store.phone}" style="color:var(--text-primary); text-decoration:none; font-weight:500; display:block; text-align:left;">${store.phone || '-'}</a>
+                    </div>
+                    <div class="map-popup-row" style="margin-bottom:0; display:flex; align-items:flex-start; gap:10px;">
+                        <i class="fa-regular fa-calendar-xmark" style="color:var(--system-red); width:20px; text-align:center; padding-top:3px; font-size:16px;"></i> 
+                        <span style="font-weight:500; text-align:left;">휴무: ${store.closed || '없음'}</span>
+                    </div>
+                </div>
             </div>
             <div class="map-popup-buttons" style="margin-top:24px; display:flex; gap:8px;">
                 ${popupLinkBtn}
             </div>
+            ${testRideGuideHtml}
         </div>
     `;
 
