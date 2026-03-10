@@ -9,12 +9,11 @@
     <!-- 아이콘: FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- [필수] Leaflet.js -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <!-- Leaflet MarkerCluster CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <!-- [필수] Leaflet.js (Local) -->
+    <link rel="stylesheet" href="lib/leaflet/leaflet.css" />
+    <!-- Leaflet MarkerCluster CSS (Local) -->
+    <link rel="stylesheet" href="lib/markercluster/MarkerCluster.css" />
+    <link rel="stylesheet" href="lib/markercluster/MarkerCluster.Default.css" />
 
     <!-- 분리된 CSS 연결 -->
     <link rel="stylesheet" href="css/style.css">
@@ -149,13 +148,13 @@
         </div>
     </div>
 
-    <!-- 외부 라이브러리 -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <!-- Leaflet MarkerCluster JS -->
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <!-- 외부 라이브러리 (Local) -->
+    <script src="lib/leaflet/leaflet.js"></script>
+    <!-- Leaflet MarkerCluster JS (Local) -->
+    <script src="lib/markercluster/leaflet.markercluster.js"></script>
 
     <!-- 분리된 JS 연결 -->
+    <script src="js/config.js"></script>
     <script src="js/script.js"></script>
 </body>
 

@@ -14,7 +14,7 @@ document.addEventListener('keydown', function (e) {
     if (e.ctrlKey && e.keyCode === 80) { e.preventDefault(); return false; }
 });
 
-const GAS_URL = "/api/gas-proxy";
+const GAS_URL = CONFIG.GAS_URL;
 
 let map;
 let markers = []; // This will now act as a reference if needed, but mainly use cluster
@@ -83,14 +83,14 @@ function initMap() {
 
     // [복구] OpenStreetMap (OSM)
     // 기본 타일 (Light)
-    window.lightTile = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors',
+    window.lightTile = L.tileLayer(CONFIG.MAP.LIGHT_TILE, {
+        attribution: CONFIG.MAP.ATTRIBUTION.OSM,
         maxZoom: 19
     }).addTo(map);
 
     // 다크 모드용 타일 (CartoDB Dark Matter)
-    window.darkTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap &copy; CartoDB',
+    window.darkTile = L.tileLayer(CONFIG.MAP.DARK_TILE, {
+        attribution: CONFIG.MAP.ATTRIBUTION.CARTO,
         maxZoom: 19
     });
 
@@ -352,7 +352,7 @@ function requestInitialLocation() {
 // [신규 기능] 네이버 길찾기 동적 연동
 function openNaverNavi(lat, lng, name) {
     // 기본 URL (도착지)
-    let url = `https://map.naver.com/index.nhn?elat=${lat}&elng=${lng}&etext=${name}&menu=route`;
+    let url = `${CONFIG.EXTERNAL_SERVICES.NAVER_ROUTE}?elat=${lat}&elng=${lng}&etext=${name}&menu=route`;
 
     // 현재 시점의 내 위치가 있으면 출발지로 추가
     // 만약 userLat가 없다면, 다시 한번 시도해볼 수도 있음 (여기서는 저장된 값 사용)
@@ -784,7 +784,7 @@ function showMobileModal(store) {
             attributionControl: false // [신규] 오픈소스 지도 마크 삭제 (모바일 미니맵)
         });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer(CONFIG.MAP.LIGHT_TILE, {
             detectRetina: true, // 고해상도(레티나) 디스플레이에서 선명한 타일 로드 옵션
             maxZoom: 19
         }).addTo(mobileMiniMap);
@@ -799,7 +799,7 @@ function showMobileModal(store) {
 
         // 맵 클릭 시 네이버 지도로 연결되게 설정
         mobileMiniMap.on('click', () => {
-            window.open(`https://map.naver.com/v5/search/${encodeURIComponent(store.address)}`, '_blank');
+            window.open(`${CONFIG.EXTERNAL_SERVICES.NAVER_SEARCH}${encodeURIComponent(store.address)}`, '_blank');
         });
     }, 200);
 }
