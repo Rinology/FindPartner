@@ -67,11 +67,23 @@
 
                 <!-- 2단: 필터 버튼 모음 -->
                 <div class="filter-buttons-row">
-                    <!-- [주석처리] 프리미엄 필터 비활성화
                     <label class="filter-btn premium-filter">
                         <input type="checkbox" id="premiumCheck" onchange="updateFilter(this); filterData()">
-                        <i class="fa-solid fa-crown"></i>
+                        <i class="fa-solid fa-star"></i>
                         <span>프리미엄</span>
+                    </label>
+
+                    <!-- [주석처리] A, B 등급 및 시승 필터 비활성화
+                    <label class="filter-btn a-grade-filter">
+                        <input type="checkbox" id="aGradeCheck" onchange="updateFilter(this); filterData()">
+                        <i class="fa-solid fa-star" style="color:var(--quali-blue);"></i>
+                        <span>A등급</span>
+                    </label>
+
+                    <label class="filter-btn b-grade-filter">
+                        <input type="checkbox" id="bGradeCheck" onchange="updateFilter(this); filterData()">
+                        <i class="fa-solid fa-star" style="color:var(--quali-green);"></i>
+                        <span>B등급</span>
                     </label>
                     -->
 
@@ -81,11 +93,13 @@
                         <span>원케어</span>
                     </label>
 
+                    <!--
                     <label class="filter-btn testride-filter">
                         <input type="checkbox" id="testRideCheck" onchange="updateFilter(this); filterData()">
                         <i class="fa-solid fa-motorcycle"></i>
                         <span>시승</span>
                     </label>
+                    -->
                 </div>
 
                 <!-- [선택됨 표시] -->

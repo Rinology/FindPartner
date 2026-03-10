@@ -146,20 +146,27 @@ function getStoreLatLng(store) {
     return null;
 }
 
-function getMarkerIcon(category, isPremium) {
-    if (isPremium) {
-        // [원복] 프리미엄 핀: 별 모양만 나오게 디자인 (사용자 요청)
+function getMarkerIcon(category, grade) {
+    // 프리미엄 별 아이콘 (기존 S등급)
+    if (grade === 'S') {
+        let gradeClass = `grade-s-star`;
         return L.divIcon({
-            className: 'custom-pin premium-star-only',
+            className: `custom-pin grade-star-pin ${gradeClass}`,
             html: `<i class="fa-solid fa-star"></i>`,
             iconSize: [42, 42],
-            iconAnchor: [21, 21], // 중앙 정렬
+            iconAnchor: [21, 21],
             popupAnchor: [0, -20]
         });
     }
+    /* [주석처리] A, B 등급 핀 비활성화
+    else if (grade === 'A' || grade === 'B') {
+        let gradeClass = `grade-${grade.toLowerCase()}-star`;
+        ...
+    }
+    */
 
     // 일반 핀: 카테고리에 맞춰 색상만 변경 (아이콘은 일관성 있게 location-dot 통일)
-    let color = '#2f6286'; // 기본 블루
+    let color = '#888'; // 기본 그레이 (등급과 구분되게 변경)
     if (category === 'testride') color = '#72bf44'; // 그린
     if (category === 'onecare') color = '#3a86ff'; // 라이트블루
 
@@ -199,11 +206,17 @@ function updateMarkers(stores) {
         const pos = getStoreLatLng(store);
 
         if (pos) {
-            const isPremium = store.grade === 'S';
-            const customIcon = getMarkerIcon(store.category, isPremium);
+            const grade = store.grade; // 'S', 'A', 'B' 등
+            const isPremium = grade === 'S'; // 'S' 등급은 기존처럼 프리미엄 대우
+            const customIcon = getMarkerIcon(store.category, grade);
             const marker = L.marker([pos.lat, pos.lng], { icon: customIcon });
 
-            const badgeHtml = isPremium ? '<span class="premium-badge"><i class="fa-solid fa-star" style="font-size:11px;"></i> S등급 우수 대리점</span><br>' : '';
+            let badgeHtml = '';
+            if (grade === 'S') badgeHtml = '<span class="premium-badge badge-s"><i class="fa-solid fa-star" style="font-size:11px;"></i> 프리미엄</span><br>';
+            /* [주석처리] A, B 뱃지 비활성화
+            else if (grade === 'A') ...
+            else if (grade === 'B') ...
+            */
 
             // [상세 정보 HTML 생성]
             let branchHtml = '';
@@ -481,16 +494,19 @@ function renderList(data) {
     }
 
     data.forEach((store) => {
-        const isPremium = (store.grade === 'S');
+        const grade = store.grade;
+        const isPremium = (grade === 'S');
         const pos = getStoreLatLng(store);
 
         let badgesHtml = '';
+        /* [주석처리] 리스트 내 시승가능 표시 제거
         if (store.testRide === "O") {
             badgesHtml += `
             <span class="badge test-ride">
                 <i class="fa-solid fa-motorcycle"></i> 시승가능
             </span>`;
         }
+        */
         if (store.oneCare === "O") {
             badgesHtml += `
             <span class="badge one-care">
@@ -529,10 +545,14 @@ function renderList(data) {
             }
         };
 
-        // 프리미엄 핀 리스트 내 아이콘 표시 (기존 지도 핀과 동일한 fa-star)
-        let locationIcon = isPremium
-            ? '<i class="fa-solid fa-star" style="color:#FFD700; filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.5));"></i>'
-            : (pos ? '<i class="fa-solid fa-location-dot" style="color:#e03131;"></i>' : '<i class="fa-solid fa-location-dot"></i>');
+        // 프리미엄 아이콘 리스트 내 표시 (기존 S등급)
+        let locationIcon = '';
+        if (grade === 'S') {
+            locationIcon = `<i class="fa-solid fa-star" style="color:#FFD700; filter: drop-shadow(0 0 4px rgba(0,0,0,0.1));"></i>`;
+        } /* A, B 등급 아이콘 표시 주석 처리 */
+        else {
+            locationIcon = pos ? '<i class="fa-solid fa-location-dot" style="color:#e03131;"></i>' : '<i class="fa-solid fa-location-dot"></i>';
+        }
 
         card.innerHTML = `
             <div class="card-header">
@@ -721,8 +741,11 @@ function showMobileModal(store) {
         </div>
     `;
 
-    const isPremium = store.grade === 'S';
-    const badgeHtml = isPremium ? '<span class="premium-badge"><i class="fa-solid fa-star" style="font-size:12px;"></i> S등급 우수 대리점</span><br>' : '';
+    const grade = store.grade;
+    const isPremium = grade === 'S';
+    let badgeHtml = '';
+    if (grade === 'S') badgeHtml = '<span class="premium-badge badge-s"><i class="fa-solid fa-star" style="font-size:12px;"></i> 프리미엄</span><br>';
+    /* A, B 등급 뱃지 비활성화 */
 
     let branchHtml = '';
     if (store.branch && store.branch.trim() !== '') {
@@ -812,11 +835,11 @@ function closeMobileModal() {
 
 function applyFilter() {
     const keyword = document.getElementById("searchInput").value.toUpperCase().trim();
-    // [주석처리] 프리미엄 필터 체크박스 비활성화
-    // const showPremiumOnly = document.getElementById("premiumCheck").checked;
-    const showPremiumOnly = false; // 강제 false 처리
+    const showPremiumOnly = document.getElementById("premiumCheck").checked;
+    // const showAGradeOnly = document.getElementById("aGradeCheck").checked;
+    // const showBGradeOnly = document.getElementById("bGradeCheck").checked;
     const showOneCareOnly = document.getElementById("oneCareCheck").checked;
-    const showTestRideOnly = document.getElementById("testRideCheck").checked;
+    // const showTestRideOnly = document.getElementById("testRideCheck").checked;
 
     clearSelection();
 
@@ -825,8 +848,10 @@ function applyFilter() {
         if (currentCategory !== 'all' && store.category !== currentCategory) return false;
 
         if (showPremiumOnly && store.grade !== 'S') return false;
+        // if (showAGradeOnly && store.grade !== 'A') return false;
+        // if (showBGradeOnly && store.grade !== 'B') return false;
         if (showOneCareOnly && store.oneCare !== 'O') return false;
-        if (showTestRideOnly && store.testRide !== 'O') return false;
+        // if (showTestRideOnly && store.testRide !== 'O') return false;
 
         if (keyword !== "") {
             return (store.name && store.name.toUpperCase().includes(keyword)) ||
@@ -836,17 +861,15 @@ function applyFilter() {
         return true;
     });
 
-    // 2. [주석처리] 정렬 수행 비활성화 (S등급 최상단 기능 끔)
-    /*
+    // 2. 정렬 수행 (S > A > B > 일반)
     filtered.sort((a, b) => {
-        const isPremiumA = a.grade === 'S';
-        const isPremiumB = b.grade === 'S';
+        const gradeMap = { 'S': 3, 'A': 2, 'B': 1 };
+        const scoreA = gradeMap[a.grade] || 0;
+        const scoreB = gradeMap[b.grade] || 0;
 
-        if (isPremiumA && !isPremiumB) return -1; // A가 프리미엄이면 앞으로
-        if (!isPremiumA && isPremiumB) return 1;  // B가 프리미엄이면 앞으로
-        return 0; // 둘 다 같으면 순서 유지
+        if (scoreA !== scoreB) return scoreB - scoreA; // 높은 등급이 앞으로
+        return 0; // 등급 같으면 순서 유지
     });
-    */
 
     renderList(filtered);
     updateMarkers(filtered);

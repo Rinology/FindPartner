@@ -242,6 +242,55 @@ body.dark-mode .brand-title .logo-dark {
     transition: transform 0.2s;
 }
 
+/* 등급별 별 아이콘 스타일 */
+.grade-star-pin i {
+    font-size: 40px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    display: block;
+    text-align: center;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+    transition: transform 0.2s;
+}
+
+/* S등급: 골드 + 엄청 화려한 광택(Gloss) + Pulse */
+.grade-s-star i {
+    color: #FFD700;
+    /* 하얀 광택 효과를 위한 다중 텍스트 섀도우 */
+    text-shadow: 
+        0 0 5px rgba(255, 215, 0, 0.5),
+        -1px -1px 0 rgba(255, 255, 255, 0.9) inset,
+        1px 1px 2px rgba(255, 255, 255, 0.8);
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+    -webkit-text-stroke: 1.2px #B8860B;
+    animation: starPulseS 2s infinite alternate;
+}
+
+/* A등급: 블루 (가독성 강화를 위해 화이트 테두리 및 광채 추가) */
+.grade-a-star i {
+    color: var(--quali-blue);
+    -webkit-text-stroke: 1.5px white;
+    filter: drop-shadow(0 0 8px white) drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+    animation: starPulseAB 3s infinite alternate;
+}
+
+/* B등급: 그린 (가독성 강화를 위해 화이트 테두리 및 광채 추가) */
+.grade-b-star i {
+    color: var(--quali-green);
+    -webkit-text-stroke: 1.5px white;
+    filter: drop-shadow(0 0 8px white) drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+    animation: starPulseAB 3s infinite alternate;
+}
+
+@keyframes starPulseS {
+    0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 5px white); }
+    100% { transform: scale(1.18); filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)) drop-shadow(0 0 10px white); }
+}
+
+@keyframes starPulseAB {
+    0% { transform: scale(1); opacity: 0.9; }
+    100% { transform: scale(1.05); opacity: 1; }
+}
+
 .premium-pin i {
     font-size: 40px;
     color: #FFD700;
@@ -473,6 +522,42 @@ body.dark-mode .brand-title .logo-dark {
 }
 
 /* === 필터 버튼 활성화 상태 === */
+
+/* S등급 - 골드 */
+.filter-btn.premium-filter.active {
+    background: linear-gradient(135deg, #FFD700, #FFB800) !important;
+    border-color: rgba(184, 134, 11, 0.4) !important;
+    color: #000 !important;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+}
+
+.filter-btn.premium-filter.active i {
+    color: #000 !important;
+}
+
+/* A등급 - 브랜드 블루 */
+.filter-btn.a-grade-filter.active {
+    background: var(--quali-blue) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(47, 98, 134, 0.4);
+}
+
+.filter-btn.a-grade-filter.active i {
+    color: #fff !important;
+}
+
+/* B등급 - 브랜드 그린 */
+.filter-btn.b-grade-filter.active {
+    background: var(--quali-green) !important;
+    border-color: transparent !important;
+    color: #1a1a1a !important;
+    box-shadow: 0 4px 12px rgba(114, 191, 68, 0.4);
+}
+
+.filter-btn.b-grade-filter.active i {
+    color: #1a1a1a !important;
+}
 
 /* 원케어 - 브랜드 블루 */
 .filter-btn.onecare-filter.active {
@@ -1297,17 +1382,37 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     letter-spacing: -0.4px;
 }
 
+/* 등급별 뱃지 스타일 */
+.premium-badge.badge-s {
+    background: linear-gradient(135deg, #FFD700, #FFB800);
+    color: #000;
+    border: 1px solid rgba(255, 215, 0, 0.5);
+}
+
+.premium-badge.badge-a {
+    background: linear-gradient(135deg, #2f6286, #1a4a6d);
+    color: #fff;
+    border: 1px solid rgba(47, 98, 134, 0.3);
+}
+
+.premium-badge.badge-b {
+    background: linear-gradient(135deg, #72bf44, #5a9e36);
+    color: #fff;
+    border: 1px solid rgba(114, 191, 68, 0.3);
+}
+
 /* S등급 뱃지 공통 스타일 (light mode) */
 .premium-badge {
-    background: #FFD700;
-    color: #000;
     padding: 4px 10px;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 11px;
     margin-bottom: 8px;
-    display: inline-block;
-    font-weight: 800;
-    letter-spacing: 0.2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 /* 길찾기 버튼 (Primary) - 네이버 그린 */
@@ -1587,12 +1692,13 @@ body.dark-mode .map-popup-header {
 }
 
 /* [신규] 선택된 핀 스타일 (더 세련된 강조) */
-.custom-pin.active-pin i {
+.custom-pin.active-pin i,
+.custom-pin.active-pin img {
     color: #ff3b30 !important;
-    /* 강제 빨간색 */
+    /* 강제 빨간색 (아이콘용) */
     transform: scale(1.15) translateY(-5px);
     /* 적당히 커지고 살짝 위로 */
-    filter: drop-shadow(0 4px 10px rgba(255, 59, 48, 0.45));
+    filter: drop-shadow(0 4px 12px rgba(255, 59, 48, 0.6)) !important;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     z-index: 9999;
 }
