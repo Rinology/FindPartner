@@ -856,7 +856,8 @@ function applyFilter() {
         if (keyword !== "") {
             return (store.name && store.name.toUpperCase().includes(keyword)) ||
                 (store.address && store.address.toUpperCase().includes(keyword)) ||
-                (store.branch && store.branch.toUpperCase().includes(keyword));
+                (store.branch && store.branch.toUpperCase().includes(keyword)) ||
+                (store.subName && store.subName.toUpperCase().includes(keyword));
         }
         return true;
     });
