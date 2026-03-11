@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "jsdom": "^28.1.0",
     "@upstash/redis": "^1.28.4",

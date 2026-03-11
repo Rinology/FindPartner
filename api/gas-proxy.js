@@ -23,7 +23,12 @@ export default async function handler(req, res) {
 
   // 2. [가장 중요🚨] 강력한 출처(Origin) 및 직접 접속 검증
   const requestOrigin = req.headers.origin || req.headers.referer || '';
-  const isAllowed = requestOrigin.startsWith(allowedOrigin) || requestOrigin.startsWith('http://localhost:');
+  
+  // 우리 사이트이거나 로컬 테스트 환경(localhost, 127.0.0.1)인지 확인
+  const isAllowed = 
+    requestOrigin.startsWith(allowedOrigin) || 
+    requestOrigin.startsWith('http://localhost:') || 
+    requestOrigin.startsWith('http://127.0.0.1:');
 
   if (!isAllowed) {
     // ❌ 허락되지 않은 접근(브라우저 직접 접속, 해킹 툴 등)즉시 차단
@@ -43,7 +48,7 @@ export default async function handler(req, res) {
   // 4. [보안 고도화🔒] Upstash 기반 IP Rate Limiting
   // Vercel 환경에서는 x-forwarded-for 헤더에 실제 사용자 IP가 담깁니다.
   const forwarded = req.headers['x-forwarded-for'];
-  const ip = typeof forwarded === 'string' ? forwarded.split(',')[0] : req.socket.remoteAddress || '127.0.0.1';
+  const ip = typeof forwarded === 'string' ? forwarded.split(',')[0] : req.socket?.remoteAddress || '127.0.0.1';
 
   try {
     const { success, limit, reset, remaining } = await ratelimit.limit(`ratelimit_${ip}`);
