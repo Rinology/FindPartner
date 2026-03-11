@@ -341,7 +341,7 @@ function updateMarkers(stores) {
             // [신규] 시승 안내 문구
             const testRideGuideHtml = `
                 <div class="test-ride-guide">
-                    <i class="fa-solid fa-circle-info"></i> 시승 가능 여부는 해당 매장에 문의해 주시면 친절히 안내해 드립니다.
+                    <i class="fa-solid fa-circle-info"></i> 시승 가능 여부는 해당 매장에 문의해 주시기 바랍니다.
                 </div>
             `;
 
@@ -627,7 +627,7 @@ function renderList(data) {
         // [신규] 리스트용 시승 안내 문구
         const listTestRideGuide = `
             <div class="test-ride-guide" style="border-top:none; padding-top:0; margin-top:8px; justify-content:flex-start; font-size:12px;">
-                <i class="fa-solid fa-circle-info" style="font-size:12px;"></i> 시승 가능 여부는 해당 매장에 문의해 주시면 친절히 안내해 드립니다.
+                <i class="fa-solid fa-circle-info" style="font-size:12px;"></i> 시승 가능 여부는 해당 매장에 문의해 주시기 바랍니다.
             </div>
         `;
 
@@ -882,7 +882,7 @@ function showMobileModal(store) {
     // [신규] 시승 안내 문구 (모바일)
     const testRideGuideHtml = `
         <div class="test-ride-guide">
-            <i class="fa-solid fa-circle-info"></i> 시승 가능 여부는 해당 매장에 문의해 주시면 친절히 안내해 드립니다.
+            <i class="fa-solid fa-circle-info"></i> 시승 가능 여부는 해당 매장에 문의해 주시기 바랍니다.
         </div>
     `;
 
