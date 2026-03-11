@@ -38,6 +38,20 @@ let _pendingPopupFn = null;
 let _suppressMapClick = false;
 let myLocationMarker = null;
 
+// [보안] XSS 방지를 위한 HTML 이스케이프 함수
+function escapeHTML(str) {
+    if (!str) return '';
+    const charMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;'
+    };
+    return String(str).replace(/[&<>"'/]/g, s => charMap[s]);
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     // [보안] 우클릭, 드래그 등 방지
     document.addEventListener('contextmenu', e => e.preventDefault());
@@ -300,7 +314,7 @@ function updateMarkers(stores) {
             // [상세 정보 HTML 생성]
             let branchHtml = '';
             if (store.branch && store.branch.trim() !== '') {
-                branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${store.branch}</div>`;
+                branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
             }
 
             // [변경] 웹사이트(데스크탑)에서 정보를 모두 표시하기 위해 팝업 내용은 항상 전체 정보를 포함하도록 생성
@@ -309,8 +323,9 @@ function updateMarkers(stores) {
 
             // 네이버 지도로 보기 (상세)
             if (store.link && store.link.trim() !== '' && store.link !== '#') {
+                // link는 URL이므로 최소한의 검증만 (이미 config 등에서 제어됨)
                 popupLinkBtn += `
-                    <a href="${store.link}" target="_blank" class="map-popup-btn">
+                    <a href="${escapeHTML(store.link)}" target="_blank" class="map-popup-btn">
                         네이버 지도로 보기
                     </a>
                 `;
@@ -318,7 +333,7 @@ function updateMarkers(stores) {
 
             // 길찾기 버튼 (네이버) - 클릭 시점에 동적으로 내 위치 확인하여 연동
             popupLinkBtn += `
-                <a href="#" onclick="openNaverNavi(${pos.lat}, ${pos.lng}, '${store.name}'); return false;" class="btn-map-link">
+                <a href="#" onclick="openNaverNavi(${pos.lat}, ${pos.lng}, '${escapeHTML(store.name).replace(/'/g, "\\'")}'); return false;" class="btn-map-link">
                     <i class="fa-solid fa-location-arrow"></i> 네이버 길찾기
                 </a>
             `;
@@ -338,21 +353,21 @@ function updateMarkers(stores) {
                 <div class="map-popup-inner">
                     <div class="${headerClass}">
                         ${badgeHtml}
-                        <h4 class="${titleClass}">${store.name}</h4>
+                        <h4 class="${titleClass}">${escapeHTML(store.name)}</h4>
                         ${branchHtml}
                     </div>
                     <div class="map-popup-body popup-mobile-hide">
                         <div class="map-popup-row">
                             <i class="fa-solid fa-location-dot" style="color:var(--quali-blue);"></i> 
-                            <span>${store.address}</span>
+                            <span>${escapeHTML(store.address)}</span>
                         </div>
                         <div class="map-popup-row">
                             <i class="fa-solid fa-phone" style="color:var(--quali-blue);"></i> 
-                            <a href="tel:${store.phone}">${store.phone || '-'}</a>
+                            <a href="tel:${escapeHTML(store.phone)}">${escapeHTML(store.phone) || '-'}</a>
                         </div>
                         <div class="map-popup-row">
                             <i class="fa-regular fa-calendar-xmark" style="color:var(--system-red);"></i> 
-                            <span>휴무: ${store.closed || '없음'}</span>
+                            <span>휴무: ${escapeHTML(store.closed) || '없음'}</span>
                         </div>
                     </div>
                     <div class="map-popup-buttons">
@@ -370,7 +385,7 @@ function updateMarkers(stores) {
 
                 // 핀 디자인(일반 vs 프리미엄)에 따라 툴팁 높이 조정
                 const tooltipOffset = isPremium ? [0, -25] : [0, -15];
-                marker.bindTooltip(store.name, {
+                marker.bindTooltip(escapeHTML(store.name), {
                     direction: 'top',
                     offset: tooltipOffset,
                     permanent: false,
@@ -613,16 +628,16 @@ function renderList(data) {
             </div>
         `;
 
-        const phoneHtml = store.phone ? `<a href="tel:${store.phone}" class="phone-link" onclick="event.stopPropagation();">${store.phone}</a>` : '-';
+        const phoneHtml = store.phone ? `<a href="tel:${escapeHTML(store.phone)}" class="phone-link" onclick="event.stopPropagation();">${escapeHTML(store.phone)}</a>` : '-';
 
         let branchHtml = '';
         if (store.branch && store.branch.trim() !== '') {
-            branchHtml = `<div class="store-branch">퀄리스포츠 ${store.branch}</div>`;
+            branchHtml = `<div class="store-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
         }
 
         const card = document.createElement("div");
         card.className = `store-card ${isPremium ? 'premium-card' : ''}`;
-        card.dataset.storeName = store.name;
+        card.dataset.storeName = store.name; // ID용이므로 그대로 사용 (HTML 속성)
 
         card.onclick = () => {
             const targetPos = getStoreLatLng(store);
@@ -655,13 +670,13 @@ function renderList(data) {
 
         card.innerHTML = `
             <div class="card-header">
-                <h3 class="store-name">${store.name}</h3>
+                <h3 class="store-name">${escapeHTML(store.name)}</h3>
             </div>
             <div class="card-body">
                 ${branchHtml}
                 <div class="info-row">
                     ${locationIcon}
-                    <div>${store.address}</div>
+                    <div>${escapeHTML(store.address)}</div>
                 </div>
                 <div class="info-row">
                     <i class="fa-solid fa-phone"></i>
@@ -669,7 +684,7 @@ function renderList(data) {
                 </div>
                 <div class="closed-day">
                     <i class="fa-regular fa-calendar-xmark" style="color:#888; margin-right:4px;"></i>
-                    휴무: ${store.closed || '없음'}
+                    휴무: ${escapeHTML(store.closed) || '없음'}
                 </div>
                 <div class="badge-group">${badgesHtml}</div>
                 ${listTestRideGuide}
@@ -847,7 +862,7 @@ function showMobileModal(store) {
 
     let branchHtml = '';
     if (store.branch && store.branch.trim() !== '') {
-        branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${store.branch}</div>`;
+        branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
     }
 
     let popupLinkBtn = '';
@@ -856,7 +871,7 @@ function showMobileModal(store) {
     //     popupLinkBtn += `<a href="${store.link}" target="_blank" class="map-popup-btn">네이버 지도로 보기</a>`;
     // }
     popupLinkBtn += `
-        <a href="#" onclick="openNaverNavi(${pos.lat}, ${pos.lng}, '${store.name}'); return false;" class="btn-map-link">
+        <a href="#" onclick="openNaverNavi(${pos.lat}, ${pos.lng}, '${escapeHTML(store.name).replace(/'/g, "\\'")}'); return false;" class="btn-map-link">
             <i class="fa-solid fa-location-arrow"></i> 네이버 길찾기
         </a>
     `;
@@ -878,22 +893,22 @@ function showMobileModal(store) {
             ${miniMapHtml}
             <div class="${headerClass}">
                 ${badgeHtml}
-                <h4 class="${titleClass}" style="font-size:22px;">${store.name}</h4>
+                <h4 class="${titleClass}" style="font-size:22px;">${escapeHTML(store.name)}</h4>
                 ${branchHtml}
             </div>
             <div class="map-popup-body" style="font-size:15px; margin: 20px 0; display: flex; flex-direction: column; align-items: center;">
                 <div style="width: 100%; max-width: 280px;">
                     <div class="map-popup-row" style="margin-bottom:12px; display:flex; align-items:flex-start; gap:10px;">
                         <i class="fa-solid fa-location-dot" style="color:var(--system-blue); width:20px; text-align:center; padding-top:3px; font-size:16px;"></i> 
-                        <span style="flex:1; line-height:1.5; text-align:left; word-break:keep-all;">${store.address}</span>
+                        <span style="flex:1; line-height:1.5; text-align:left; word-break:keep-all;">${escapeHTML(store.address)}</span>
                     </div>
                     <div class="map-popup-row" style="margin-bottom:12px; display:flex; align-items:flex-start; gap:10px;">
                         <i class="fa-solid fa-phone" style="color:var(--system-blue); width:20px; text-align:center; padding-top:3px; font-size:16px;"></i> 
-                        <a href="tel:${store.phone}" style="color:var(--text-primary); text-decoration:none; font-weight:500; display:block; text-align:left;">${store.phone || '-'}</a>
+                        <a href="tel:${escapeHTML(store.phone)}" style="color:var(--text-primary); text-decoration:none; font-weight:500; display:block; text-align:left;">${escapeHTML(store.phone) || '-'}</a>
                     </div>
                     <div class="map-popup-row" style="margin-bottom:0; display:flex; align-items:flex-start; gap:10px;">
                         <i class="fa-regular fa-calendar-xmark" style="color:var(--system-red); width:20px; text-align:center; padding-top:3px; font-size:16px;"></i> 
-                        <span style="font-weight:500; text-align:left;">휴무: ${store.closed || '없음'}</span>
+                        <span style="font-weight:500; text-align:left;">휴무: ${escapeHTML(store.closed) || '없음'}</span>
                     </div>
                 </div>
             </div>
