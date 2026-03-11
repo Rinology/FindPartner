@@ -103,6 +103,22 @@
     --shadow-float: 0 12px 32px rgba(47, 98, 134, 0.12);
     /* Blue-tinted shadow */
     --backdrop-blur: saturate(180%) blur(20px);
+    /* Z-Index System */
+    --z-map: 1;
+    --z-sidebar: 10;
+    --z-control: 20;
+    --z-header: 1001;
+    --z-mobile-selected: 1002;
+    --z-modal-overlay: 1050;
+    --z-active-pin: 9999;
+
+    /* Semantic Colors */
+    --color-gold: #FFD700;
+    --color-gold-dark: #B8860B;
+    --color-gray-light: #f8f9fa;
+    --color-gray-mid: #888;
+    --color-kakao-bg: #FEE500;
+    --color-kakao-text: #3C1E1E;
 }
 
 * {
@@ -142,7 +158,7 @@ header {
     flex-direction: column;
     padding: 0 24px;
     flex-shrink: 0;
-    z-index: 1001;
+    z-index: var(--z-header);
     border-bottom: 1px solid var(--divider);
 }
 
@@ -192,53 +208,52 @@ body.dark-mode .brand-title .logo-dark {
     margin-left: 24px;
 }
 
-.btn-kakao-sm,
-.btn-regist-sm {
-    height: 34px !important;
-    padding: 0 16px !important;
-    border-radius: 8px !important;
-    font-size: 13px !important;
-    font-weight: 700 !important;
-    text-decoration: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    transition: all 0.2s !important;
-    box-sizing: border-box !important;
-    white-space: nowrap !important;
-    line-height: normal !important;
-    /* 브라우저 기본값으로 초기화하여 flex 중앙 정렬 유지 */
+.header-action-buttons .btn-kakao-sm,
+.header-action-buttons .btn-regist-sm {
+    height: 34px;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    box-sizing: border-box;
+    white-space: nowrap;
+    line-height: normal;
 }
 
-.btn-kakao-sm {
-    background-color: #FEE500 !important;
-    color: #3C1E1E !important;
+.header-action-buttons .btn-kakao-sm {
+    background-color: var(--color-kakao-bg);
+    color: var(--color-kakao-text);
 }
 
-.btn-kakao-sm i {
-    font-size: 16px !important;
-    color: #3C1E1E !important;
-    display: inline-block !important;
-    margin: 0 !important;
-    line-height: inherit !important;
+.header-action-buttons .btn-kakao-sm i {
+    font-size: 16px;
+    color: var(--color-kakao-text);
+    display: inline-block;
+    margin: 0;
+    line-height: inherit;
 }
 
-.btn-regist-sm {
-    background-color: var(--quali-blue) !important;
-    color: white !important;
+.header-action-buttons .btn-regist-sm {
+    background-color: var(--quali-blue);
+    color: var(--quali-white);
 }
 
-.btn-regist-sm i {
-    font-size: 14px !important;
-    color: white !important;
-    display: inline-block !important;
-    margin: 0 !important;
-    line-height: inherit !important;
+.header-action-buttons .btn-regist-sm i {
+    font-size: 14px;
+    color: var(--quali-white);
+    display: inline-block;
+    margin: 0;
+    line-height: inherit;
 }
 
-.btn-kakao-sm:hover,
-.btn-regist-sm:hover {
+.header-action-buttons .btn-kakao-sm:hover,
+.header-action-buttons .btn-regist-sm:hover {
     transform: translateY(-1px);
     filter: brightness(0.95);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -279,7 +294,7 @@ body.dark-mode .brand-title .logo-dark {
     flex-direction: column;
     border-right: 1px solid var(--divider);
     position: relative;
-    z-index: 10;
+    z-index: var(--z-sidebar);
     box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02);
 }
 
@@ -293,7 +308,7 @@ body.dark-mode .brand-title .logo-dark {
 #map {
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: var(--z-map);
 }
 
 /* [커스텀 핀 스타일 (FontAwesome)] */
@@ -376,10 +391,10 @@ body.dark-mode .brand-title .logo-dark {
 
 .premium-pin i {
     font-size: 40px;
-    color: #FFD700;
+    color: var(--color-gold);
     /* Gold */
     filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.8));
-    -webkit-text-stroke: 1px #B8860B;
+    -webkit-text-stroke: 1px var(--color-gold-dark);
     animation: starPulse 2.5s infinite alternate;
 }
 
@@ -407,7 +422,7 @@ body.dark-mode .brand-title .logo-dark {
     gap: 16px;
     position: sticky;
     top: 0;
-    z-index: 20;
+    z-index: var(--z-control);
 }
 
 /* 1행: 검색창 */
@@ -608,38 +623,38 @@ body.dark-mode .brand-title .logo-dark {
 
 /* S등급 - 골드 */
 .filter-btn.premium-filter.active {
-    background: linear-gradient(135deg, #FFD700, #FFB800) !important;
-    border-color: rgba(184, 134, 11, 0.4) !important;
-    color: #000 !important;
+    background: linear-gradient(135deg, var(--color-gold), #FFB800);
+    border-color: rgba(184, 134, 11, 0.4);
+    color: #000;
     box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
 }
 
 .filter-btn.premium-filter.active i {
-    color: #000 !important;
+    color: #000;
 }
 
 /* A등급 - 브랜드 블루 */
 .filter-btn.a-grade-filter.active {
-    background: var(--quali-blue) !important;
-    border-color: transparent !important;
-    color: #fff !important;
+    background: var(--quali-blue);
+    border-color: transparent;
+    color: #fff;
     box-shadow: 0 4px 12px rgba(47, 98, 134, 0.4);
 }
 
 .filter-btn.a-grade-filter.active i {
-    color: #fff !important;
+    color: #fff;
 }
 
 /* B등급 - 브랜드 그린 */
 .filter-btn.b-grade-filter.active {
-    background: var(--quali-green) !important;
-    border-color: transparent !important;
-    color: #1a1a1a !important;
+    background: var(--quali-green);
+    border-color: transparent;
+    color: #1a1a1a;
     box-shadow: 0 4px 12px rgba(114, 191, 68, 0.4);
 }
 
 .filter-btn.b-grade-filter.active i {
-    color: #1a1a1a !important;
+    color: #1a1a1a;
 }
 
 /* 원케어 - 브랜드 블루 */
@@ -669,7 +684,7 @@ body.dark-mode .brand-title .logo-dark {
 
 /* [선택된 매장 표시줄 - 전역/데스크탑 기본] */
 .selected-info-bar {
-    background-color: #f8f9fa;
+    background-color: var(--color-gray-light);
     color: var(--quali-blue);
     padding: 12px 16px;
     border-radius: var(--radius-m);
@@ -732,7 +747,7 @@ body.dark-mode .brand-title .logo-dark {
         bottom: 30px;
         left: 20px;
         right: 20px;
-        z-index: 1002;
+        z-index: var(--z-mobile-selected);
         /* 지도 컨트롤보다 위에 */
         margin-bottom: 0;
         padding: 16px 20px;
@@ -1527,6 +1542,13 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     transform: translateY(-1px);
 }
 
+/* 프리미엄 팝업 전용 타이틀 조절 (줄바꿈 방지) */
+.premium-popup-title {
+    font-size: 20px !important;
+    word-break: keep-all;
+    letter-spacing: -0.02em;
+}
+
 /* 다크모드 대응: S등급 프리미엄 헤더 */
 body.dark-mode .premium-popup-header {
     background: linear-gradient(135deg, #2a2a20, #332e18);
@@ -1683,7 +1705,7 @@ body.dark-mode .map-popup-header {
 /* [신규] 모바일 플로팅 액션 버튼 (FAB) */
 .mobile-fab-container {
     position: fixed;
-    bottom: 24px;
+    bottom: 160px;
     right: 20px;
     display: flex;
     flex-direction: column;
@@ -1692,48 +1714,44 @@ body.dark-mode .map-popup-header {
 }
 
 .fab-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+    width: auto;
+    height: 48px;
+    padding: 0 20px;
+    border-radius: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 15px;
+    font-weight: 800;
     color: white;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease-in-out;
+    letter-spacing: -0.02em;
 }
 
 .fab-btn.kakao {
     background-color: #FEE500 !important;
     color: #3C1E1E !important;
-    animation: fab-pulse 2.5s infinite !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* [신규] 모달 오픈 시 플로팅 버튼 숨김 */
+body.modal-open .mobile-fab-container {
+    display: none !important;
 }
 
 .fab-btn.regist {
     background-color: var(--quali-blue);
-    animation: fab-pulse-blue 2.5s infinite 1.25s;
-    /* 엇갈리게 애니메이션 */
-}
-
-.fab-btn i {
-    animation: fab-float 3s ease-in-out infinite;
-}
-
-.fab-btn.regist i {
-    animation-delay: 1.5s;
-}
-
-.fab-btn.kakao i {
-    font-size: 26px;
-    /* 모바일 FAB 내에서도 브랜드 아이콘을 크게 노출 */
 }
 
 .fab-btn:active {
-    transform: scale(0.85);
+    transform: scale(0.95);
     filter: brightness(0.9);
 }
+
+/* [신규] FAB 전용 애니메이션 제거됨 (정적 디자인 유지) */
+
 
 /* 유틸리티: 기기별 노출 */
 .desktop-only {
@@ -1859,17 +1877,38 @@ body.dark-mode .map-popup-header {
 .my-location-marker {
     background: transparent;
     border: none;
+    overflow: visible;
+}
+
+.my-location-icon-wrapper {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.my-location-icon-wrapper i {
+    font-size: 60px;
+    color: var(--system-blue);
+    z-index: 3;
+    position: relative;
+    /* 흰색 발광 효과 추가 (Drop-shadow) */
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1)) drop-shadow(0 0 5px rgba(0, 122, 255, 0.5));
+    text-shadow: 0 0 10px rgba(255,255,255,0.9);
 }
 
 .my-location-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 20px;
     height: 20px;
-    background: #007aff;
+    background: rgba(0, 122, 255, 0.2);
     border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    position: relative;
-    z-index: 2;
+    z-index: 1;
 }
 
 .my-location-pulse::after {
@@ -1882,21 +1921,29 @@ body.dark-mode .map-popup-header {
     height: 20px;
     background: rgba(0, 122, 255, 0.4);
     border-radius: 50%;
-    animation: radar-wave 2s infinite;
-    z-index: 1;
+    animation: radar-wave 2.5s infinite ease-out;
 }
 
 @keyframes radar-wave {
     0% {
         width: 20px;
         height: 20px;
-        opacity: 0.8;
+        opacity: 1;
+        background: rgba(0, 122, 255, 0.6);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+    }
+
+    50% {
+        opacity: 0.5;
+        background: rgba(0, 122, 255, 0.3);
     }
 
     100% {
-        width: 60px;
-        height: 60px;
+        width: 120px;
+        height: 120px;
         opacity: 0;
+        background: rgba(0, 122, 255, 0);
+        box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0);
     }
 }
 
@@ -2079,7 +2126,7 @@ body.dark-mode .filter-btn.testride-filter.active i {
 }
 
 /* 다크모드 하이퍼링크 색상 최적화 */
-body.dark-mode a:not(.control-btn):not(.tab-btn),
+body.dark-mode a:not(.control-btn):not(.tab-btn):not(.btn-kakao-sm):not(.btn-regist-sm):not(.fab-btn),
 body.dark-mode .phone-link,
 body.dark-mode .map-popup-row a {
     color: #85e05d;

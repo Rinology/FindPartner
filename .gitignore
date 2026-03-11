@@ -9,3 +9,6 @@ Thumbs.db
 .env
 .vercel
 .env*.local
+
+# 라이브러리 폴더 무시 (필수)
+node_modules/

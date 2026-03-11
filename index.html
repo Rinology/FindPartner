@@ -20,7 +20,7 @@
 </head>
 <!-- [보안] 우클릭/드래그/선택 방지 적용 -->
 
-<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+<body class="no-select">
 
     <header id="mainHeader">
         <div class="header-top-row">
@@ -53,58 +53,55 @@
                 <!-- 1단: 검색창 -->
                 <div class="search-input-row">
                     <!-- [수정] autocomplete="off" 속성 추가하여 브라우저 자동완성 차단 -->
-                    <input type="text" id="searchInput" placeholder="지역명 또는 매장명 입력"
-                        oninput="toggleClearBtn(); filterData()" autocomplete="off">
-                    <button class="btn-clear-search" id="clearSearchBtn" onclick="clearSearch()"><i
-                            class="fa-solid fa-circle-xmark"></i></button>
-                    <button class="search-btn" onclick="filterData()"><i
-                            class="fa-solid fa-magnifying-glass"></i></button>
+                    <input type="text" id="searchInput" placeholder="지역명 또는 매장명 입력" autocomplete="off">
+                    <button class="btn-clear-search" id="clearSearchBtn"><i class="fa-solid fa-circle-xmark"></i></button>
+                    <button class="search-btn" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
 
                 <!-- [신규] 지도 제어 버튼 통합 (핀 묶기, 내 위치, 다크모드) -->
                 <div class="map-controls-row">
-                    <button id="btnCluster" class="control-btn active" onclick="toggleClustering()">
+                    <button id="btnCluster" class="control-btn active">
                         <i class="fa-solid fa-layer-group"></i> 핀 묶어보기
                     </button>
-                    <button id="btnMyLocation" class="control-btn" onclick="toggleMyLocation()">
+                    <button id="btnMyLocation" class="control-btn">
                         <i class="fa-solid fa-location-crosshairs"></i> 내 위치
                     </button>
-                    <button id="btnDarkMode" class="control-btn" onclick="toggleDarkMode()">
+                    <button id="btnDarkMode" class="control-btn">
                         <i class="fa-solid fa-moon"></i> 다크모드
                     </button>
                 </div>
 
                 <!-- 2단: 필터 버튼 모음 -->
-                <div class="filter-buttons-row">
+                <div class="filter-buttons-row" id="filterButtonsContainer">
                     <label class="filter-btn premium-filter">
-                        <input type="checkbox" id="premiumCheck" onchange="updateFilter(this); filterData()">
+                        <input type="checkbox" id="premiumCheck">
                         <i class="fa-solid fa-star"></i>
                         <span>프리미엄</span>
                     </label>
 
                     <!-- [주석처리] A, B 등급 및 시승 필터 비활성화
                     <label class="filter-btn a-grade-filter">
-                        <input type="checkbox" id="aGradeCheck" onchange="updateFilter(this); filterData()">
+                        <input type="checkbox" id="aGradeCheck">
                         <i class="fa-solid fa-star" style="color:var(--quali-blue);"></i>
                         <span>A등급</span>
                     </label>
 
                     <label class="filter-btn b-grade-filter">
-                        <input type="checkbox" id="bGradeCheck" onchange="updateFilter(this); filterData()">
+                        <input type="checkbox" id="bGradeCheck">
                         <i class="fa-solid fa-star" style="color:var(--quali-green);"></i>
                         <span>B등급</span>
                     </label>
                     -->
 
                     <label class="filter-btn onecare-filter">
-                        <input type="checkbox" id="oneCareCheck" onchange="updateFilter(this); filterData()">
+                        <input type="checkbox" id="oneCareCheck">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                         <span>원케어</span>
                     </label>
 
                     <!--
                     <label class="filter-btn testride-filter">
-                        <input type="checkbox" id="testRideCheck" onchange="updateFilter(this); filterData()">
+                        <input type="checkbox" id="testRideCheck">
                         <i class="fa-solid fa-motorcycle"></i>
                         <span>시승</span>
                     </label>
@@ -115,35 +112,32 @@
                 <div id="selectedStoreBar" class="selected-info-bar">
                     <span><i class="fa-solid fa-check-circle"></i> 선택된 대리점: <strong
                             id="selectedStoreName"></strong></span>
-                    <button class="btn-clear-select" onclick="clearSelection()"><i
-                            class="fa-solid fa-xmark"></i></button>
+                    <button class="btn-clear-select" id="btnClearSelect"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
                 <!-- 3단: 탭 영역 -->
                 <div class="tabs-container">
-                    <button class="scroll-btn" onclick="scrollTabs('left')"><i
-                            class="fa-solid fa-chevron-left"></i></button>
+                    <button class="scroll-btn" id="btnScrollLeft"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="category-tabs" id="categoryTabs">
-                        <div class="tab-btn active" onclick="setCategory('all', this)">전체</div>
-                        <div class="tab-btn" onclick="setCategory('서울', this)">서울</div>
-                        <div class="tab-btn" onclick="setCategory('경기', this)">경기</div>
-                        <div class="tab-btn" onclick="setCategory('인천', this)">인천</div>
-                        <div class="tab-btn" onclick="setCategory('강원', this)">강원</div>
-                        <div class="tab-btn" onclick="setCategory('충남', this)">충남</div>
-                        <div class="tab-btn" onclick="setCategory('충북', this)">충북</div>
-                        <div class="tab-btn" onclick="setCategory('대전', this)">대전</div>
-                        <div class="tab-btn" onclick="setCategory('세종', this)">세종</div>
-                        <div class="tab-btn" onclick="setCategory('전남', this)">전남</div>
-                        <div class="tab-btn" onclick="setCategory('전북', this)">전북</div>
-                        <div class="tab-btn" onclick="setCategory('경남', this)">경남</div>
-                        <div class="tab-btn" onclick="setCategory('경북', this)">경북</div>
-                        <div class="tab-btn" onclick="setCategory('대구', this)">대구</div>
-                        <div class="tab-btn" onclick="setCategory('부산', this)">부산</div>
-                        <div class="tab-btn" onclick="setCategory('울산', this)">울산</div>
-                        <div class="tab-btn" onclick="setCategory('제주', this)">제주</div>
+                        <div class="tab-btn active" data-cat="all">전체</div>
+                        <div class="tab-btn" data-cat="서울">서울</div>
+                        <div class="tab-btn" data-cat="경기">경기</div>
+                        <div class="tab-btn" data-cat="인천">인천</div>
+                        <div class="tab-btn" data-cat="강원">강원</div>
+                        <div class="tab-btn" data-cat="충남">충남</div>
+                        <div class="tab-btn" data-cat="충북">충북</div>
+                        <div class="tab-btn" data-cat="대전">대전</div>
+                        <div class="tab-btn" data-cat="세종">세종</div>
+                        <div class="tab-btn" data-cat="전남">전남</div>
+                        <div class="tab-btn" data-cat="전북">전북</div>
+                        <div class="tab-btn" data-cat="경남">경남</div>
+                        <div class="tab-btn" data-cat="경북">경북</div>
+                        <div class="tab-btn" data-cat="대구">대구</div>
+                        <div class="tab-btn" data-cat="부산">부산</div>
+                        <div class="tab-btn" data-cat="울산">울산</div>
+                        <div class="tab-btn" data-cat="제주">제주</div>
                     </div>
-                    <button class="scroll-btn" onclick="scrollTabs('right')"><i
-                            class="fa-solid fa-chevron-right"></i></button>
+                    <button class="scroll-btn" id="btnScrollRight"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
             </div>
 
@@ -152,7 +146,7 @@
                     <i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>데이터를 불러오는 중입니다...
                 </div>
             </div>
-            <button class="btn-top" id="topBtn" onclick="scrollToListTop()">
+            <button class="btn-top" id="topBtn">
                 <i class="fa-solid fa-arrow-up"></i>
             </button>
         </aside>
@@ -164,21 +158,17 @@
     </div>
 
     <!-- [신규] 모바일 상세 모달 -->
-    <div id="mobileModalOverlay" class="mobile-modal-overlay" onclick="closeMobileModal(event)">
-        <div class="mobile-modal-container" onclick="event.stopPropagation()">
-            <button class="btn-close-modal" onclick="closeMobileModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div id="mobileModalOverlay" class="mobile-modal-overlay">
+        <div class="mobile-modal-container" id="mobileModalContainer">
+            <button class="btn-close-modal" id="btnCloseModal"><i class="fa-solid fa-xmark"></i></button>
             <div id="mobileModalBody"></div>
         </div>
     </div>
 
     <!-- [신규] 모바일 플로팅 액션 버튼 (FAB) -->
     <div class="mobile-fab-container mobile-only">
-        <a href="#" id="fabRegistBtn" target="_blank" class="fab-btn regist" title="제품등록센터">
-            <i class="fa-solid fa-file-signature"></i>
-        </a>
-        <a href="#" id="fabKakaoBtn" target="_blank" class="fab-btn kakao" title="카카오톡 1:1 상담하기">
-            <i class="fa-brands fa-kakao"></i>
-        </a>
+        <a href="#" id="fabRegistBtn" target="_blank" class="fab-btn regist">제품등록</a>
+        <a href="#" id="fabKakaoBtn" target="_blank" class="fab-btn kakao">카카오톡 문의</a>
     </div>
 
     <!-- 외부 라이브러리 (Local) -->

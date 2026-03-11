@@ -14,18 +14,38 @@ document.addEventListener('keydown', function (e) {
     if (e.ctrlKey && e.keyCode === 80) { e.preventDefault(); return false; }
 });
 
+(function() { // [신규] IIFE 시작
 const GAS_URL = CONFIG.GAS_URL;
 
+// [상태 관리] 모듈 내부에서만 접근 가능한 지역 변수로 캡슐화
+const CONSTANTS = {
+    ZOOM_DEFAULT: 7,
+    ZOOM_FOCUS: 16,
+    ZOOM_MOBILE_FOCUS: 17,
+    POPUP_OFFSET_DESKTOP: [0, 130]
+};
+
 let map;
-let markers = []; // This will now act as a reference if needed, but mainly use cluster
-let markerClusterGroup; // New global for clustering
-let isClusteringEnabled = true; // [신규] 클러스터링 토글 상태
-let userLat = null; // [신규] 사용자 현재 위도
-let userLng = null; // [신규] 사용자 현재 경도
+let markers = []; 
+let markerClusterGroup;
+let isClusteringEnabled = true;
+let userLat = null;
+let userLng = null;
 let ALL_DATA = [];
 let currentCategory = 'all';
+let mobileMiniMap = null;
+let _pendingPopupFn = null;
+let _suppressMapClick = false;
+let myLocationMarker = null;
 
 document.addEventListener("DOMContentLoaded", function () {
+    // [보안] 우클릭, 드래그 등 방지
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+
+    setupEventListeners();
+
     initMap();
     fetchData();
     requestInitialLocation(); // [신규] 페이지 진입 시 위치 권한 요청
@@ -48,6 +68,51 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     window.addEventListener('resize', handleResponsiveLayout);
 });
+
+function setupEventListeners() {
+    // 1단: 검색창
+    document.getElementById("searchInput")?.addEventListener("input", () => { toggleClearBtn(); filterData(); });
+    document.getElementById("clearSearchBtn")?.addEventListener("click", clearSearch);
+    document.getElementById("searchBtn")?.addEventListener("click", filterData);
+
+    // 지도 제어 버튼
+    document.getElementById("btnCluster")?.addEventListener("click", toggleClustering);
+    document.getElementById("btnMyLocation")?.addEventListener("click", toggleMyLocation);
+    document.getElementById("btnDarkMode")?.addEventListener("click", toggleDarkMode);
+
+    // 2단: 필터 버튼 (이벤트 위임)
+    const filterContainer = document.getElementById("filterButtonsContainer");
+    if (filterContainer) {
+        filterContainer.addEventListener("change", (e) => {
+            if (e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
+                updateFilter(e.target);
+                filterData();
+            }
+        });
+    }
+
+    // 선택 해제 및 탭 스크롤
+    document.getElementById("btnClearSelect")?.addEventListener("click", clearSelection);
+    document.getElementById("btnScrollLeft")?.addEventListener("click", () => scrollTabs('left'));
+    document.getElementById("btnScrollRight")?.addEventListener("click", () => scrollTabs('right'));
+
+    // 3단: 탭 영역 (이벤트 위임)
+    const catTabs = document.getElementById("categoryTabs");
+    if (catTabs) {
+        catTabs.addEventListener("click", (e) => {
+            const btn = e.target.closest('.tab-btn');
+            if (btn) {
+                setCategory(btn.dataset.cat, btn);
+            }
+        });
+    }
+
+    // 기타
+    document.getElementById("topBtn")?.addEventListener("click", scrollToListTop);
+    document.getElementById("mobileModalOverlay")?.addEventListener("click", closeMobileModal);
+    document.getElementById("mobileModalContainer")?.addEventListener("click", e => e.stopPropagation());
+    document.getElementById("btnCloseModal")?.addEventListener("click", closeMobileModal);
+}
 
 // [신규] 설정 파일의 링크를 실제 앨리먼트에 바인딩
 function applyConfigLinks() {
@@ -477,12 +542,17 @@ function toggleMyLocation() {
             // 지도 이동
             map.flyTo([lat, lng], 14, { duration: 1.5 });
 
-            // [변경] 커스텀 디자인 마커 (레이더 효과)
+            // [변경] 커스텀 디자인 마커 (사람모양 + 레이더 파장 효과)
             const myLocIcon = L.divIcon({
                 className: 'my-location-marker',
-                html: '<div class="my-location-pulse"></div>',
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
+                html: `
+                    <div class="my-location-icon-wrapper">
+                        <i class="fa-solid fa-street-view"></i>
+                        <div class="my-location-pulse"></div>
+                    </div>
+                `,
+                iconSize: [90, 90],
+                iconAnchor: [45, 45]
             });
 
             // [변경] 커스텀 팝업 적용 (X버튼 숨김, 오토클로즈)
@@ -751,9 +821,7 @@ function focusMarker(marker, pos, storeData) {
     }, 450);
 }
 
-let mobileMiniMap = null;
-let _pendingPopupFn = null;    // 지도 중앙 팝업용 moveend 리스너 참조
-let _suppressMapClick = false; // 마커 클릭 시 map click 이벤트 억제용 플래그
+
 
 // [신규] 모바일 전용 상세 모달 표시
 function showMobileModal(store) {
@@ -839,6 +907,7 @@ function showMobileModal(store) {
     const overlay = document.getElementById('mobileModalOverlay');
     overlay.classList.add('show');
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-open'); // [신규] 모달 오픈 시 FAB 숨김용 클래스 추가
 
     // 모달 내 미니 지도 초기화 (비동기 처리)
     setTimeout(() => {
@@ -880,6 +949,7 @@ function closeMobileModal() {
     const overlay = document.getElementById('mobileModalOverlay');
     overlay.classList.remove('show');
     document.body.style.overflow = '';
+    document.body.classList.remove('modal-open'); // [신규] 모달 종료 시 FAB 다시 표시
 }
 
 function applyFilter() {
@@ -934,3 +1004,8 @@ function scrollToListTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
+
+// [신규] 전역 노출이 필요한 함수들 (인라인 HTML 호출용)
+window.openNaverNavi = openNaverNavi;
+
+})(); // [신규] IIFE 종료 (코드 보호)
