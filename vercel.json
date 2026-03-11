@@ -19,6 +19,10 @@
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
         }
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://find-partner-1hyq.vercel.app"
+        }
       ]
     }
   ]
