@@ -596,7 +596,10 @@ function renderList(data) {
     container.innerHTML = "";
 
     if (!data || data.length === 0) {
-        container.innerHTML = '<div class="message-box">조건에 맞는 매장이 없습니다.</div>';
+        const msgBox = document.createElement("div");
+        msgBox.className = "message-box";
+        msgBox.textContent = "조건에 맞는 매장이 없습니다.";
+        container.appendChild(msgBox);
         return;
     }
 
@@ -668,7 +671,7 @@ function renderList(data) {
             locationIcon = pos ? '<i class="fa-solid fa-location-dot" style="color:#e03131;"></i>' : '<i class="fa-solid fa-location-dot"></i>';
         }
 
-        card.innerHTML = `
+        card.innerHTML = DOMPurify.sanitize(`
             <div class="card-header">
                 <h3 class="store-name">${escapeHTML(store.name)}</h3>
             </div>
@@ -689,7 +692,7 @@ function renderList(data) {
                 <div class="badge-group">${badgesHtml}</div>
                 ${listTestRideGuide}
             </div>
-        `;
+        `);
         container.appendChild(card);
     });
 }
@@ -888,7 +891,7 @@ function showMobileModal(store) {
     const headerClass = isPremium ? 'map-popup-header premium-popup-header' : 'map-popup-header';
     const titleClass = isPremium ? 'map-popup-title premium-popup-title' : 'map-popup-title';
 
-    body.innerHTML = `
+    body.innerHTML = DOMPurify.sanitize(`
         <div class="map-popup-inner" style="padding:0;">
             ${miniMapHtml}
             <div class="${headerClass}">
@@ -917,7 +920,7 @@ function showMobileModal(store) {
             </div>
             ${testRideGuideHtml}
         </div>
-    `;
+    `);
 
     const overlay = document.getElementById('mobileModalOverlay');
     overlay.classList.add('show');
