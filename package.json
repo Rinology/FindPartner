@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "jsdom": "^28.1.0"
+    "jsdom": "^28.1.0",
+    "@upstash/redis": "^1.28.4",
+    "@upstash/ratelimit": "^1.0.1"
   }
 }
