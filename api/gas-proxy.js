@@ -24,7 +24,7 @@ const ratelimit = redis ? new Ratelimit({
 
 export default async function handler(req, res) {
   // 1. 환경 변수 설정값 불러오기
-  const allowedOrigin = cleanEnv(process.env.ALLOWED_ORIGIN) || 'https://find-partner-1hyq.vercel.app';
+  const allowedOrigin = cleanEnv(process.env.ALLOWED_ORIGIN) || 'https://www.xtronmap.kr';
   const GAS_URL = cleanEnv(process.env.GAS_URL);
   const API_TOKEN = cleanEnv(process.env.API_TOKEN);
 

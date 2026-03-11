@@ -26,7 +26,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://find-partner-1hyq.vercel.app"
+          "value": "https://www.xtronmap.kr"
         },
         {
           "key": "Access-Control-Allow-Methods",
