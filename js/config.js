@@ -21,7 +21,7 @@ const CONFIG = {
     EXTERNAL_SERVICES: {
         NAVER_ROUTE: "https://map.naver.com/index.nhn",
         NAVER_SEARCH: "https://map.naver.com/v5/search/",
-        KAKAO_CHANNEL: "#", // 공식 카카오톡 채널 링크를 입력하세요
-        REGIST_CENTER: "#"  // 제품등록센터 링크를 입력하세요
+        KAKAO_CHANNEL: "http://pf.kakao.com/_xhxhRZxl/chat",
+        REGIST_CENTER: "https://xtroncare.kr"
     }
 };
