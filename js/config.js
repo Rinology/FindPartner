@@ -7,6 +7,9 @@ const CONFIG = {
     // API Data Source (GAS Proxy)
     GAS_URL: "/api/gas-proxy",
 
+    // Google reCAPTCHA v3 Site Key (퍼블릭 키)
+    RECAPTCHA_SITE_KEY: "6LeqOogsAAAAAOQl8FdrYqQLdIEXwcvHk0Mmf5eo",
+
     // Map Configuration (Leaflet Tiles)
     MAP: {
         LIGHT_TILE: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",

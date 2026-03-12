@@ -49,10 +49,37 @@ export default async function handler(req, res) {
   const actualOrigin = origin || (referer ? new URL(referer).origin : allowedOrigin);
   res.setHeader('Access-Control-Allow-Origin', actualOrigin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Recaptcha-Token');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  // [신규] reCAPTCHA v3 검증
+  const recaptchaToken = req.headers['x-recaptcha-token'];
+  const RECAPTCHA_SECRET_KEY = cleanEnv(process.env.RECAPTCHA_SECRET_KEY);
+
+  if (RECAPTCHA_SECRET_KEY && recaptchaToken) {
+    try {
+      const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
+      });
+      const verifyData = await verifyRes.json();
+      
+      if (!verifyData.success || verifyData.score < 0.5) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`[403 Forbidden] 봇 접근 감지 (Score: ${verifyData.score})`);
+        }
+        return res.status(403).json({ error: "Forbidden: 비정상적인 접근이 감지되었습니다." });
+      }
+    } catch (err) {
+      console.error("reCAPTCHA 검증 중 오류:", err.message);
+    }
+  } else if (RECAPTCHA_SECRET_KEY && !recaptchaToken) {
+    // 시크릿 키는 설정되어 있는데 토큰이 없는 경우 차단
+    return res.status(403).json({ error: "Forbidden: reCAPTCHA 토큰이 필요합니다." });
   }
 
   // 4. [보안] Upstash 기반 IP Rate Limiting

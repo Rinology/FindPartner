@@ -61,7 +61,18 @@ document.addEventListener("DOMContentLoaded", function () {
     setupEventListeners();
 
     initMap();
-    fetchData();
+
+    // [신규] reCAPTCHA 동적 로드 후 초기 데이터 로드
+    if (CONFIG.RECAPTCHA_SITE_KEY && CONFIG.RECAPTCHA_SITE_KEY !== 'YOUR_RECAPTCHA_SITE_KEY') {
+        const script = document.createElement('script');
+        script.src = `https://www.google.com/recaptcha/api.js?render=${CONFIG.RECAPTCHA_SITE_KEY}`;
+        script.onload = () => fetchData();
+        script.onerror = () => fetchData(); // 로드 실패 시 무시하고 데이터 요청 시도
+        document.head.appendChild(script);
+    } else {
+        fetchData();
+    }
+
     requestInitialLocation(); // [신규] 페이지 진입 시 위치 권한 요청
     handleResponsiveLayout(); // [신규] 화면 크기에 따른 레이아웃 처리
     applyConfigLinks();      // [신규] 설정 파일의 링크를 UI에 적용
@@ -273,7 +284,27 @@ function getMarkerIcon(category, grade) {
 }
 
 function fetchData() {
-    fetch(GAS_URL)
+    if (CONFIG.RECAPTCHA_SITE_KEY && CONFIG.RECAPTCHA_SITE_KEY !== 'YOUR_RECAPTCHA_SITE_KEY' && typeof grecaptcha !== 'undefined') {
+        grecaptcha.ready(function() {
+            grecaptcha.execute(CONFIG.RECAPTCHA_SITE_KEY, {action: 'fetch_data'}).then(function(token) {
+                requestDataWithToken(token);
+            }).catch(function(err) {
+                console.error("reCAPTCHA execute Error:", err);
+                requestDataWithToken(null);
+            });
+        });
+    } else {
+        requestDataWithToken(null);
+    }
+}
+
+function requestDataWithToken(token) {
+    const headers = {};
+    if (token) {
+        headers['X-Recaptcha-Token'] = token;
+    }
+
+    fetch(GAS_URL, { headers })
         .then(res => res.json())
         .then(data => {
             if (data.error) throw new Error(data.error);
