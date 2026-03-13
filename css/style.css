@@ -92,7 +92,7 @@
 
     /* Layout & Spacing */
     --sidebar-width: 420px;
-    --header-height: 52px;
+    --header-height: 64px;
     --radius-s: 8px;
     --radius-m: 12px;
     --radius-l: 18px;
@@ -171,41 +171,56 @@ header {
 }
 
 .brand-title {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     font-weight: 800;
-    display: flex;
-    align-items: center;
-    gap: 12px;
     color: var(--quali-dark);
     letter-spacing: -0.03em;
+    margin-bottom: 4px;
+    line-height: 1.1;
 }
 
-.brand-title img {
+.brand-logo {
+    display: flex;
+    align-items: center;
+}
+
+.brand-logo img {
     height: 24px;
     width: auto;
     object-fit: contain;
 }
 
-.brand-title .logo-dark {
+.brand-logo .logo-dark {
     display: none;
 }
 
 /* 다크모드 시 로고 전환 */
-body.dark-mode .brand-title .logo-light {
+body.dark-mode .brand-logo .logo-light {
     display: none;
 }
 
-body.dark-mode .brand-title .logo-dark {
+body.dark-mode .brand-logo .logo-dark {
     display: block;
 }
 
-/* [신규] 헤더 버튼 스타일 (데스크탑) */
+/* [신규] 헤더 버튼 및 레이아웃 스타일 (데스크탑) */
+.header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-text-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .header-action-buttons {
     display: flex;
     align-items: center;
     /* 버튼들의 수직 베이스라인 일치 */
     gap: 10px;
-    margin-left: 24px;
 }
 
 .header-action-buttons .btn-kakao-sm,
@@ -232,7 +247,7 @@ body.dark-mode .brand-title .logo-dark {
 }
 
 .header-action-buttons .btn-kakao-sm i {
-    font-size: 16px;
+    font-size: 14.5px;
     color: var(--color-kakao-text);
     display: inline-block;
     margin: 0;
@@ -245,7 +260,7 @@ body.dark-mode .brand-title .logo-dark {
 }
 
 .header-action-buttons .btn-regist-sm i {
-    font-size: 14px;
+    font-size: 12.5px;
     color: var(--quali-white);
     display: inline-block;
     margin: 0;
@@ -268,14 +283,24 @@ body.dark-mode .brand-title .logo-dark {
 .header-info {
     font-size: 0.85rem;
     color: var(--text-secondary);
-    display: none;
+    display: block;
     font-weight: 400;
     letter-spacing: -0.01em;
 }
 
-@media (min-width: 768px) {
+/* 모바일 화면 조정 (기존 유지 확인용) */
+@media (max-width: 767px) {
+    .desktop-only {
+        display: none !important;
+    }
+    
+    .brand-title {
+        font-size: 1.25rem; /* 모바일에서는 타이틀 크기 살짝 조정 */
+        margin-bottom: 2px;
+    }
+    
     .header-info {
-        display: block;
+        font-size: 0.8rem; /* 모바일용 서브타이틀 크기 조정 */
     }
 }
 
