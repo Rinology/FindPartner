@@ -244,7 +244,7 @@ function getStoreLatLng(store) {
         }
     }
 
-    if (!isNaN(lat) && !isNaN(lng)) {
+    if (lat !== null && lng !== null && !isNaN(lat) && !isNaN(lng)) {
         return { lat, lng };
     }
     return null;
@@ -344,7 +344,7 @@ function updateMarkers(stores) {
 
             // [상세 정보 HTML 생성]
             let branchHtml = '';
-            if (store.branch && store.branch.trim() !== '') {
+            if (store.branch && String(store.branch).trim() !== '') {
                 branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
             }
 
@@ -353,7 +353,7 @@ function updateMarkers(stores) {
             let popupLinkBtn = '';
 
             // 네이버 지도로 보기 (상세)
-            if (store.link && store.link.trim() !== '' && store.link !== '#') {
+            if (store.link && String(store.link).trim() !== '' && store.link !== '#') {
                 // link는 URL이므로 최소한의 검증만 (이미 config 등에서 제어됨)
                 popupLinkBtn += `
                     <a href="${escapeHTML(store.link)}" target="_blank" class="map-popup-btn">
@@ -665,7 +665,7 @@ function renderList(data) {
         const phoneHtml = store.phone ? `<a href="tel:${escapeHTML(store.phone)}" class="phone-link" onclick="event.stopPropagation();">${escapeHTML(store.phone)}</a>` : '-';
 
         let branchHtml = '';
-        if (store.branch && store.branch.trim() !== '') {
+        if (store.branch && String(store.branch).trim() !== '') {
             branchHtml = `<div class="store-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
         }
 
@@ -895,13 +895,13 @@ function showMobileModal(store) {
     /* A, B 등급 뱃지 비활성화 */
 
     let branchHtml = '';
-    if (store.branch && store.branch.trim() !== '') {
+    if (store.branch && String(store.branch).trim() !== '') {
         branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
     }
 
     let popupLinkBtn = '';
     // 모바일 바텀시트에서는 지도 자체가 클릭 시 네이버지도로 연결되므로, '네이버 지도로 보기' 버튼은 비활성화
-    // if (store.link && store.link.trim() !== '' && store.link !== '#') {
+    // if (store.link && String(store.link).trim() !== '' && store.link !== '#') {
     //     popupLinkBtn += `<a href="${store.link}" target="_blank" class="map-popup-btn">네이버 지도로 보기</a>`;
     // }
     popupLinkBtn += `
@@ -1022,10 +1022,10 @@ function applyFilter() {
         // if (showTestRideOnly && store.testRide !== 'O') return false;
 
         if (keyword !== "") {
-            return (store.name && store.name.toUpperCase().includes(keyword)) ||
-                (store.address && store.address.toUpperCase().includes(keyword)) ||
-                (store.branch && store.branch.toUpperCase().includes(keyword)) ||
-                (store.subName && store.subName.toUpperCase().includes(keyword));
+            return (store.name && String(store.name).toUpperCase().includes(keyword)) ||
+                (store.address && String(store.address).toUpperCase().includes(keyword)) ||
+                (store.branch && String(store.branch).toUpperCase().includes(keyword)) ||
+                (store.subName && String(store.subName).toUpperCase().includes(keyword));
         }
         return true;
     });
