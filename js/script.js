@@ -336,7 +336,7 @@ function updateMarkers(stores) {
             const marker = L.marker([pos.lat, pos.lng], { icon: customIcon });
 
             let badgeHtml = '';
-            if (grade === 'S') badgeHtml = '<span class="premium-badge badge-s"><i class="fa-solid fa-star" style="font-size:11px;"></i> 프리미엄</span><br>';
+            if (grade === 'S') badgeHtml = '<span class="premium-badge badge-s"><i class="fa-solid fa-star" style="font-size:11px;"></i> 우수협력점</span><br>';
             /* [주석처리] A, B 뱃지 비활성화
             else if (grade === 'A') ...
             else if (grade === 'B') ...
@@ -891,7 +891,7 @@ function showMobileModal(store) {
     const grade = store.grade;
     const isPremium = grade === 'S';
     let badgeHtml = '';
-    if (grade === 'S') badgeHtml = '<span class="premium-badge badge-s"><i class="fa-solid fa-star" style="font-size:12px;"></i> 프리미엄</span><br>';
+    if (grade === 'S') badgeHtml = '<span class="premium-badge badge-s"><i class="fa-solid fa-star" style="font-size:12px;"></i> 우수협력점</span><br>';
     /* A, B 등급 뱃지 비활성화 */
 
     let branchHtml = '';
