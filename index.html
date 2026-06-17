@@ -1,24 +1,24 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
-    <title>?꾨━?ㅽ룷痢??꾧뎅 ?由ъ젏</title>
+    <title>퀄리스포츠 전국 대리점</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ?고듃: Paperlogy (Local) -->
-    <!-- ?꾩씠肄? FontAwesome -->
+    <!-- 폰트: Paperlogy (Local) -->
+    <!-- 아이콘: FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- [?꾩닔] Leaflet.js (Local) -->
+    <!-- [필수] Leaflet.js (Local) -->
     <link rel="stylesheet" href="lib/leaflet/leaflet.css" />
     <!-- Leaflet MarkerCluster CSS (Local) -->
     <link rel="stylesheet" href="lib/markercluster/MarkerCluster.css" />
     <link rel="stylesheet" href="lib/markercluster/MarkerCluster.Default.css" />
 
-    <!-- 遺꾨━??CSS ?곌껐 -->
+    <!-- 분리된 CSS 연결 -->
     <link rel="stylesheet" href="css/style.css">
 </head>
-<!-- [蹂댁븞] ?고겢由??쒕옒洹??좏깮 諛⑹? ?곸슜 -->
+<!-- [보안] 우클릭/드래그/선택 방지 적용 -->
 
 <body class="no-select">
 
@@ -26,122 +26,122 @@
         <div class="header-top-row">
             <div class="header-left-group">
                 <div class="header-text-group">
-                    <div class="brand-title">?꾧뎅 ?由ъ젏 ?덈궡</div>
-                    <div class="header-info">媛源뚯슫 怨듭떇 ?由ъ젏??寃?됲빐蹂댁꽭??/div>
+                    <div class="brand-title">전국 대리점 안내</div>
+                    <div class="header-info">가까운 공식 대리점을 검색해보세요</div>
                 </div>
-                <!-- ?뉗뒪?ы깙: ?≪뀡踰꾪듉 洹몃９ -->
+                <!-- デ스크탑: 액션버튼 그룹 -->
                 <div class="header-action-buttons desktop-only">
                     <a href="#" id="headerKakaoBtn" target="_blank" class="btn-kakao-sm">
-                        <i class="fa-brands fa-kakao"></i> 移댁뭅?ㅽ넚 1:1 ?곷떞?섍린
+                        <i class="fa-brands fa-kakao"></i> 카카오톡 1:1 상담하기
                     </a>
                     <a href="#" id="headerRegistBtn" target="_blank" class="btn-regist-sm">
-                        <i class="fa-solid fa-file-signature"></i> ?쒗뭹?깅줉?쇳꽣
+                        <i class="fa-solid fa-file-signature"></i> 제품등록센터
                     </a>
                 </div>
             </div>
 
-            <!-- ?곗륫??諛곗튂??濡쒓퀬 -->
+            <!-- 우측에 배치될 로고 -->
             <div class="brand-logo">
                 <img src="images/Xtron_x_Qualisports_Logo_Black.webp" alt="Qualisports Logo" class="logo-light">
                 <img src="images/Xtron_x_Qualisports_Logo_White.webp" alt="Qualisports Logo" class="logo-dark">
             </div>
         </div>
 
-        <!-- 紐⑤컮?쇱뿉???ㅻ뜑濡??대룞??而⑦듃濡??곸뿭 (?곗뒪?ы깙? aside ?대????꾩튂) -->
+        <!-- 모바일에서 헤더로 이동될 컨트롤 영역 (데스크탑은 aside 내부에 위치) -->
         <div id="mobileControlPortal" class="mobile-only-header-controls"></div>
     </header>
 
     <div class="main-container">
-        <!-- ?쇱そ ?⑤꼸 -->
+        <!-- 왼쪽 패널 -->
         <aside class="list-panel">
 
             <div class="control-area" id="controlArea">
-                <!-- 1?? 寃?됱갹 -->
+                <!-- 1단: 검색창 -->
                 <div class="search-input-row">
-                    <!-- [?섏젙] autocomplete="off" ?띿꽦 異붽??섏뿬 釉뚮씪?곗? ?먮룞?꾩꽦 李⑤떒 -->
-                    <input type="text" id="searchInput" placeholder="吏??챸 ?먮뒗 留ㅼ옣紐??낅젰" autocomplete="off">
+                    <!-- [수정] autocomplete="off" 속성 추가하여 브라우저 자동완성 차단 -->
+                    <input type="text" id="searchInput" placeholder="지역명 또는 매장명 입력" autocomplete="off">
                     <button class="btn-clear-search" id="clearSearchBtn"><i class="fa-solid fa-circle-xmark"></i></button>
                     <button class="search-btn" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
 
-                <!-- [?좉퇋] 吏???쒖뼱 踰꾪듉 ?듯빀 (? 臾띔린, ???꾩튂, ?ㅽ겕紐⑤뱶) -->
+                <!-- [신규] 지도 제어 버튼 통합 (핀 묶기, 내 위치, 다크모드) -->
                 <div class="map-controls-row">
                     <button id="btnCluster" class="control-btn active">
-                        <i class="fa-solid fa-layer-group"></i> ? 臾띠뼱蹂닿린
+                        <i class="fa-solid fa-layer-group"></i> 핀 묶어보기
                     </button>
                     <button id="btnMyLocation" class="control-btn">
-                        <i class="fa-solid fa-location-crosshairs"></i> ???꾩튂
+                        <i class="fa-solid fa-location-crosshairs"></i> 내 위치
                     </button>
                     <button id="btnDarkMode" class="control-btn">
-                        <i class="fa-solid fa-moon"></i> ?ㅽ겕紐⑤뱶
+                        <i class="fa-solid fa-moon"></i> 다크모드
                     </button>
                 </div>
 
-                <!-- 2?? ?꾪꽣 踰꾪듉 紐⑥쓬 -->
+                <!-- 2단: 필터 버튼 모음 -->
                 <div class="filter-buttons-row" id="filterButtonsContainer">
                     <label class="filter-btn premium-filter">
                         <input type="checkbox" id="premiumCheck">
                         <i class="fa-solid fa-star"></i>
-                        <span>?곗닔?묐젰??/span>
+                        <span>우수협력점</span>
                     </label>
 
-                    <!-- [二쇱꽍泥섎━] A, B ?깃툒 諛??쒖듅 ?꾪꽣 鍮꾪솢?깊솕
+                    <!-- [주석처리] A, B 등급 및 시승 필터 비활성화
                     <label class="filter-btn a-grade-filter">
                         <input type="checkbox" id="aGradeCheck">
                         <i class="fa-solid fa-star" style="color:var(--quali-blue);"></i>
-                        <span>A?깃툒</span>
+                        <span>A등급</span>
                     </label>
 
                     <label class="filter-btn b-grade-filter">
                         <input type="checkbox" id="bGradeCheck">
                         <i class="fa-solid fa-star" style="color:var(--quali-green);"></i>
-                        <span>B?깃툒</span>
+                        <span>B등급</span>
                     </label>
                     -->
 
                     <label class="filter-btn onecare-filter">
                         <input type="checkbox" id="oneCareCheck">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
-                        <span>?먯???/span>
+                        <span>원케어</span>
                     </label>
 
                     <!--
                     <label class="filter-btn testride-filter">
                         <input type="checkbox" id="testRideCheck">
                         <i class="fa-solid fa-motorcycle"></i>
-                        <span>?쒖듅</span>
+                        <span>시승</span>
                     </label>
                     -->
                 </div>
 
-                <!-- [?좏깮???쒖떆] -->
+                <!-- [선택됨 표시] -->
                 <div id="selectedStoreBar" class="selected-info-bar">
-                    <span><i class="fa-solid fa-check-circle"></i> ?좏깮???由ъ젏: <strong
+                    <span><i class="fa-solid fa-check-circle"></i> 선택된 대리점: <strong
                             id="selectedStoreName"></strong></span>
                     <button class="btn-clear-select" id="btnClearSelect"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
-                <!-- 3?? ???곸뿭 -->
+                <!-- 3단: 탭 영역 -->
                 <div class="tabs-container">
                     <button class="scroll-btn" id="btnScrollLeft"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="category-tabs" id="categoryTabs">
-                        <div class="tab-btn active" data-cat="all">?꾩껜</div>
-                        <div class="tab-btn" data-cat="?쒖슱">?쒖슱</div>
-                        <div class="tab-btn" data-cat="寃쎄린">寃쎄린</div>
-                        <div class="tab-btn" data-cat="?몄쿇">?몄쿇</div>
-                        <div class="tab-btn" data-cat="媛뺤썝">媛뺤썝</div>
-                        <div class="tab-btn" data-cat="異⑸궓">異⑸궓</div>
-                        <div class="tab-btn" data-cat="異⑸턿">異⑸턿</div>
-                        <div class="tab-btn" data-cat="???>???/div>
-                        <div class="tab-btn" data-cat="?몄쥌">?몄쥌</div>
-                        <div class="tab-btn" data-cat="?꾨궓">?꾨궓</div>
-                        <div class="tab-btn" data-cat="?꾨턿">?꾨턿</div>
-                        <div class="tab-btn" data-cat="寃쎈궓">寃쎈궓</div>
-                        <div class="tab-btn" data-cat="寃쎈턿">寃쎈턿</div>
-                        <div class="tab-btn" data-cat="?援?>?援?/div>
-                        <div class="tab-btn" data-cat="遺??>遺??/div>
-                        <div class="tab-btn" data-cat="?몄궛">?몄궛</div>
-                        <div class="tab-btn" data-cat="?쒖＜">?쒖＜</div>
+                        <div class="tab-btn active" data-cat="all">전체</div>
+                        <div class="tab-btn" data-cat="서울">서울</div>
+                        <div class="tab-btn" data-cat="경기">경기</div>
+                        <div class="tab-btn" data-cat="인천">인천</div>
+                        <div class="tab-btn" data-cat="강원">강원</div>
+                        <div class="tab-btn" data-cat="충남">충남</div>
+                        <div class="tab-btn" data-cat="충북">충북</div>
+                        <div class="tab-btn" data-cat="대전">대전</div>
+                        <div class="tab-btn" data-cat="세종">세종</div>
+                        <div class="tab-btn" data-cat="전남">전남</div>
+                        <div class="tab-btn" data-cat="전북">전북</div>
+                        <div class="tab-btn" data-cat="경남">경남</div>
+                        <div class="tab-btn" data-cat="경북">경북</div>
+                        <div class="tab-btn" data-cat="대구">대구</div>
+                        <div class="tab-btn" data-cat="부산">부산</div>
+                        <div class="tab-btn" data-cat="울산">울산</div>
+                        <div class="tab-btn" data-cat="제주">제주</div>
                     </div>
                     <button class="scroll-btn" id="btnScrollRight"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
@@ -149,7 +149,7 @@
 
             <div class="list-content" id="listContent">
                 <div class="message-box">
-                    <i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>?곗씠?곕? 遺덈윭?ㅻ뒗 以묒엯?덈떎...
+                    <i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>데이터를 불러오는 중입니다...
                 </div>
             </div>
             <button class="btn-top" id="topBtn">
@@ -157,13 +157,13 @@
             </button>
         </aside>
 
-        <!-- ?ㅻⅨ履??⑤꼸: Leaflet Map -->
+        <!-- 오른쪽 패널: Leaflet Map -->
         <main class="map-panel">
             <div id="map"></div>
         </main>
     </div>
 
-    <!-- [?좉퇋] 紐⑤컮???곸꽭 紐⑤떖 -->
+    <!-- [신규] 모바일 상세 모달 -->
     <div id="mobileModalOverlay" class="mobile-modal-overlay">
         <div class="mobile-modal-container" id="mobileModalContainer">
             <button class="btn-close-modal" id="btnCloseModal"><i class="fa-solid fa-xmark"></i></button>
@@ -171,20 +171,20 @@
         </div>
     </div>
 
-    <!-- [?좉퇋] 紐⑤컮???뚮줈???≪뀡 踰꾪듉 (FAB) -->
+    <!-- [신규] 모바일 플로팅 액션 버튼 (FAB) -->
     <div class="mobile-fab-container mobile-only">
-        <a href="#" id="fabRegistBtn" target="_blank" class="fab-btn regist">?쒗뭹?깅줉</a>
-        <a href="#" id="fabKakaoBtn" target="_blank" class="fab-btn kakao">移댁뭅?ㅽ넚 臾몄쓽</a>
+        <a href="#" id="fabRegistBtn" target="_blank" class="fab-btn regist">제품등록</a>
+        <a href="#" id="fabKakaoBtn" target="_blank" class="fab-btn kakao">카카오톡 문의</a>
     </div>
 
-    <!-- [?꾩닔] Leaflet.js (Local) -->
+    <!-- [필수] Leaflet.js (Local) -->
     <script src="lib/leaflet/leaflet.js"></script>
     <!-- Leaflet MarkerCluster JS (Local) -->
     <script src="lib/markercluster/leaflet.markercluster.js"></script>
-    <!-- [蹂댁븞] DOMPurify: XSS 諛⑹뼱瑜??꾪븳 HTML ?뚮룆 ?쇱씠釉뚮윭由?-->
+    <!-- [보안] DOMPurify: XSS 방어를 위한 HTML 소독 라이브러리 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
 
-    <!-- 遺꾨━??JS ?곌껐 -->
+    <!-- 분리된 JS 연결 -->
     <script src="js/config.js"></script>
     <script src="js/script.js"></script>
 </body>
