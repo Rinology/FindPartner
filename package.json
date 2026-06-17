@@ -6,6 +6,7 @@
     "jsdom": "^28.1.0"
   },
   "devDependencies": {
+    "sharp": "^0.35.1",
     "ttf2woff2": "^8.0.1"
   }
 }
