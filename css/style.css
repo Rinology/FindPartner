@@ -1,62 +1,62 @@
-@font-face {
+﻿@font-face {
     font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-1Thin.ttf') format('truetype');
+    src: url('../fonts/Paperlogy-1.000/Paperlogy-1Thin.woff2') format('woff2');
     font-weight: 100;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-2ExtraLight.ttf') format('truetype');
+    src: url('../fonts/Paperlogy-1.000/Paperlogy-2ExtraLight.woff2') format('woff2');
     font-weight: 200;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-3Light.ttf') format('truetype');
+    src: url('../fonts/Paperlogy-1.000/Paperlogy-3Light.woff2') format('woff2');
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-4Regular.ttf') format('truetype');
+    src: url('../fonts/Paperlogy-1.000/Paperlogy-4Regular.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-5Medium.ttf') format('truetype');
+    src: url('../fonts/Paperlogy-1.000/Paperlogy-5Medium.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-6SemiBold.ttf') format('truetype');
+    src: url('../fonts/Paperlogy-1.000/Paperlogy-6SemiBold.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-7Bold.ttf') format('truetype');
+    src: url('../fonts/Paperlogy-1.000/Paperlogy-7Bold.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-8ExtraBold.ttf') format('truetype');
+    src: url('../fonts/Paperlogy-1.000/Paperlogy-8ExtraBold.woff2') format('woff2');
     font-weight: 800;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-9Black.ttf') format('truetype');
+    src: url('../fonts/Paperlogy-1.000/Paperlogy-9Black.woff2') format('woff2');
     font-weight: 900;
     font-style: normal;
 }
@@ -126,7 +126,7 @@
     -webkit-font-smoothing: antialiased;
 }
 
-/* 폼 요소 폰트 상속 이슈 해결 */
+/* ???붿냼 ?고듃 ?곸냽 ?댁뒋 ?닿껐 */
 input,
 button,
 select,
@@ -147,7 +147,7 @@ body {
     letter-spacing: -0.01em;
 }
 
-/* 헤더 */
+/* ?ㅻ뜑 */
 header {
     min-height: var(--header-height);
     background-color: rgba(255, 255, 255, 0.85);
@@ -194,7 +194,7 @@ header {
     display: none;
 }
 
-/* 다크모드 시 로고 전환 */
+/* ?ㅽ겕紐⑤뱶 ??濡쒓퀬 ?꾪솚 */
 body.dark-mode .brand-logo .logo-light {
     display: none;
 }
@@ -203,7 +203,7 @@ body.dark-mode .brand-logo .logo-dark {
     display: block;
 }
 
-/* [신규] 헤더 버튼 및 레이아웃 스타일 (데스크탑) */
+/* [?좉퇋] ?ㅻ뜑 踰꾪듉 諛??덉씠?꾩썐 ?ㅽ???(?곗뒪?ы깙) */
 .header-left-group {
     display: flex;
     align-items: center;
@@ -219,7 +219,7 @@ body.dark-mode .brand-logo .logo-dark {
 .header-action-buttons {
     display: flex;
     align-items: center;
-    /* 버튼들의 수직 베이스라인 일치 */
+    /* 踰꾪듉?ㅼ쓽 ?섏쭅 踰좎씠?ㅻ씪???쇱튂 */
     gap: 10px;
 }
 
@@ -288,23 +288,23 @@ body.dark-mode .brand-logo .logo-dark {
     letter-spacing: -0.01em;
 }
 
-/* 모바일 화면 조정 (기존 유지 확인용) */
+/* 紐⑤컮???붾㈃ 議곗젙 (湲곗〈 ?좎? ?뺤씤?? */
 @media (max-width: 767px) {
     .desktop-only {
         display: none !important;
     }
     
     .brand-title {
-        font-size: 1.25rem; /* 모바일에서는 타이틀 크기 살짝 조정 */
+        font-size: 1.25rem; /* 紐⑤컮?쇱뿉?쒕뒗 ??댄? ?ш린 ?댁쭩 議곗젙 */
         margin-bottom: 2px;
     }
     
     .header-info {
-        font-size: 0.8rem; /* 모바일용 서브타이틀 크기 조정 */
+        font-size: 0.8rem; /* 紐⑤컮?쇱슜 ?쒕툕??댄? ?ш린 議곗젙 */
     }
 }
 
-/* 레이아웃 */
+/* ?덉씠?꾩썐 */
 .main-container {
     display: flex;
     flex: 1;
@@ -329,14 +329,14 @@ body.dark-mode .brand-logo .logo-dark {
     position: relative;
 }
 
-/* 지도 div */
+/* 吏??div */
 #map {
     width: 100%;
     height: 100%;
     z-index: var(--z-map);
 }
 
-/* [커스텀 핀 스타일 (FontAwesome)] */
+/* [而ㅼ뒪? ? ?ㅽ???(FontAwesome)] */
 .custom-pin {
     background: none !important;
     border: none !important;
@@ -351,7 +351,7 @@ body.dark-mode .brand-logo .logo-dark {
     transition: transform 0.2s;
 }
 
-/* 등급별 별 아이콘 스타일 */
+/* ?깃툒蹂?蹂??꾩씠肄??ㅽ???*/
 .grade-star-pin i {
     font-size: 40px;
     filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
@@ -361,10 +361,10 @@ body.dark-mode .brand-logo .logo-dark {
     transition: transform 0.2s;
 }
 
-/* S등급: 골드 + 엄청 화려한 광택(Gloss) + Pulse */
+/* S?깃툒: 怨⑤뱶 + ?꾩껌 ?붾젮??愿묓깮(Gloss) + Pulse */
 .grade-s-star i {
     color: #FFD700;
-    /* 하얀 광택 효과를 위한 다중 텍스트 섀도우 */
+    /* ?섏? 愿묓깮 ?④낵瑜??꾪븳 ?ㅼ쨷 ?띿뒪????꾩슦 */
     text-shadow:
         0 0 5px rgba(255, 215, 0, 0.5),
         -1px -1px 0 rgba(255, 255, 255, 0.9) inset,
@@ -374,7 +374,7 @@ body.dark-mode .brand-logo .logo-dark {
     animation: starPulseS 2s infinite alternate;
 }
 
-/* A등급: 블루 (가독성 강화를 위해 화이트 테두리 및 광채 추가) */
+/* A?깃툒: 釉붾（ (媛?낆꽦 媛뺥솕瑜??꾪빐 ?붿씠???뚮몢由?諛?愿묒콈 異붽?) */
 .grade-a-star i {
     color: var(--quali-blue);
     -webkit-text-stroke: 1.5px white;
@@ -382,7 +382,7 @@ body.dark-mode .brand-logo .logo-dark {
     animation: starPulseAB 3s infinite alternate;
 }
 
-/* B등급: 그린 (가독성 강화를 위해 화이트 테두리 및 광채 추가) */
+/* B?깃툒: 洹몃┛ (媛?낆꽦 媛뺥솕瑜??꾪빐 ?붿씠???뚮몢由?諛?愿묒콈 異붽?) */
 .grade-b-star i {
     color: var(--quali-green);
     -webkit-text-stroke: 1.5px white;
@@ -435,7 +435,7 @@ body.dark-mode .brand-logo .logo-dark {
     }
 }
 
-/* [검색 및 컨트롤 영역] */
+/* [寃??諛?而⑦듃濡??곸뿭] */
 .control-area {
     padding: 20px 24px;
     background: rgba(255, 255, 255, 0.8);
@@ -450,7 +450,7 @@ body.dark-mode .brand-logo .logo-dark {
     z-index: var(--z-control);
 }
 
-/* 1행: 검색창 */
+/* 1?? 寃?됱갹 */
 .search-input-row {
     position: relative;
     width: 100%;
@@ -530,10 +530,10 @@ body.dark-mode .brand-logo .logo-dark {
 }
 
 /* ==============================================
-   통합 버튼 디자인 시스템 (control-btn + filter-btn 공통 베이스)
+   ?듯빀 踰꾪듉 ?붿옄???쒖뒪??(control-btn + filter-btn 怨듯넻 踰좎씠??
    ============================================== */
 
-/* 지도 제어 버튼 영역 */
+/* 吏???쒖뼱 踰꾪듉 ?곸뿭 */
 .map-controls-row {
     display: flex;
     gap: 8px;
@@ -546,7 +546,7 @@ body.dark-mode .brand-logo .logo-dark {
     display: none;
 }
 
-/* 공통 스타일 베이스 - control-btn & filter-btn 둘 다 적용 */
+/* 怨듯넻 ?ㅽ???踰좎씠??- control-btn & filter-btn ?????곸슜 */
 .control-btn,
 .filter-btn {
     display: inline-flex;
@@ -555,13 +555,13 @@ body.dark-mode .brand-logo .logo-dark {
     padding: 8px 16px;
     border-radius: var(--radius-pill);
     cursor: pointer;
-    /* 반투명 배경 */
+    /* 諛섑닾紐?諛곌꼍 */
     background: rgba(255, 255, 255, 0.55);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    /* 선명한 테두리 */
+    /* ?좊챸???뚮몢由?*/
     border: 1.5px solid rgba(0, 0, 0, 0.1);
-    /* 서브틀 셸도우 */
+    /* ?쒕툕? ?몃룄??*/
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.7);
     transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
     font-size: 13.5px;
@@ -580,7 +580,7 @@ body.dark-mode .brand-logo .logo-dark {
     transform: translateY(-1px);
 }
 
-/* 아이콘 기본 색 */
+/* ?꾩씠肄?湲곕낯 ??*/
 .control-btn i,
 .filter-btn i {
     color: var(--text-secondary);
@@ -588,9 +588,9 @@ body.dark-mode .brand-logo .logo-dark {
     font-size: 0.88rem;
 }
 
-/* === 콘트롤 버튼 활성화 상태 === */
+/* === 肄섑듃濡?踰꾪듉 ?쒖꽦???곹깭 === */
 
-/* 핀 묶어보기 - 브랜드 다크 */
+/* ? 臾띠뼱蹂닿린 - 釉뚮옖???ㅽ겕 */
 .control-btn#btnCluster.active {
     background: var(--quali-dark);
     border-color: transparent;
@@ -602,7 +602,7 @@ body.dark-mode .brand-logo .logo-dark {
     color: #fff;
 }
 
-/* 내 위치 - 브랜드 블루 */
+/* ???꾩튂 - 釉뚮옖??釉붾（ */
 .control-btn#btnMyLocation.active {
     background: var(--quali-blue);
     border-color: transparent;
@@ -614,7 +614,7 @@ body.dark-mode .brand-logo .logo-dark {
     color: #fff;
 }
 
-/* 다크모드 - 진한 네이비 */
+/* ?ㅽ겕紐⑤뱶 - 吏꾪븳 ?ㅼ씠鍮?*/
 .control-btn#btnDarkMode.active {
     background: #1a1a2e;
     border-color: transparent;
@@ -626,7 +626,7 @@ body.dark-mode .brand-logo .logo-dark {
     color: #f0c040;
 }
 
-/* 2행: 필터 버튼들 */
+/* 2?? ?꾪꽣 踰꾪듉??*/
 .filter-buttons-row {
     display: flex;
     gap: 8px;
@@ -639,14 +639,14 @@ body.dark-mode .brand-logo .logo-dark {
     display: none;
 }
 
-/* filter-btn - control-btn의 공통 베이스를 활용하므로 별도 기본 선언 불필요 (filter-btn 독자 추가 속성만) */
+/* filter-btn - control-btn??怨듯넻 踰좎씠?ㅻ? ?쒖슜?섎?濡?蹂꾨룄 湲곕낯 ?좎뼵 遺덊븘??(filter-btn ?낆옄 異붽? ?띿꽦留? */
 .filter-btn input {
     display: none;
 }
 
-/* === 필터 버튼 활성화 상태 === */
+/* === ?꾪꽣 踰꾪듉 ?쒖꽦???곹깭 === */
 
-/* S등급 - 골드 */
+/* S?깃툒 - 怨⑤뱶 */
 .filter-btn.premium-filter.active {
     background: linear-gradient(135deg, var(--color-gold), #FFB800);
     border-color: rgba(184, 134, 11, 0.4);
@@ -658,7 +658,7 @@ body.dark-mode .brand-logo .logo-dark {
     color: #000;
 }
 
-/* A등급 - 브랜드 블루 */
+/* A?깃툒 - 釉뚮옖??釉붾（ */
 .filter-btn.a-grade-filter.active {
     background: var(--quali-blue);
     border-color: transparent;
@@ -670,7 +670,7 @@ body.dark-mode .brand-logo .logo-dark {
     color: #fff;
 }
 
-/* B등급 - 브랜드 그린 */
+/* B?깃툒 - 釉뚮옖??洹몃┛ */
 .filter-btn.b-grade-filter.active {
     background: var(--quali-green);
     border-color: transparent;
@@ -682,7 +682,7 @@ body.dark-mode .brand-logo .logo-dark {
     color: #1a1a1a;
 }
 
-/* 원케어 - 브랜드 블루 */
+/* ?먯???- 釉뚮옖??釉붾（ */
 .filter-btn.onecare-filter.active {
     background: var(--quali-blue);
     border-color: transparent;
@@ -694,7 +694,7 @@ body.dark-mode .brand-logo .logo-dark {
     color: #fff;
 }
 
-/* 시승 - 브랜드 그린 */
+/* ?쒖듅 - 釉뚮옖??洹몃┛ */
 .filter-btn.testride-filter.active {
     background: var(--quali-green);
     border-color: transparent;
@@ -707,7 +707,7 @@ body.dark-mode .brand-logo .logo-dark {
 }
 
 
-/* [선택된 매장 표시줄 - 전역/데스크탑 기본] */
+/* [?좏깮??留ㅼ옣 ?쒖떆以?- ?꾩뿭/?곗뒪?ы깙 湲곕낯] */
 .selected-info-bar {
     background-color: var(--color-gray-light);
     color: var(--quali-blue);
@@ -765,7 +765,7 @@ body.dark-mode .brand-logo .logo-dark {
     }
 }
 
-/* 모바일 전용 플로팅 바 디자인 (하단 고정) */
+/* 紐⑤컮???꾩슜 ?뚮줈??諛??붿옄??(?섎떒 怨좎젙) */
 @media (max-width: 900px) {
     .selected-info-bar {
         position: fixed;
@@ -773,7 +773,7 @@ body.dark-mode .brand-logo .logo-dark {
         left: 20px;
         right: 20px;
         z-index: var(--z-mobile-selected);
-        /* 지도 컨트롤보다 위에 */
+        /* 吏??而⑦듃濡ㅻ낫???꾩뿉 */
         margin-bottom: 0;
         padding: 16px 20px;
         background: var(--quali-dark);
@@ -782,7 +782,7 @@ body.dark-mode .brand-logo .logo-dark {
         border: none;
         box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         display: none;
-        /* JS로 제어 */
+        /* JS濡??쒖뼱 */
         animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -799,7 +799,7 @@ body.dark-mode .brand-logo .logo-dark {
         color: white;
     }
 
-    /* 하단 이동 버튼 위치 조정 (바와 겹치지 않게) */
+    /* ?섎떒 ?대룞 踰꾪듉 ?꾩튂 議곗젙 (諛붿? 寃뱀튂吏 ?딄쾶) */
     .btn-top.show {
         bottom: 100px;
     }
@@ -818,7 +818,7 @@ body.dark-mode .brand-logo .logo-dark {
 }
 
 
-/* 3행: 탭 영역 마스크 추가 */
+/* 3?? ???곸뿭 留덉뒪??異붽? */
 .tabs-container {
     display: flex;
     align-items: center;
@@ -920,7 +920,7 @@ body.dark-mode .brand-logo .logo-dark {
     /* Soft blue shadow */
 }
 
-/* 리스트 아이템 */
+/* 由ъ뒪???꾩씠??*/
 .list-content {
     flex: 1;
     overflow-y: auto;
@@ -1021,7 +1021,7 @@ body.dark-mode .brand-logo .logo-dark {
     line-height: 1.2;
 }
 
-/* 지점명(D열) 스타일 */
+/* 吏?먮챸(D?? ?ㅽ???*/
 .store-branch {
     font-size: 14px;
     color: var(--text-secondary);
@@ -1049,7 +1049,7 @@ body.dark-mode .brand-logo .logo-dark {
     font-size: 14px;
 }
 
-/* 전화번호 링크 스타일 */
+/* ?꾪솕踰덊샇 留곹겕 ?ㅽ???*/
 .phone-link {
     color: inherit;
     text-decoration: none;
@@ -1121,22 +1121,22 @@ body.dark-mode .brand-logo .logo-dark {
     width: 280px !important;
 }
 
-/* 모바일 지도 내 팝업 크기 조정 및 버그 수정 */
+/* 紐⑤컮??吏?????앹뾽 ?ш린 議곗젙 諛?踰꾧렇 ?섏젙 */
 @media (max-width: 900px) {
     .leaflet-popup-content {
         width: 200px !important;
-        /* 다시 축소하여 콤팩트하게 */
+        /* ?ㅼ떆 異뺤냼?섏뿬 肄ㅽ뙥?명븯寃?*/
         max-height: 280px;
         overflow: hidden !important;
-        /* 스크롤바 제거 */
+        /* ?ㅽ겕濡ㅻ컮 ?쒓굅 */
     }
 
-    /* 모바일에서 좁을 경우 정보 숨김 */
+    /* 紐⑤컮?쇱뿉??醫곸쓣 寃쎌슦 ?뺣낫 ?④? */
     .popup-mobile-hide {
         display: none !important;
     }
 
-    /* 모바일 팝업 내 버튼 및 폰트 크기 축소 */
+    /* 紐⑤컮???앹뾽 ??踰꾪듉 諛??고듃 ?ш린 異뺤냼 */
     .map-popup-title {
         font-size: 15px !important;
     }
@@ -1148,7 +1148,7 @@ body.dark-mode .brand-logo .logo-dark {
     .map-popup-btn,
     .btn-map-link {
         padding: 6px 10px !important;
-        /* 다시 축소 */
+        /* ?ㅼ떆 異뺤냼 */
         font-size: 12px !important;
         min-height: auto !important;
         margin-top: 2px !important;
@@ -1156,14 +1156,14 @@ body.dark-mode .brand-logo .logo-dark {
 
     .map-popup-inner {
         padding: 10px 15px !important;
-        /* 패딩 축소 */
+        /* ?⑤뵫 異뺤냼 */
         gap: 4px !important;
-        /* 간격 축소 */
+        /* 媛꾧꺽 異뺤냼 */
     }
 
     .leaflet-popup-inner {
         padding: 8px;
-        /* 패딩 더 축소 */
+        /* ?⑤뵫 ??異뺤냼 */
     }
 
     .map-popup-header {
@@ -1177,7 +1177,7 @@ body.dark-mode .brand-logo .logo-dark {
 
     .map-popup-title {
         font-size: 14px;
-        /* 폰트 크기 축소 */
+        /* ?고듃 ?ш린 異뺤냼 */
     }
 
     .map-popup-branch {
@@ -1193,8 +1193,8 @@ body.dark-mode .brand-logo .logo-dark {
         gap: 4px;
     }
 
-    /* 모바일 화면에서는 지도 진입 팝업 자체가 안 뜨므로 해당 스타일 필요 없음 */
-    /* 모바일 바텀시트 내 버튼만 멋지게 키워주기 */
+    /* 紐⑤컮???붾㈃?먯꽌??吏??吏꾩엯 ?앹뾽 ?먯껜媛 ???⑤?濡??대떦 ?ㅽ????꾩슂 ?놁쓬 */
+    /* 紐⑤컮??諛뷀??쒗듃 ??踰꾪듉留?硫뗭?寃??ㅼ썙二쇨린 */
     .mobile-modal-container .map-popup-btn,
     .mobile-modal-container .btn-map-link {
         padding: 12px 0 !important;
@@ -1210,7 +1210,7 @@ body.dark-mode .brand-logo .logo-dark {
     background: rgba(255, 255, 255, 0.95);
 }
 
-/* 지도 중앙 팝업 - 꼬리 없는 클린 스타일 */
+/* 吏??以묒븰 ?앹뾽 - 瑗щ━ ?녿뒗 ?대┛ ?ㅽ???*/
 .center-map-popup .leaflet-popup-tip-container {
     display: none;
 }
@@ -1224,7 +1224,7 @@ body.dark-mode .center-map-popup .leaflet-popup-content-wrapper {
     background: rgba(30, 30, 30, 0.97);
 }
 
-/* [신규] 모바일 커스텀 모달 스타일 */
+/* [?좉퇋] 紐⑤컮??而ㅼ뒪? 紐⑤떖 ?ㅽ???*/
 .mobile-modal-overlay {
     position: fixed;
     top: 0;
@@ -1236,7 +1236,7 @@ body.dark-mode .center-map-popup .leaflet-popup-content-wrapper {
     z-index: 2000;
     display: none;
     align-items: flex-end;
-    /* 하단에서 올라오는 느낌 */
+    /* ?섎떒?먯꽌 ?щ씪?ㅻ뒗 ?먮굦 */
     justify-content: center;
 }
 
@@ -1253,10 +1253,10 @@ body.dark-mode .center-map-popup .leaflet-popup-content-wrapper {
     max-height: 90vh;
     overflow-y: auto;
     overflow-x: hidden;
-    /* 가로 스크롤 방지 */
+    /* 媛濡??ㅽ겕濡?諛⑹? */
 }
 
-/* 모바일 모달 내 미니 지도 */
+/* 紐⑤컮??紐⑤떖 ??誘몃땲 吏??*/
 #mobileMiniMap {
     width: 100%;
     height: 180px;
@@ -1266,7 +1266,7 @@ body.dark-mode .center-map-popup .leaflet-popup-content-wrapper {
     z-index: 1;
 }
 
-/* 다크모드: 모바일 바텀시트 전체 스타일 */
+/* ?ㅽ겕紐⑤뱶: 紐⑤컮??諛뷀??쒗듃 ?꾩껜 ?ㅽ???*/
 body.dark-mode .mobile-modal-overlay {
     background: rgba(0, 0, 0, 0.75);
 }
@@ -1357,9 +1357,9 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     flex-direction: column;
     gap: 8px;
     text-align: center;
-    /* 중앙 정렬로 통일 */
+    /* 以묒븰 ?뺣젹濡??듭씪 */
     overflow: hidden !important;
-    /* 내부 스크롤 방지 */
+    /* ?대? ?ㅽ겕濡?諛⑹? */
 }
 
 .map-popup-title {
@@ -1392,10 +1392,10 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     text-decoration: underline;
 }
 
-/* [신규] 팝업 상세 스타일 */
+/* [?좉퇋] ?앹뾽 ?곸꽭 ?ㅽ???*/
 .map-popup-inner {
     text-align: center;
-    /* 중앙 정렬로 변경 */
+    /* 以묒븰 ?뺣젹濡?蹂寃?*/
     min-width: 200px;
 }
 
@@ -1443,12 +1443,12 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
 .map-popup-buttons {
     display: flex;
     flex-direction: row;
-    /* 가로 배열로 변경 */
+    /* 媛濡?諛곗뿴濡?蹂寃?*/
     justify-content: center;
     gap: 8px;
     margin-top: 16px;
     flex-wrap: wrap;
-    /* 공간 부족 시 줄바꿈 */
+    /* 怨듦컙 遺議???以꾨컮轅?*/
 }
 
 .map-popup-row a {
@@ -1461,14 +1461,14 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     color: #2f6286;
 }
 
-/* 네이버 지도로 보기 (Secondary) - 데스크탑 팝업 전용 슬림 버튼 */
+/* ?ㅼ씠踰?吏?꾨줈 蹂닿린 (Secondary) - ?곗뒪?ы깙 ?앹뾽 ?꾩슜 ?щ┝ 踰꾪듉 */
 .map-popup-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 8px 14px;
     width: auto;
-    /* 너비 자동 */
+    /* ?덈퉬 ?먮룞 */
     min-width: 110px;
     background: rgba(0, 0, 0, 0.04);
     color: var(--quali-blue);
@@ -1488,7 +1488,7 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     color: var(--quali-blue);
 }
 
-/* S등급 프리미엄 전용 팝업 헤더 스타일 (light mode) */
+/* S?깃툒 ?꾨━誘몄뾼 ?꾩슜 ?앹뾽 ?ㅻ뜑 ?ㅽ???(light mode) */
 .premium-popup-header {
     background: linear-gradient(135deg, #fffef9, #fff7d6);
     padding: 16px;
@@ -1505,7 +1505,7 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     letter-spacing: -0.4px;
 }
 
-/* 등급별 뱃지 스타일 */
+/* ?깃툒蹂?諭껋? ?ㅽ???*/
 .premium-badge.badge-s {
     background: linear-gradient(135deg, #FFD700, #FFB800);
     color: #000;
@@ -1524,7 +1524,7 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     border: 1px solid rgba(114, 191, 68, 0.3);
 }
 
-/* S등급 뱃지 공통 스타일 (light mode) */
+/* S?깃툒 諭껋? 怨듯넻 ?ㅽ???(light mode) */
 .premium-badge {
     padding: 4px 10px;
     border-radius: 6px;
@@ -1538,14 +1538,14 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* 길찾기 버튼 (Primary) - 네이버 그린 */
+/* 湲몄갼湲?踰꾪듉 (Primary) - ?ㅼ씠踰?洹몃┛ */
 .btn-map-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 8px 14px;
     width: auto;
-    /* 너비 자동 */
+    /* ?덈퉬 ?먮룞 */
     min-width: 110px;
     background: #03C75A;
     color: white;
@@ -1567,14 +1567,14 @@ body.dark-mode .mobile-modal-container .map-popup-btn:hover {
     transform: translateY(-1px);
 }
 
-/* 프리미엄 팝업 전용 타이틀 조절 (줄바꿈 방지) */
+/* ?꾨━誘몄뾼 ?앹뾽 ?꾩슜 ??댄? 議곗젅 (以꾨컮轅?諛⑹?) */
 .premium-popup-title {
     font-size: 20px !important;
     word-break: keep-all;
     letter-spacing: -0.02em;
 }
 
-/* 다크모드 대응: S등급 프리미엄 헤더 */
+/* ?ㅽ겕紐⑤뱶 ??? S?깃툒 ?꾨━誘몄뾼 ?ㅻ뜑 */
 body.dark-mode .premium-popup-header {
     background: linear-gradient(135deg, #2a2a20, #332e18);
     border-color: rgba(255, 215, 0, 0.35);
@@ -1591,7 +1591,7 @@ body.dark-mode .premium-badge {
     border: 1px solid rgba(255, 215, 0, 0.4);
 }
 
-/* 다크모드 대응 */
+/* ?ㅽ겕紐⑤뱶 ???*/
 body.dark-mode .map-popup-title {
     color: #e0e0e0;
 }
@@ -1649,7 +1649,7 @@ body.dark-mode .map-popup-header {
     transform: translateY(-4px);
 }
 
-/* [신규] 시승 안내 문구 스타일 */
+/* [?좉퇋] ?쒖듅 ?덈궡 臾멸뎄 ?ㅽ???*/
 .test-ride-guide {
     font-size: 13px;
     color: var(--text-secondary);
@@ -1668,7 +1668,7 @@ body.dark-mode .map-popup-header {
     font-size: 14px;
 }
 
-/* [신규] 카카오톡 & 제품등록센터 버튼 스타일 */
+/* [?좉퇋] 移댁뭅?ㅽ넚 & ?쒗뭹?깅줉?쇳꽣 踰꾪듉 ?ㅽ???*/
 .btn-kakao,
 .btn-regist {
     display: inline-flex;
@@ -1707,14 +1707,14 @@ body.dark-mode .map-popup-header {
     box-shadow: 0 4px 12px rgba(47, 98, 134, 0.3);
 }
 
-/* 사이드바 전용 고정 버튼 컨테이너 */
+/* ?ъ씠?쒕컮 ?꾩슜 怨좎젙 踰꾪듉 而⑦뀒?대꼫 */
 .sidebar-action-buttons {
     display: flex;
     gap: 10px;
     margin-top: 4px;
 }
 
-/* 모바일 바텀시트에서의 버튼 크기 조정 */
+/* 紐⑤컮??諛뷀??쒗듃?먯꽌??踰꾪듉 ?ш린 議곗젙 */
 @media (max-width: 900px) {
     .sidebar-action-buttons {
         margin-top: 10px;
@@ -1727,7 +1727,7 @@ body.dark-mode .map-popup-header {
     }
 }
 
-/* [신규] 모바일 플로팅 액션 버튼 (FAB) */
+/* [?좉퇋] 紐⑤컮???뚮줈???≪뀡 踰꾪듉 (FAB) */
 .mobile-fab-container {
     position: fixed;
     bottom: 160px;
@@ -1761,7 +1761,7 @@ body.dark-mode .map-popup-header {
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* [신규] 모달 오픈 시 플로팅 버튼 숨김 */
+/* [?좉퇋] 紐⑤떖 ?ㅽ뵂 ???뚮줈??踰꾪듉 ?④? */
 body.modal-open .mobile-fab-container {
     display: none !important;
 }
@@ -1775,10 +1775,10 @@ body.modal-open .mobile-fab-container {
     filter: brightness(0.9);
 }
 
-/* [신규] FAB 전용 애니메이션 제거됨 (정적 디자인 유지) */
+/* [?좉퇋] FAB ?꾩슜 ?좊땲硫붿씠???쒓굅??(?뺤쟻 ?붿옄???좎?) */
 
 
-/* 유틸리티: 기기별 노출 */
+/* ?좏떥由ы떚: 湲곌린蹂??몄텧 */
 .desktop-only {
     display: flex !important;
 }
@@ -1834,10 +1834,10 @@ body.modal-open .mobile-fab-container {
         position: sticky;
         top: 0;
         z-index: 1100;
-        /* 컨트롤 영역보다 높게 */
+        /* 而⑦듃濡??곸뿭蹂대떎 ?믨쾶 */
         padding: 12px;
         padding-bottom: 16px;
-        /* 하단 여백 추가 */
+        /* ?섎떒 ?щ갚 異붽? */
     }
 
     .mobile-only-header-controls .control-area {
@@ -1854,12 +1854,12 @@ body.modal-open .mobile-fab-container {
         margin-top: 8px;
     }
 
-    /* 모바일 헤더 내 검색창 스타일 */
+    /* 紐⑤컮???ㅻ뜑 ??寃?됱갹 ?ㅽ???*/
     .mobile-only-header-controls .search-input-row {
         margin-bottom: 0;
     }
 
-    /* 모바일 헤더 내 지도 제어 버튼 */
+    /* 紐⑤컮???ㅻ뜑 ??吏???쒖뼱 踰꾪듉 */
     .mobile-only-header-controls .map-controls-row {
         padding: 0;
         background: transparent;
@@ -1867,23 +1867,23 @@ body.modal-open .mobile-fab-container {
         margin-top: 0;
     }
 
-    /* 모바일 헤더 내 필터 버튼 */
+    /* 紐⑤컮???ㅻ뜑 ???꾪꽣 踰꾪듉 */
     .mobile-only-header-controls .filter-buttons-row {
         padding-bottom: 0;
     }
 
-    /* 모바일 헤더 내 탭 */
+    /* 紐⑤컮???ㅻ뜑 ????*/
     .mobile-only-header-controls .tabs-container {
         margin-top: 0;
         padding-bottom: 0;
     }
 
-    /* 다크모드 헤더 대응 */
+    /* ?ㅽ겕紐⑤뱶 ?ㅻ뜑 ???*/
     body.dark-mode header {
         background-color: rgba(30, 30, 30, 0.95);
     }
 
-    /* 모바일에서 body 스크롤 시 헤더 고정 보장 */
+    /* 紐⑤컮?쇱뿉??body ?ㅽ겕濡????ㅻ뜑 怨좎젙 蹂댁옣 */
     body {
         display: block;
         height: auto;
@@ -1898,7 +1898,7 @@ body.modal-open .mobile-fab-container {
     }
 }
 
-/* [신규] 내 위치 마커 (레이더 효과) */
+/* [?좉퇋] ???꾩튂 留덉빱 (?덉씠???④낵) */
 .my-location-marker {
     background: transparent;
     border: none;
@@ -1919,7 +1919,7 @@ body.modal-open .mobile-fab-container {
     color: var(--system-blue);
     z-index: 3;
     position: relative;
-    /* 흰색 발광 효과 추가 (Drop-shadow) */
+    /* ?곗깋 諛쒓킅 ?④낵 異붽? (Drop-shadow) */
     filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1)) drop-shadow(0 0 5px rgba(0, 122, 255, 0.5));
     text-shadow: 0 0 10px rgba(255,255,255,0.9);
 }
@@ -1972,10 +1972,10 @@ body.modal-open .mobile-fab-container {
     }
 }
 
-/* [원복] 프리미엄 핀 스타일: 별 모양만 강조 */
+/* [?먮났] ?꾨━誘몄뾼 ? ?ㅽ??? 蹂?紐⑥뼇留?媛뺤“ */
 .premium-star-only i {
     color: #FFD700;
-    /* 금색 */
+    /* 湲덉깋 */
     font-size: 38px;
     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
     animation: premium-star-pulse 2s infinite ease-in-out;
@@ -1998,36 +1998,36 @@ body.modal-open .mobile-fab-container {
     }
 }
 
-/* [신규] 선택된 핀 스타일 (더 세련된 강조) */
+/* [?좉퇋] ?좏깮??? ?ㅽ???(???몃젴??媛뺤“) */
 .custom-pin.active-pin i,
 .custom-pin.active-pin img {
     color: #ff3b30 !important;
-    /* 강제 빨간색 (아이콘용) */
+    /* 媛뺤젣 鍮④컙??(?꾩씠肄섏슜) */
     transform: scale(1.15) translateY(-5px);
-    /* 적당히 커지고 살짝 위로 */
+    /* ?곷떦??而ㅼ?怨??댁쭩 ?꾨줈 */
     filter: drop-shadow(0 4px 12px rgba(255, 59, 48, 0.6)) !important;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     z-index: 9999;
 }
 
-/* [신규] 팝업 꼬리(Tail) 강화 - 시각적 연결 */
+/* [?좉퇋] ?앹뾽 瑗щ━(Tail) 媛뺥솕 - ?쒓컖???곌껐 */
 .leaflet-popup-tip {
     width: 16px;
     height: 16px;
     padding: 0;
     margin: -8px auto 0;
-    /* 위로 더 올림 */
+    /* ?꾨줈 ???щ┝ */
     pointer-events: auto;
     background: white;
     box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
     transform: rotate(45deg);
-    /* 마름모꼴 유지 */
+    /* 留덈쫫紐④섦 ?좎? */
 }
 
-/* [신규] 내 위치 팝업 커스텀 (텍스트 맞춤, X버튼 수정) */
+/* [?좉퇋] ???꾩튂 ?앹뾽 而ㅼ뒪? (?띿뒪??留욎땄, X踰꾪듉 ?섏젙) */
 .custom-location-popup .leaflet-popup-content-wrapper {
     background: rgba(47, 98, 134, 0.9);
-    /* 말풍선 배경색 변경 (구분됨) */
+    /* 留먰뭾??諛곌꼍??蹂寃?(援щ텇?? */
     color: white;
     padding: 0;
     border-radius: 4px;
@@ -2037,7 +2037,7 @@ body.modal-open .mobile-fab-container {
 
 .custom-location-popup .leaflet-popup-content {
     margin: 6px 10px;
-    /* 여백 축소 */
+    /* ?щ갚 異뺤냼 */
     line-height: 1.4;
     min-width: max-content !important;
     font-size: 13px;
@@ -2048,12 +2048,12 @@ body.modal-open .mobile-fab-container {
     background: rgba(47, 98, 134, 0.9);
 }
 
-/* 내 위치 팝업 X 버튼 숨기기 (요청사항) */
+/* ???꾩튂 ?앹뾽 X 踰꾪듉 ?④린湲?(?붿껌?ы빆) */
 .custom-location-popup .leaflet-popup-close-button {
     display: none;
 }
 
-/* [다크 모드] */
+/* [?ㅽ겕 紐⑤뱶] */
 body.dark-mode {
     --bg-body: #121212;
     --bg-panel: #1e1e1e;
@@ -2129,7 +2129,7 @@ body.dark-mode .filter-btn:hover {
     background: #444;
 }
 
-/* 다크모드 필터 버튼 활성화 상태 (다크모드에서도 브랜드켇러 유지) */
+/* ?ㅽ겕紐⑤뱶 ?꾪꽣 踰꾪듉 ?쒖꽦???곹깭 (?ㅽ겕紐⑤뱶?먯꽌??釉뚮옖?쒖펶???좎?) */
 body.dark-mode .filter-btn.onecare-filter.active {
     background: var(--quali-blue);
     color: white;
@@ -2150,12 +2150,12 @@ body.dark-mode .filter-btn.testride-filter.active i {
     color: #111;
 }
 
-/* 다크모드 하이퍼링크 색상 최적화 */
+/* ?ㅽ겕紐⑤뱶 ?섏씠?쇰쭅???됱긽 理쒖쟻??*/
 body.dark-mode a:not(.control-btn):not(.tab-btn):not(.btn-kakao-sm):not(.btn-regist-sm):not(.fab-btn),
 body.dark-mode .phone-link,
 body.dark-mode .map-popup-row a {
     color: #85e05d;
-    /* 브랜드 그린 계열로 변경하여 눈의 피로도 감소 */
+    /* 釉뚮옖??洹몃┛ 怨꾩뿴濡?蹂寃쏀븯???덉쓽 ?쇰줈??媛먯냼 */
 }
 
 body.dark-mode a:hover {
@@ -2177,7 +2177,7 @@ body.dark-mode .map-popup-phone {
     color: #aaa;
 }
 
-/* 다크 모드 토글 버튼 */
+/* ?ㅽ겕 紐⑤뱶 ?좉? 踰꾪듉 */
 .dark-mode-toggle {
     background: transparent;
     border: none;
@@ -2198,7 +2198,7 @@ body.dark-mode .dark-mode-toggle:hover {
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* 다크모드: 통합 버튼 시스템 (control-btn + filter-btn) */
+/* ?ㅽ겕紐⑤뱶: ?듯빀 踰꾪듉 ?쒖뒪??(control-btn + filter-btn) */
 body.dark-mode .control-btn,
 body.dark-mode .filter-btn {
     background: rgba(255, 255, 255, 0.07);
@@ -2219,9 +2219,9 @@ body.dark-mode .filter-btn i {
     color: rgba(255, 255, 255, 0.5);
 }
 
-/* 다크모드 활성화 상태는 라이트모드와 동일하게 브랜드컬러 유지 */
+/* ?ㅽ겕紐⑤뱶 ?쒖꽦???곹깭???쇱씠?몃え?쒖? ?숈씪?섍쾶 釉뚮옖?쒖뺄???좎? */
 
-/* 마커 클러스터 커스텀 스타일 */
+/* 留덉빱 ?대윭?ㅽ꽣 而ㅼ뒪? ?ㅽ???*/
 .marker-cluster-custom {
     background-color: rgba(47, 98, 134, 0.6);
     border-radius: 50%;
@@ -2241,7 +2241,7 @@ body.dark-mode .filter-btn i {
     margin: 5px;
 }
 
-/* 애니메이션 마커 (Pulse) */
+/* ?좊땲硫붿씠??留덉빱 (Pulse) */
 .marker-pulse {
     animation: pulse-animation 1.5s infinite;
 }
@@ -2263,7 +2263,7 @@ body.dark-mode .filter-btn i {
     }
 }
 
-/* [신규] 모바일 상세 모달 스타일 */
+/* [?좉퇋] 紐⑤컮???곸꽭 紐⑤떖 ?ㅽ???*/
 .mobile-modal-overlay {
     position: fixed;
     top: 0;
@@ -2293,7 +2293,7 @@ body.dark-mode .filter-btn i {
     width: 100%;
     max-height: 90vh;
     border-radius: 28px 28px 0 0;
-    /* 더 둥글게 */
+    /* ???κ?寃?*/
     padding: 28px 24px 24px;
     padding-bottom: env(safe-area-inset-bottom, 24px);
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
@@ -2303,7 +2303,7 @@ body.dark-mode .filter-btn i {
     overflow-y: auto;
 }
 
-/* 상단 핸들바 효과 추가 */
+/* ?곷떒 ?몃뱾諛??④낵 異붽? */
 .mobile-modal-container::before {
     content: '';
     position: absolute;
@@ -2359,7 +2359,7 @@ body.dark-mode .filter-btn i {
     padding-bottom: 20px;
 }
 
-/* Leaflet Tooltip 커스텀 */
+/* Leaflet Tooltip 而ㅼ뒪? */
 .leaflet-tooltip {
     background: rgba(0, 0, 0, 0.75) !important;
     border: none !important;
@@ -2376,7 +2376,7 @@ body.dark-mode .filter-btn i {
     border-top-color: rgba(0, 0, 0, 0.75) !important;
 }
 
-/* 모바일 모달 내 버튼은 다시 가득 채우기 (터치 편의) */
+/* 紐⑤컮??紐⑤떖 ??踰꾪듉? ?ㅼ떆 媛??梨꾩슦湲?(?곗튂 ?몄쓽) */
 @media (max-width: 900px) {
     .mobile-modal-container .map-popup-buttons {
         flex-direction: column;

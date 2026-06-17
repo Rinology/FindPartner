@@ -1,8 +1,11 @@
 {
   "type": "module",
   "dependencies": {
-    "jsdom": "^28.1.0",
+    "@upstash/ratelimit": "^1.0.1",
     "@upstash/redis": "^1.28.4",
-    "@upstash/ratelimit": "^1.0.1"
+    "jsdom": "^28.1.0"
+  },
+  "devDependencies": {
+    "ttf2woff2": "^8.0.1"
   }
 }
