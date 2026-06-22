@@ -352,15 +352,19 @@ function updateMarkers(stores) {
             // 모바일에서는 노출 시점(focusMarker)에서 팝업이 뜨지 않게 제어하므로, 데이터는 항상 전체 바인딩해둡니다.
             let popupLinkBtn = '';
 
-            // 네이버 지도로 보기 (상세)
+            // 네이버 지도로 보기 (상세 및 대체 검색)
+            let finalLink = '';
             if (store.link && String(store.link).trim() !== '' && store.link !== '#') {
-                // link는 URL이므로 최소한의 검증만 (이미 config 등에서 제어됨)
-                popupLinkBtn += `
-                    <a href="${escapeHTML(store.link)}" target="_blank" class="map-popup-btn">
-                        네이버 지도로 보기
-                    </a>
-                `;
+                finalLink = escapeHTML(store.link);
+            } else {
+                finalLink = `${CONFIG.EXTERNAL_SERVICES.NAVER_SEARCH}${encodeURIComponent(store.name)}`;
             }
+
+            popupLinkBtn += `
+                <a href="${finalLink}" target="_blank" class="map-popup-btn">
+                    네이버 지도로 보기
+                </a>
+            `;
 
             // 길찾기 버튼 (네이버) - 클릭 시점에 동적으로 내 위치 확인하여 연동
             popupLinkBtn += `
