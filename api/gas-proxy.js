@@ -125,8 +125,33 @@ export default async function handler(req, res) {
       options.headers = { 'Content-Type': 'application/json' };
     }
 
+    // [신규] Redis 캐시 확인 (GET 요청 한정, 5분 유지)
+    const CACHE_KEY = `gas_cache_${req.method}_${JSON.stringify(req.query || {})}`;
+    const CACHE_TTL = 300; 
+
+    if (redis && req.method === 'GET') {
+      try {
+        const cachedData = await redis.get(CACHE_KEY);
+        if (cachedData) {
+          const result = typeof cachedData === 'string' ? JSON.parse(cachedData) : cachedData;
+          return res.status(200).json(result);
+        }
+      } catch (cacheErr) {
+        console.error('Cache Get Error:', cacheErr.message);
+      }
+    }
+
     const response = await fetch(url.toString(), options);
     const data = await response.json();
+
+    // [신규] 성공적인 GET 응답에 한해 Redis에 캐시 저장
+    if (redis && req.method === 'GET' && response.ok && !data.error) {
+      try {
+        await redis.set(CACHE_KEY, JSON.stringify(data), { ex: CACHE_TTL });
+      } catch (cacheErr) {
+        console.error('Cache Set Error:', cacheErr.message);
+      }
+    }
 
     return res.status(200).json(data);
     
