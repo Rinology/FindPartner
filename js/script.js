@@ -904,10 +904,19 @@ function showMobileModal(store) {
     }
 
     let popupLinkBtn = '';
-    // 모바일 바텀시트에서는 지도 자체가 클릭 시 네이버지도로 연결되므로, '네이버 지도로 보기' 버튼은 비활성화
-    // if (store.link && String(store.link).trim() !== '' && store.link !== '#') {
-    //     popupLinkBtn += `<a href="${store.link}" target="_blank" class="map-popup-btn">네이버 지도로 보기</a>`;
-    // }
+    
+    // 모바일 바텀시트에서도 '네이버 지도로 보기' 버튼 활성화 (대체 검색 포함)
+    let finalLink = '';
+    if (store.link && String(store.link).trim() !== '' && store.link !== '#') {
+        finalLink = escapeHTML(store.link);
+    } else {
+        finalLink = `${CONFIG.EXTERNAL_SERVICES.NAVER_SEARCH}${encodeURIComponent(store.name)}`;
+    }
+    popupLinkBtn += `
+        <a href="${finalLink}" target="_blank" class="map-popup-btn">
+            네이버 지도로 보기
+        </a>
+    `;
     popupLinkBtn += `
         <a href="#" onclick="openNaverNavi(${pos.lat}, ${pos.lng}, '${escapeHTML(store.name).replace(/'/g, "\\'")}'); return false;" class="btn-map-link">
             <i class="fa-solid fa-location-arrow"></i> 네이버 길찾기
