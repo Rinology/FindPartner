@@ -1,64 +1,65 @@
+/* 라이선스: 페이퍼로지체(Paperozi)는 상업용으로 사용 가능한 무료 폰트입니다. (SIL 오픈폰트라이선스) */
 @font-face {
-    font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-1Thin.woff2') format('woff2');
+    font-family: 'Paperozi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-1Thin.woff2') format('woff2');
     font-weight: 100;
-    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-2ExtraLight.woff2') format('woff2');
+    font-family: 'Paperozi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-2ExtraLight.woff2') format('woff2');
     font-weight: 200;
-    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-3Light.woff2') format('woff2');
+    font-family: 'Paperozi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-3Light.woff2') format('woff2');
     font-weight: 300;
-    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-4Regular.woff2') format('woff2');
+    font-family: 'Paperozi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4Regular.woff2') format('woff2');
     font-weight: 400;
-    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-5Medium.woff2') format('woff2');
+    font-family: 'Paperozi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-5Medium.woff2') format('woff2');
     font-weight: 500;
-    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-6SemiBold.woff2') format('woff2');
+    font-family: 'Paperozi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-6SemiBold.woff2') format('woff2');
     font-weight: 600;
-    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-7Bold.woff2') format('woff2');
+    font-family: 'Paperozi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-7Bold.woff2') format('woff2');
     font-weight: 700;
-    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-family: 'Paperozi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
     font-weight: 800;
-    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'Paperlogy';
-    src: url('../fonts/Paperlogy-1.000/Paperlogy-9Black.woff2') format('woff2');
+    font-family: 'Paperozi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-9Black.woff2') format('woff2');
     font-weight: 900;
-    font-style: normal;
+    font-display: swap;
 }
 
 :root {
@@ -137,7 +138,7 @@ textarea {
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Paperlogy', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+    font-family: 'Paperozi', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
     color: var(--text-primary);
     background-color: var(--bg-body);
     height: 100vh;

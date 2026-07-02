@@ -1,5 +1,9 @@
 {
   "type": "module",
+  "scripts": {
+    "start-dev": "vercel dev",
+    "serve": "npx serve ."
+  },
   "dependencies": {
     "@upstash/ratelimit": "^1.0.1",
     "@upstash/redis": "^1.28.4",
