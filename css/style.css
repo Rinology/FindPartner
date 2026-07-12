@@ -451,19 +451,26 @@ body.dark-mode .brand-logo .logo-dark {
     z-index: var(--z-control);
 }
 
-/* 1행: 검색창 */
-.search-input-row {
-    position: relative;
+/* [리팩토링] 1행: 검색창 + 지도 컨트롤 */
+.search-and-controls-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
     width: 100%;
 }
 
-.search-input-row input {
+.search-input-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.search-input-wrapper input {
     width: 100%;
     padding: 0 16px;
     padding-right: 48px;
     border: none;
     border-radius: 12px;
-    font-size: 17px;
+    font-size: 16px;
     background-color: var(--bg-input);
     color: var(--text-primary);
     outline: none;
@@ -472,83 +479,58 @@ body.dark-mode .brand-logo .logo-dark {
     font-weight: 500;
 }
 
-.search-input-row input::placeholder {
+.search-input-wrapper input::placeholder {
     color: var(--text-secondary);
 }
 
-.search-input-row input:focus {
+.search-input-wrapper input:focus {
     background-color: var(--system-white);
     box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
 }
 
-.search-btn {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    background: transparent;
-    color: var(--system-gray);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
+/* ==============================================
+   통합 버튼 디자인 시스템 (icon-control-btn + filter-btn 공통 베이스)
+   ============================================== */
+
+/* 신규 컴팩트 지도 제어 버튼 영역 */
+.map-controls-compact {
     display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* 콤팩트 아이콘 버튼 스타일 */
+.icon-control-btn {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+    color: var(--text-secondary);
+}
+
+.icon-control-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+    color: var(--text-primary);
+}
+
+.icon-control-btn i {
     font-size: 1.1rem;
     transition: color 0.2s;
 }
 
-.search-btn:hover {
-    color: var(--system-blue);
-}
-
-.btn-clear-search {
-    position: absolute;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    background: transparent;
-    color: #ccc;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    transition: color 0.2s;
-}
-
-.btn-clear-search:hover {
-    color: var(--text-secondary);
-}
-
-.btn-clear-search.show {
-    display: flex;
-}
-
-/* ==============================================
-   통합 버튼 디자인 시스템 (control-btn + filter-btn 공통 베이스)
-   ============================================== */
-
-/* 지도 제어 버튼 영역 */
-.map-controls-row {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    scrollbar-width: none;
-}
-
-.map-controls-row::-webkit-scrollbar {
-    display: none;
-}
-
-/* 공통 스타일 베이스 - control-btn & filter-btn 둘 다 적용 */
-.control-btn,
+/* 공통 스타일 베이스 - filter-btn */
 .filter-btn {
     display: inline-flex;
     align-items: center;
@@ -556,13 +538,10 @@ body.dark-mode .brand-logo .logo-dark {
     padding: 8px 16px;
     border-radius: var(--radius-pill);
     cursor: pointer;
-    /* 반투명 배경 */
     background: rgba(255, 255, 255, 0.55);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    /* 선명한 테두리 */
     border: 1.5px solid rgba(0, 0, 0, 0.1);
-    /* 서브틀 셸도우 */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.7);
     transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
     font-size: 13.5px;
@@ -573,7 +552,6 @@ body.dark-mode .brand-logo .logo-dark {
     text-decoration: none;
 }
 
-.control-btn:hover,
 .filter-btn:hover {
     background: rgba(255, 255, 255, 0.9);
     border-color: rgba(0, 0, 0, 0.15);
@@ -582,7 +560,6 @@ body.dark-mode .brand-logo .logo-dark {
 }
 
 /* 아이콘 기본 색 */
-.control-btn i,
 .filter-btn i {
     color: var(--text-secondary);
     transition: color 0.2s;
@@ -592,11 +569,15 @@ body.dark-mode .brand-logo .logo-dark {
 /* === 콘트롤 버튼 활성화 상태 === */
 
 /* 핀 묶어보기 - 브랜드 다크 */
-.control-btn#btnCluster.active {
+.icon-control-btn#btnCluster.active {
     background: var(--quali-dark);
     border-color: transparent;
     color: #fff;
     box-shadow: 0 4px 12px rgba(35, 31, 32, 0.3);
+}
+
+.icon-control-btn#btnCluster.active i {
+    color: #fff;
 }
 
 .control-btn#btnCluster.active i {
@@ -604,27 +585,103 @@ body.dark-mode .brand-logo .logo-dark {
 }
 
 /* 내 위치 - 브랜드 블루 */
-.control-btn#btnMyLocation.active {
+.icon-control-btn#btnMyLocation.active {
     background: var(--quali-blue);
     border-color: transparent;
     color: #fff;
     box-shadow: 0 4px 12px rgba(47, 98, 134, 0.35);
 }
 
-.control-btn#btnMyLocation.active i {
+.icon-control-btn#btnMyLocation.active i {
     color: #fff;
 }
 
 /* 다크모드 - 진한 네이비 */
-.control-btn#btnDarkMode.active {
+.icon-control-btn#btnDarkMode.active {
     background: #1a1a2e;
     border-color: transparent;
     color: #fff;
     box-shadow: 0 4px 12px rgba(26, 26, 46, 0.4);
 }
 
-.control-btn#btnDarkMode.active i {
+.icon-control-btn#btnDarkMode.active i {
     color: #f0c040;
+}
+
+/* ==============================================
+   커스텀 드롭다운 스타일 (브랜드 선택)
+   ============================================== */
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle .chevron-icon {
+    font-size: 0.75rem;
+    margin-left: 2px;
+    transition: transform 0.3s;
+}
+
+.custom-dropdown.open .dropdown-toggle .chevron-icon {
+    transform: rotate(180deg);
+}
+
+/* 커스텀 드롭다운 활성화 상태 */
+.custom-dropdown.has-selection .dropdown-toggle {
+    background: var(--quali-blue);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(47, 98, 134, 0.35);
+}
+
+.custom-dropdown.has-selection .dropdown-toggle i {
+    color: #fff;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    min-width: 160px;
+    z-index: 1000;
+    padding: 8px;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.custom-dropdown.open .dropdown-menu {
+    display: flex;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.dropdown-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item input[type="checkbox"] {
+    accent-color: var(--quali-blue);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }
 
 /* 2행: 필터 버튼들 */

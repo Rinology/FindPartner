@@ -57,62 +57,69 @@
         <aside class="list-panel">
 
             <div class="control-area" id="controlArea">
-                <!-- 1단: 검색창 -->
-                <div class="search-input-row">
-                    <!-- [수정] autocomplete="off" 속성 추가하여 브라우저 자동완성 차단 -->
-                    <input type="text" id="searchInput" placeholder="지역명 또는 매장명 입력" autocomplete="off">
-                    <button class="btn-clear-search" id="clearSearchBtn"><i class="fa-solid fa-circle-xmark"></i></button>
-                    <button class="search-btn" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-
-                <!-- [신규] 지도 제어 버튼 통합 (핀 묶기, 내 위치, 다크모드) -->
-                <div class="map-controls-row">
-                    <button id="btnCluster" class="control-btn active">
-                        <i class="fa-solid fa-layer-group"></i> 핀 묶어보기
-                    </button>
-                    <button id="btnMyLocation" class="control-btn">
-                        <i class="fa-solid fa-location-crosshairs"></i> 내 위치
-                    </button>
-                    <button id="btnDarkMode" class="control-btn">
-                        <i class="fa-solid fa-moon"></i> 다크모드
-                    </button>
+                <!-- [리팩토링] 검색창과 지도 컨트롤을 한 줄(또는 유연한 배치)로 묶음 -->
+                <div class="search-and-controls-row">
+                    <div class="search-input-wrapper">
+                        <!-- [수정] autocomplete="off" 속성 추가하여 브라우저 자동완성 차단 -->
+                        <input type="text" id="searchInput" placeholder="지역명 또는 매장명 입력" autocomplete="off">
+                        <button class="btn-clear-search" id="clearSearchBtn"><i class="fa-solid fa-circle-xmark"></i></button>
+                        <button class="search-btn" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                    <!-- [신규] 아이콘 형태의 지도 제어 버튼 -->
+                    <div class="map-controls-compact">
+                        <button id="btnCluster" class="icon-control-btn active" title="핀 묶어보기">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </button>
+                        <button id="btnMyLocation" class="icon-control-btn" title="내 위치">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                        </button>
+                        <button id="btnDarkMode" class="icon-control-btn" title="다크모드">
+                            <i class="fa-solid fa-moon"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- 2단: 필터 버튼 모음 -->
                 <div class="filter-buttons-row" id="filterButtonsContainer">
+                    
+                    <!-- [신규] 커스텀 브랜드 드롭다운 -->
+                    <div class="custom-dropdown" id="brandDropdown">
+                        <button class="dropdown-toggle filter-btn" id="brandDropdownToggle">
+                            <i class="fa-solid fa-bicycle"></i>
+                            <span>브랜드 전체</span>
+                            <i class="fa-solid fa-chevron-down chevron-icon"></i>
+                        </button>
+                        <div class="dropdown-menu" id="brandDropdownMenu">
+                            <label class="dropdown-item">
+                                <input type="checkbox" value="퀄리스포츠" class="brand-check">
+                                <span>퀄리스포츠</span>
+                            </label>
+                            <label class="dropdown-item">
+                                <input type="checkbox" value="엑스트론" class="brand-check">
+                                <span>엑스트론</span>
+                            </label>
+                            <label class="dropdown-item">
+                                <input type="checkbox" value="퀄리바이크" class="brand-check">
+                                <span>퀄리바이크</span>
+                            </label>
+                            <label class="dropdown-item">
+                                <input type="checkbox" value="케어엑스" class="brand-check">
+                                <span>케어엑스</span>
+                            </label>
+                        </div>
+                    </div>
+
                     <label class="filter-btn premium-filter">
                         <input type="checkbox" id="premiumCheck">
                         <i class="fa-solid fa-star"></i>
                         <span>우수협력점</span>
                     </label>
 
-                    <!-- [주석처리] A, B 등급 및 시승 필터 비활성화
-                    <label class="filter-btn a-grade-filter">
-                        <input type="checkbox" id="aGradeCheck">
-                        <i class="fa-solid fa-star" style="color:var(--quali-blue);"></i>
-                        <span>A등급</span>
-                    </label>
-
-                    <label class="filter-btn b-grade-filter">
-                        <input type="checkbox" id="bGradeCheck">
-                        <i class="fa-solid fa-star" style="color:var(--quali-green);"></i>
-                        <span>B등급</span>
-                    </label>
-                    -->
-
                     <label class="filter-btn onecare-filter">
                         <input type="checkbox" id="oneCareCheck">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                         <span>원케어</span>
                     </label>
-
-                    <!--
-                    <label class="filter-btn testride-filter">
-                        <input type="checkbox" id="testRideCheck">
-                        <i class="fa-solid fa-motorcycle"></i>
-                        <span>시승</span>
-                    </label>
-                    -->
                 </div>
 
                 <!-- [선택됨 표시] -->

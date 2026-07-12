@@ -33,7 +33,10 @@ export default async function handler(req, res) {
   const referer = req.headers.referer || "";
   const requestOrigin = origin || referer || "";
   
+  const isLocalhost = req.headers.host && (req.headers.host.includes('localhost') || req.headers.host.includes('127.0.0.1'));
+
   const isAllowed = 
+    isLocalhost ||
     requestOrigin.startsWith(allowedOrigin) || 
     requestOrigin.startsWith('http://localhost') || 
     requestOrigin.startsWith('http://127.0.0.1');
@@ -55,11 +58,11 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // [신규] reCAPTCHA v3 검증
+  // [신규] reCAPTCHA v3 검증 (로컬호스트에서는 검증 생략하여 로딩 실패 방지)
   const recaptchaToken = req.headers['x-recaptcha-token'];
   const RECAPTCHA_SECRET_KEY = cleanEnv(process.env.RECAPTCHA_SECRET_KEY);
 
-  if (RECAPTCHA_SECRET_KEY && recaptchaToken) {
+  if (!isLocalhost && RECAPTCHA_SECRET_KEY && recaptchaToken) {
     try {
       const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
         method: 'POST',
@@ -77,8 +80,8 @@ export default async function handler(req, res) {
     } catch (err) {
       console.error("reCAPTCHA 검증 중 오류:", err.message);
     }
-  } else if (RECAPTCHA_SECRET_KEY && !recaptchaToken) {
-    // 시크릿 키는 설정되어 있는데 토큰이 없는 경우 차단
+  } else if (!isLocalhost && RECAPTCHA_SECRET_KEY && !recaptchaToken) {
+    // 시크릿 키는 설정되어 있는데 토큰이 없는 경우 차단 (로컬 예외)
     return res.status(403).json({ error: "Forbidden: reCAPTCHA 토큰이 필요합니다." });
   }
 

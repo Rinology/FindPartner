@@ -137,6 +137,24 @@ function setupEventListeners() {
     document.getElementById("mobileModalOverlay")?.addEventListener("click", closeMobileModal);
     document.getElementById("mobileModalContainer")?.addEventListener("click", e => e.stopPropagation());
     document.getElementById("btnCloseModal")?.addEventListener("click", closeMobileModal);
+
+    // [신규] 브랜드 드롭다운 토글 로직
+    const brandDropdownToggle = document.getElementById("brandDropdownToggle");
+    const brandDropdown = document.getElementById("brandDropdown");
+
+    if (brandDropdownToggle && brandDropdown) {
+        brandDropdownToggle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            brandDropdown.classList.toggle("open");
+        });
+
+        // 외부 클릭 시 드롭다운 닫기
+        document.addEventListener("click", (e) => {
+            if (!brandDropdown.contains(e.target)) {
+                brandDropdown.classList.remove("open");
+            }
+        });
+    }
 }
 
 // [신규] 설정 파일의 링크를 실제 앨리먼트에 바인딩
@@ -1017,10 +1035,28 @@ function closeMobileModal() {
 function applyFilter() {
     const keyword = document.getElementById("searchInput").value.toUpperCase().trim();
     const showPremiumOnly = document.getElementById("premiumCheck").checked;
-    // const showAGradeOnly = document.getElementById("aGradeCheck").checked;
-    // const showBGradeOnly = document.getElementById("bGradeCheck").checked;
     const showOneCareOnly = document.getElementById("oneCareCheck").checked;
-    // const showTestRideOnly = document.getElementById("testRideCheck").checked;
+
+    // [신규] 선택된 브랜드 필터 배열 수집
+    const brandChecks = document.querySelectorAll(".brand-check:checked");
+    const selectedBrands = Array.from(brandChecks).map(cb => cb.value);
+
+    // 드롭다운 버튼 텍스트 업데이트 및 활성화 스타일 변경
+    const brandDropdownToggle = document.getElementById("brandDropdownToggle");
+    const brandDropdown = document.getElementById("brandDropdown");
+    if (brandDropdownToggle) {
+        const textSpan = brandDropdownToggle.querySelector("span");
+        if (selectedBrands.length === 0) {
+            textSpan.innerText = "브랜드 전체";
+            brandDropdown.classList.remove("has-selection");
+        } else if (selectedBrands.length === 1) {
+            textSpan.innerText = selectedBrands[0];
+            brandDropdown.classList.add("has-selection");
+        } else {
+            textSpan.innerText = `브랜드 ${selectedBrands.length}개`;
+            brandDropdown.classList.add("has-selection");
+        }
+    }
 
     clearSelection();
 
@@ -1029,10 +1065,30 @@ function applyFilter() {
         if (currentCategory !== 'all' && store.category !== currentCategory) return false;
 
         if (showPremiumOnly && store.grade !== 'S') return false;
-        // if (showAGradeOnly && store.grade !== 'A') return false;
-        // if (showBGradeOnly && store.grade !== 'B') return false;
         if (showOneCareOnly && store.oneCare !== 'O') return false;
-        // if (showTestRideOnly && store.testRide !== 'O') return false;
+
+        // [신규] 브랜드 필터링 적용
+        // 스토어의 브랜드 정보를 배열로 변환
+        let storeBrands = [];
+        if (store.brand && typeof store.brand === 'string') {
+            storeBrands = store.brand.split(',').map(b => b.trim()).filter(b => b !== '');
+        }
+
+        // '부품' 제외 처리 로직 
+        // 매장이 오직 '부품'만 취급하는 경우 노출하지 않음 (유효한 4개 브랜드가 하나도 없으면 노출 제외)
+        const validBrands = ['퀄리스포츠', '엑스트론', '퀄리바이크', '케어엑스'];
+        const hasValidBrand = storeBrands.some(b => validBrands.includes(b));
+        
+        // 유효한 브랜드가 하나도 없는 매장(예: '부품'만 있는 경우)은 리스트에서 제외
+        if (!hasValidBrand && storeBrands.length > 0) {
+            return false;
+        }
+
+        // 선택된 브랜드가 있을 경우 (OR 조건)
+        if (selectedBrands.length > 0) {
+            const hasMatch = selectedBrands.some(selected => storeBrands.includes(selected));
+            if (!hasMatch) return false;
+        }
 
         if (keyword !== "") {
             return (store.name && String(store.name).toUpperCase().includes(keyword)) ||
