@@ -52,6 +52,24 @@ function escapeHTML(str) {
     return String(str).replace(/[&<>"'/]/g, s => charMap[s]);
 }
 
+// [신규] 취급브랜드 뱃지 생성 함수
+function getBrandBadgesHtml(brandStr) {
+    if (!brandStr) return '';
+    const brands = brandStr.split(',').map(b => b.trim()).filter(b => b !== '');
+    let html = '<div class="store-brand-badges">';
+    brands.forEach(b => {
+        let badgeClass = '';
+        if (b === '퀄리스포츠') badgeClass = 'brand-qualisports';
+        else if (b === '엑스트론') badgeClass = 'brand-xtron';
+        else if (b === '퀄리바이크') badgeClass = 'brand-qualibike';
+        else if (b === '케어엑스') badgeClass = 'brand-carex';
+        else return; // '부품' 등 매칭되지 않는 텍스트 무시
+        html += `<span class="brand-badge ${badgeClass}">${b}</span>`;
+    });
+    html += '</div>';
+    return html;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     // [보안] 우클릭, 드래그 등 방지
     document.addEventListener('contextmenu', e => e.preventDefault());
@@ -122,7 +140,8 @@ function setupEventListeners() {
 
     document.getElementById("btnCluster")?.addEventListener("click", () => { toggleClustering(); mapMenuPanel?.classList.remove("open"); });
     document.getElementById("btnMyLocation")?.addEventListener("click", () => { toggleMyLocation(); mapMenuPanel?.classList.remove("open"); });
-    document.getElementById("btnDarkMode")?.addEventListener("click", () => { toggleDarkMode(); mapMenuPanel?.classList.remove("open"); });
+    // 다크모드는 주석처리하여 사용하지 않음
+    // document.getElementById("btnDarkMode")?.addEventListener("click", () => { toggleDarkMode(); mapMenuPanel?.classList.remove("open"); });
 
     // 2단: 필터 버튼 (이벤트 위임)
     const filterContainer = document.getElementById("filterButtonsContainer");
@@ -431,6 +450,10 @@ function updateMarkers(stores) {
                 </a>
             `;
 
+            // [신규] 취급브랜드 뱃지
+            const brandVal = store.brand || store.brands;
+            const brandBadgesHtml = getBrandBadgesHtml(brandVal);
+
             // [신규] 시승 안내 문구
             const testRideGuideHtml = `
                 <div class="test-ride-guide">
@@ -448,6 +471,9 @@ function updateMarkers(stores) {
                         ${badgeHtml}
                         <h4 class="${titleClass}">${escapeHTML(store.name)}</h4>
                         ${branchHtml}
+                        <div style="margin-top: 6px;">
+                            ${brandBadgesHtml}
+                        </div>
                     </div>
                     <div class="map-popup-body popup-mobile-hide">
                         <div class="map-popup-row">
@@ -599,6 +625,8 @@ function toggleClustering() {
 }
 
 // [신규 기능] 다크 모드 토글
+// [신규 기능] 다크 모드 토글 (주석처리하여 비사용)
+/*
 function toggleDarkMode() {
     const body = document.body;
     body.classList.toggle('dark-mode');
@@ -619,6 +647,7 @@ function toggleDarkMode() {
         }
     }
 }
+*/
 
 // [신규 기능] 내 위치 토글 (Toggle)
 function toggleMyLocation() {
@@ -764,12 +793,17 @@ function renderList(data) {
             locationIcon = pos ? '<i class="fa-solid fa-location-dot" style="color:#e03131;"></i>' : '<i class="fa-solid fa-location-dot"></i>';
         }
 
+        // [신규] 취급브랜드 뱃지
+        const brandVal = store.brand || store.brands;
+        const brandBadgesHtml = getBrandBadgesHtml(brandVal);
+
         card.innerHTML = DOMPurify.sanitize(`
             <div class="card-header">
                 <h3 class="store-name">${escapeHTML(store.name)}</h3>
             </div>
             <div class="card-body">
                 ${branchHtml}
+                ${brandBadgesHtml}
                 <div class="info-row">
                     ${locationIcon}
                     <div>${escapeHTML(store.address)}</div>
@@ -973,6 +1007,10 @@ function showMobileModal(store) {
         </div>
     `;
 
+    // [신규] 취급브랜드 뱃지
+    const brandVal = store.brand || store.brands;
+    const brandBadgesHtml = getBrandBadgesHtml(brandVal);
+
     // 모바일 모달은 모든 정보 표시
     // 프리미엄일 경우 커스텀 클래스 부착 (css/style.css 에서 스타일 제어)
     const headerClass = isPremium ? 'map-popup-header premium-popup-header' : 'map-popup-header';
@@ -985,6 +1023,9 @@ function showMobileModal(store) {
                 ${badgeHtml}
                 <h4 class="${titleClass}" style="font-size:22px;">${escapeHTML(store.name)}</h4>
                 ${branchHtml}
+                <div style="margin-top: 8px; display: flex; justify-content: center;">
+                    ${brandBadgesHtml}
+                </div>
             </div>
             <div class="map-popup-body" style="font-size:15px; margin: 20px 0; display: flex; flex-direction: column; align-items: center;">
                 <div style="width: 100%; max-width: 280px;">

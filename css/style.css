@@ -494,12 +494,74 @@ body.dark-mode .brand-logo .logo-dark {
 /* 신규 컴팩트 지도 제어 버튼 영역 (지도 플로팅) */
 .map-controls-compact {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 92px; /* Leaflet 줌 컨트롤 바로 아래에 배치 (웹버전 기준) */
+    left: 12px;
+    right: auto;
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
+}
+
+.map-controls-compact .map-menu-panel {
+    left: 0;
+    right: auto;
+}
+
+@media (max-width: 900px) {
+    .map-controls-compact {
+        top: 12px;
+        right: 12px;
+        left: auto;
+        align-items: flex-end;
+    }
+    .map-controls-compact .map-menu-panel {
+        left: auto;
+        right: 0;
+    }
+}
+
+/* 브랜드 뱃지 공통 스타일 */
+.store-brand-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+    justify-content: flex-start;
+}
+
+.brand-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* 퀄리스포츠 - 파란색 */
+.brand-badge.brand-qualisports {
+    background-color: var(--quali-blue);
+    color: #ffffff;
+}
+
+/* 엑스트론 - 검정색배경 & 흰색글씨 & 테두리 */
+.brand-badge.brand-xtron {
+    background-color: var(--quali-dark);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+/* 퀄리바이크 - 녹색 */
+.brand-badge.brand-qualibike {
+    background-color: var(--quali-green);
+    color: #ffffff;
+}
+
+/* 케어엑스 - 빨간색 */
+.brand-badge.brand-carex {
+    background-color: #ff3b30;
+    color: #ffffff;
 }
 
 /* 콤팩트 아이콘 버튼 스타일 */
