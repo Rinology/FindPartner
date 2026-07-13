@@ -95,15 +95,34 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function setupEventListeners() {
-    // 1단: 검색창
-    document.getElementById("searchInput")?.addEventListener("input", () => { toggleClearBtn(); filterData(); });
-    document.getElementById("clearSearchBtn")?.addEventListener("click", clearSearch);
-    document.getElementById("searchBtn")?.addEventListener("click", filterData);
+    // 1단: 검색창 (엔터키로 검색)
+    document.getElementById("searchInput")?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            filterData();
+        }
+    });
 
-    // 지도 제어 버튼
-    document.getElementById("btnCluster")?.addEventListener("click", toggleClustering);
-    document.getElementById("btnMyLocation")?.addEventListener("click", toggleMyLocation);
-    document.getElementById("btnDarkMode")?.addEventListener("click", toggleDarkMode);
+    // 지도 퀵 메뉴 (기존 지도 제어 버튼 통합)
+    const btnMapMenu = document.getElementById("btnMapMenu");
+    const mapMenuPanel = document.getElementById("mapMenuPanel");
+
+    if (btnMapMenu && mapMenuPanel) {
+        btnMapMenu.addEventListener("click", (e) => {
+            e.stopPropagation();
+            mapMenuPanel.classList.toggle("open");
+        });
+        
+        // 외부 클릭 시 닫기
+        document.addEventListener("click", (e) => {
+            if (!mapMenuPanel.contains(e.target) && e.target !== btnMapMenu && !btnMapMenu.contains(e.target)) {
+                mapMenuPanel.classList.remove("open");
+            }
+        });
+    }
+
+    document.getElementById("btnCluster")?.addEventListener("click", () => { toggleClustering(); mapMenuPanel?.classList.remove("open"); });
+    document.getElementById("btnMyLocation")?.addEventListener("click", () => { toggleMyLocation(); mapMenuPanel?.classList.remove("open"); });
+    document.getElementById("btnDarkMode")?.addEventListener("click", () => { toggleDarkMode(); mapMenuPanel?.classList.remove("open"); });
 
     // 2단: 필터 버튼 (이벤트 위임)
     const filterContainer = document.getElementById("filterButtonsContainer");
@@ -113,6 +132,27 @@ function setupEventListeners() {
                 updateFilter(e.target);
                 filterData();
             }
+        });
+    }
+
+    // 브랜드 체크박스 이벤트 및 선택 해제
+    const brandDropdownMenu = document.getElementById("brandDropdownMenu");
+    if (brandDropdownMenu) {
+        brandDropdownMenu.addEventListener("change", (e) => {
+            if (e.target.classList.contains("brand-check")) {
+                filterData();
+            }
+        });
+    }
+
+    const btnClearBrands = document.getElementById("btnClearBrands");
+    if (btnClearBrands) {
+        btnClearBrands.addEventListener("click", (e) => {
+            e.stopPropagation();
+            document.querySelectorAll(".brand-check").forEach(cb => {
+                cb.checked = false;
+            });
+            filterData();
         });
     }
 
@@ -816,22 +856,7 @@ function setCategory(cat, el) {
     applyFilter();
 }
 
-function toggleClearBtn() {
-    const input = document.getElementById("searchInput");
-    const clearBtn = document.getElementById("clearSearchBtn");
-    if (input.value.length > 0) clearBtn.classList.add("show");
-    else clearBtn.classList.remove("show");
-}
-
-function clearSearch() {
-    const input = document.getElementById("searchInput");
-    input.value = "";
-    toggleClearBtn();
-    filterData();
-    input.focus();
-}
-
-function filterData() { toggleClearBtn(); applyFilter(); }
+function filterData() { applyFilter(); }
 
 // 마커 및 팝업 포커싱 (모바일/데스크탑 모두 지도 정중앙에 팝업)
 function focusMarker(marker, pos, storeData) {
@@ -1070,8 +1095,9 @@ function applyFilter() {
         // [신규] 브랜드 필터링 적용
         // 스토어의 브랜드 정보를 배열로 변환
         let storeBrands = [];
-        if (store.brand && typeof store.brand === 'string') {
-            storeBrands = store.brand.split(',').map(b => b.trim()).filter(b => b !== '');
+        const brandVal = store.brand || store.brands;
+        if (brandVal && typeof brandVal === 'string') {
+            storeBrands = brandVal.split(',').map(b => b.trim()).filter(b => b !== '');
         }
 
         // '부품' 제외 처리 로직 
