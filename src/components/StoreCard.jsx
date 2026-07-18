@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStoreContext } from '../StoreContext';
-import { getStoreLatLng } from '../utils/mapUtils';
+import { getStoreLatLng, getDisplayBrands, getBrandBadgeClass } from '../utils/mapUtils';
 
 export default function StoreCard({ store }) {
     const { setSelectedStore, isMobile, setIsBottomSheetExpanded } = useStoreContext();
@@ -29,25 +29,16 @@ export default function StoreCard({ store }) {
     const isOneCare = store.oneCare === 'O';
 
     // Normalize brands
-    const rawBrands = (store.brand || store.brands || '').split(',').map(b => b.trim()).filter(Boolean);
-    let displayBrands = [];
-    if (rawBrands.includes('퀄리스포츠') || rawBrands.includes('엑스트론')) {
-        displayBrands.push('퀄리스포츠&엑스트론');
-    }
-    rawBrands.forEach(b => {
-        if (b !== '퀄리스포츠' && b !== '엑스트론' && !displayBrands.includes(b)) {
-            displayBrands.push(b);
-        }
-    });
+    const displayBrands = getDisplayBrands(store);
 
     return (
         <div 
             onClick={handleClick}
-            className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md hover:border-blue-200 transition-all group"
+            className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 cursor-pointer hover:shadow-lg hover:-translate-y-1 hover:border-blue-200 transition-all duration-200 group"
         >
             <div className="flex justify-between items-start mb-2">
                 <div className="flex flex-col">
-                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-lg font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors">
                         {store.name}
                     </h3>
                     {store.branch && (
@@ -56,27 +47,22 @@ export default function StoreCard({ store }) {
                 </div>
             </div>
             
-            <p className="text-sm text-gray-600 mb-3 flex items-start gap-2">
-                <i className="fa-solid fa-location-dot mt-1 text-gray-400"></i>
+            <p className="text-sm text-gray-600 mb-1 flex items-start gap-2">
+                <i className="fa-solid fa-location-dot mt-1 text-gray-400 w-3 text-center"></i>
                 <span>{store.address}</span>
             </p>
 
+            <p className="text-sm text-gray-600 mb-3 flex items-start gap-2">
+                <i className="fa-regular fa-calendar-xmark mt-1 text-gray-400 w-3 text-center"></i>
+                <span>휴무: {store.closed || '없음'}</span>
+            </p>
+
             <div className="flex flex-wrap gap-2 mb-4">
-                {displayBrands.map((brand, i) => {
-                    let bgClass = "bg-gray-100 text-gray-600";
-                    if (brand === '퀄리스포츠&엑스트론') {
-                        bgClass = "bg-gradient-to-br from-[#2f6286] to-[#231f20] text-white border border-white/20 shadow-sm";
-                    } else if (brand === '퀄리바이크') {
-                        bgClass = "bg-[#72bf44] text-white shadow-sm";
-                    } else if (brand === '케어엑스' || brand === '케이엑스') {
-                        bgClass = "bg-[#ff3b30] text-white shadow-sm";
-                    }
-                    return (
-                        <span key={i} className={`px-2.5 py-1 text-[11px] font-bold rounded-md ${bgClass}`}>
-                            {brand}
-                        </span>
-                    );
-                })}
+                {displayBrands.map((brand, i) => (
+                    <span key={i} className={`px-2.5 py-1 text-[11px] font-bold rounded-md ${getBrandBadgeClass(brand)}`}>
+                        {brand}
+                    </span>
+                ))}
             </div>
 
             {/* Badges (Premium, OneCare) moved to bottom before buttons */}

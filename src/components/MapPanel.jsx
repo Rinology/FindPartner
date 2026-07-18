@@ -4,8 +4,17 @@ import { escapeHTML, getMarkerIcon, getStoreLatLng, getPopupHTML } from '../util
 import { CONFIG } from '../config';
 
 export default function MapPanel() {
-    const { filteredData, selectedStore, setSelectedStore, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation } = useStoreContext();
+    const { filteredData, selectedStore, setSelectedStore, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation, selectedBrands, setSelectedBrands, isPremiumOnly, setIsPremiumOnly, isOneCareOnly, setIsOneCareOnly } = useStoreContext();
     const [isClustered, setIsClustered] = React.useState(true);
+    const [isBrandDropdownOpen, setIsBrandDropdownOpen] = React.useState(false);
+
+    const toggleBrand = (brand) => {
+        if (selectedBrands.includes(brand)) {
+            setSelectedBrands(selectedBrands.filter(b => b !== brand));
+        } else {
+            setSelectedBrands([...selectedBrands, brand]);
+        }
+    };
     const mapRef = useRef(null);
     const mapInstance = useRef(null);
     const markerClusterGroup = useRef(null);
@@ -37,9 +46,8 @@ export default function MapPanel() {
                 maxZoom: 19
             }).addTo(map);
 
-            // Zoom control
-            L.control.zoom({ position: 'topleft' }).addTo(map);
-
+            // Map controls are managed via React UI, no native zoom control needed
+            
             // Cluster Group
             markerClusterGroup.current = L.markerClusterGroup({
                 chunkedLoading: true,
@@ -49,13 +57,10 @@ export default function MapPanel() {
                 zoomToBoundsOnClick: true,
                 iconCreateFunction: function (cluster) {
                     var childCount = cluster.getChildCount();
-                    var c = ' marker-cluster-';
-                    if (childCount < 10) c += 'small';
-                    else if (childCount < 30) c += 'medium';
-                    else c += 'large';
+                    // 브랜드 남색 계열로 통일
                     return new L.DivIcon({
-                        html: '<div><span>' + childCount + '</span></div>',
-                        className: 'marker-cluster' + c,
+                        html: `<div style="background-color: rgba(47, 98, 134, 0.4);"><span style="background-color: rgba(47, 98, 134, 0.9); color: white;">${childCount}</span></div>`,
+                        className: 'marker-cluster',
                         iconSize: new L.Point(40, 40)
                     });
                 }
@@ -81,24 +86,20 @@ export default function MapPanel() {
             const pos = getStoreLatLng(store);
             if (pos) {
                 const grade = store.grade;
-                const customIcon = getMarkerIcon(store.category, grade);
+                const isSelected = selectedStore && selectedStore.name === store.name;
+                const customIcon = getMarkerIcon(store.category, grade, isSelected);
                 const marker = L.marker([pos.lat, pos.lng], { icon: customIcon });
                 marker.storeData = store;
-                marker.bindPopup(getPopupHTML(store), { offset: [0, -10], className: 'custom-leaflet-popup' });
+                
+                // Tooltip
+                if (!isMobile) {
+                    marker.bindTooltip(store.name, { direction: 'top', offset: [0, -25], className: 'font-bold text-xs shadow-sm rounded' });
+                }
+
                 marker.on('click', () => {
                     setSelectedStore(store);
-                    if (isMobile) {
-                        setIsBottomSheetExpanded(true);
-                    }
                     const zoomLvl = isMobile ? 17 : 16;
-                    let newPoint = map.project(pos, zoomLvl);
-                    if (isMobile) {
-                        const mapHeight = map.getSize().y;
-                        newPoint = newPoint.add([0, -mapHeight * 0.25]);
-                    } else {
-                        newPoint = newPoint.add([0, 130]);
-                    }
-                    map.setView(map.unproject(newPoint, zoomLvl), zoomLvl, { animate: true, duration: 0.5 });
+                    map.setView(pos, zoomLvl, { animate: true, duration: 0.5 });
                 });
 
                 newMarkers.push(marker);
@@ -124,19 +125,22 @@ export default function MapPanel() {
 
     }, [filteredData, isMobile, isClustered, setSelectedStore, setIsBottomSheetExpanded]);
 
-    // Open popup when selectedStore changes externally (e.g. from list)
+    // Center map when selectedStore changes externally (e.g. from list)
     useEffect(() => {
         if (!mapInstance.current || !selectedStore) return;
-        const targetMarker = markersRef.current.find(m => m.storeData === selectedStore);
+        const targetMarker = markersRef.current.find(m => m.storeData.name === selectedStore.name);
         if (targetMarker) {
             if (isClustered && markerClusterGroup.current && mapInstance.current.hasLayer(markerClusterGroup.current)) {
-                markerClusterGroup.current.zoomToShowLayer(targetMarker, () => targetMarker.openPopup());
+                markerClusterGroup.current.zoomToShowLayer(targetMarker, () => {
+                    const zoomLvl = mapInstance.current.getZoom();
+                    mapInstance.current.setView(targetMarker.getLatLng(), zoomLvl, { animate: true, duration: 0.5 });
+                });
             } else {
-                targetMarker.openPopup();
-                // Optionally center map if needed, but MapPanel usually already centers on click
+                const zoomLvl = mapInstance.current.getZoom();
+                mapInstance.current.setView(targetMarker.getLatLng(), zoomLvl, { animate: true, duration: 0.5 });
             }
         }
-    }, [selectedStore, isClustered]);
+    }, [selectedStore]);
 
     const handleMyLocation = () => {
         if (!mapInstance.current) return;
@@ -154,24 +158,87 @@ export default function MapPanel() {
     };
 
     return (
-        <div className="absolute inset-0 z-0">
+        <div className="flex-1 relative w-full h-full z-0">
             <div ref={mapRef} className="w-full h-full z-0" style={{ touchAction: 'none' }}></div>
             
-            {/* Map Controls (Positioned exactly below the Top-Left Zoom Controls) */}
-            <div className="absolute left-[10px] top-[90px] z-[1000] flex flex-col gap-2">
+            <div className={`absolute left-4 top-4 z-[1000] flex flex-wrap gap-2 transition-opacity duration-300 ${selectedStore ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                {/* Brand Filter */}
+                <div className="relative">
+                    <button 
+                        onClick={() => setIsBrandDropdownOpen(!isBrandDropdownOpen)}
+                        className={`flex items-center gap-1.5 px-3 py-2 bg-white rounded-full text-sm font-extrabold shadow-md transition-all ${selectedBrands.length > 0 ? 'text-blue-700 border-2 border-blue-500' : 'text-gray-800 border border-gray-200 hover:bg-gray-50'}`}
+                    >
+                        <i className="fa-solid fa-bicycle"></i>
+                        <span className="whitespace-nowrap">{selectedBrands.length > 0 ? `브랜드 (${selectedBrands.length})` : '브랜드'}</span>
+                        <i className={`fa-solid fa-chevron-down text-[10px] transition-transform ${isBrandDropdownOpen ? 'rotate-180' : ''}`}></i>
+                    </button>
+                    {isBrandDropdownOpen && (
+                        <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                            <button 
+                                onClick={() => setSelectedBrands([])}
+                                className="w-full text-left px-4 py-2 text-xs text-red-500 font-medium hover:bg-red-50 border-b border-gray-50"
+                            >
+                                선택 해제
+                            </button>
+                            {['퀄리스포츠&엑스트론', '퀄리바이크', '케어엑스'].map(brand => (
+                                <label key={brand} className="flex items-center gap-2 px-4 py-2.5 cursor-pointer hover:bg-gray-50 transition-colors">
+                                    <input 
+                                        type="checkbox" 
+                                        checked={selectedBrands.includes(brand)}
+                                        onChange={() => toggleBrand(brand)}
+                                        className="w-4 h-4 text-blue-600 rounded border-gray-300"
+                                    />
+                                    <span className="text-sm font-semibold text-gray-800 whitespace-nowrap">{brand}</span>
+                                </label>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Premium Filter */}
+                <button 
+                    onClick={() => setIsPremiumOnly(!isPremiumOnly)}
+                    className={`flex items-center gap-1.5 px-3 py-2 bg-white rounded-full text-sm font-extrabold shadow-md transition-all ${isPremiumOnly ? 'text-amber-600 border-2 border-amber-500' : 'text-gray-800 border border-gray-200 hover:bg-gray-50'}`}
+                >
+                    <i className="fa-solid fa-star"></i>
+                    <span>우수협력점</span>
+                </button>
+
+                {/* OneCare Filter */}
+                <button 
+                    onClick={() => setIsOneCareOnly(!isOneCareOnly)}
+                    className={`flex items-center gap-1.5 px-3 py-2 bg-white rounded-full text-sm font-extrabold shadow-md transition-all ${isOneCareOnly ? 'text-blue-700 border-2 border-blue-500' : 'text-gray-800 border border-gray-200 hover:bg-gray-50'}`}
+                >
+                    <i className="fa-solid fa-screwdriver-wrench"></i>
+                    <span>원케어</span>
+                </button>
+            </div>
+
+            {/* Map Controls (Zoom, Location, Cluster) */}
+            <div className={`absolute z-[1000] flex flex-col gap-2 transition-transform duration-300 ${isMobile ? 'top-4 right-4' : 'bottom-6 right-4'} ${isMobile && selectedStore ? '-translate-y-20 opacity-0 pointer-events-none' : ''}`}>
+                <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
+                    <button onClick={() => mapInstance.current?.zoomIn()} className="w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-50 border-b border-gray-100" title="확대">
+                        <i className="fa-solid fa-plus"></i>
+                    </button>
+                    <button onClick={() => mapInstance.current?.zoomOut()} className="w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-50" title="축소">
+                        <i className="fa-solid fa-minus"></i>
+                    </button>
+                </div>
+                
                 <button 
                     onClick={() => setIsClustered(!isClustered)}
+                    className={`w-10 h-10 rounded-xl shadow-lg border flex items-center justify-center transition-colors ${isClustered ? 'bg-blue-600 border-blue-700 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'}`}
                     title={isClustered ? "핀 풀어보기" : "핀 묶어보기"}
-                    className={`w-[34px] h-[34px] rounded bg-white text-gray-700 shadow-[0_1px_5px_rgba(0,0,0,0.65)] flex items-center justify-center hover:bg-gray-50 transition-colors border-2 border-black/20 ${isClustered ? 'text-blue-600' : ''}`}
                 >
-                    <i className="fa-solid fa-layer-group text-[15px]"></i>
+                    <i className="fa-solid fa-layer-group"></i>
                 </button>
+
                 <button 
                     onClick={handleMyLocation}
+                    className="w-10 h-10 bg-white rounded-xl shadow-lg border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-colors"
                     title="내 위치 찾기"
-                    className="w-[34px] h-[34px] rounded bg-white text-gray-700 shadow-[0_1px_5px_rgba(0,0,0,0.65)] flex items-center justify-center hover:bg-gray-50 transition-colors border-2 border-black/20"
                 >
-                    <i className="fa-solid fa-location-crosshairs text-[16px]"></i>
+                    <i className="fa-solid fa-crosshairs"></i>
                 </button>
             </div>
         </div>

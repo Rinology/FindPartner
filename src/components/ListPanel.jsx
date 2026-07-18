@@ -1,12 +1,16 @@
-﻿import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useStoreContext } from '../StoreContext';
 import StoreCard from './StoreCard';
 import ControlArea from './ControlArea';
+import StoreDetail from './StoreDetail';
+import BrandInfo from './BrandInfo';
 
 export default function ListPanel() {
     const { 
         filteredData, loading, error, 
         isMobile, 
+        selectedStore,
+        searchQuery, selectedBrands, selectedRegion, isPremiumOnly, isOneCareOnly, userLocation,
         isBottomSheetExpanded, setIsBottomSheetExpanded 
     } = useStoreContext();
     
@@ -66,19 +70,34 @@ export default function ListPanel() {
         };
     }, [isMobile, setIsBottomSheetExpanded]);
 
+    const hasFilters = searchQuery !== "" || selectedBrands.length > 0 || selectedRegion !== 'all' || isPremiumOnly || isOneCareOnly;
+    const showList = hasFilters || userLocation;
+
     if (!isMobile) {
         // Desktop View: Left Sidebar
         return (
             <aside className="w-96 flex flex-col bg-white shadow-xl z-10 shrink-0 h-full border-r border-gray-200">
-                <ControlArea />
-                <div className="flex-1 overflow-y-auto bg-gray-50 p-4 space-y-4 list-content-scroll">
-                    {loading && <div className="text-center py-10 text-gray-500"><i className="fa-solid fa-spinner fa-spin fa-2x mb-4"></i><br/>데이터를 불러오는 중입니다...</div>}
-                    {error && <div className="text-center py-10 text-red-500">데이터 로드 실패</div>}
-                    {!loading && !error && filteredData.length === 0 && <div className="text-center py-10 text-gray-500">조건에 맞는 대리점이 없습니다.</div>}
-                    {!loading && !error && filteredData.map((store, i) => (
-                        <StoreCard key={i} store={store} />
-                    ))}
-                </div>
+                {selectedStore ? (
+                    <StoreDetail />
+                ) : (
+                    <>
+                        <ControlArea />
+                        <div className="flex-1 overflow-y-auto bg-gray-50 p-4 space-y-4 list-content-scroll">
+                            {loading && <div className="text-center py-10 text-gray-500"><i className="fa-solid fa-spinner fa-spin fa-2x mb-4"></i><br/>데이터를 불러오는 중입니다...</div>}
+                            {error && <div className="text-center py-10 text-red-500">데이터 로드 실패</div>}
+                            
+                            {!loading && !error && showList && filteredData.length === 0 && <div className="text-center py-10 text-gray-500">조건에 맞는 대리점이 없습니다.</div>}
+                            
+                            {!loading && !error && showList && filteredData.map((store, i) => (
+                                <StoreCard key={i} store={store} />
+                            ))}
+
+                            {!loading && !error && !showList && (
+                                <BrandInfo />
+                            )}
+                        </div>
+                    </>
+                )}
             </aside>
         );
     }
@@ -97,10 +116,13 @@ export default function ListPanel() {
                 <div className="flex-1 overflow-y-auto bg-gray-50 p-4 space-y-4 list-content-scroll">
                     {loading && <div className="text-center py-10 text-gray-500"><i className="fa-solid fa-spinner fa-spin fa-2x mb-4"></i><br/>데이터를 불러오는 중입니다...</div>}
                     {error && <div className="text-center py-10 text-red-500">데이터 로드 실패</div>}
-                    {!loading && !error && filteredData.length === 0 && <div className="text-center py-10 text-gray-500">조건에 맞는 대리점이 없습니다.</div>}
-                    {!loading && !error && filteredData.map((store, i) => (
+                    {!loading && !error && showList && filteredData.length === 0 && <div className="text-center py-10 text-gray-500">조건에 맞는 대리점이 없습니다.</div>}
+                    {!loading && !error && showList && filteredData.map((store, i) => (
                         <StoreCard key={i} store={store} />
                     ))}
+                    {!loading && !error && !showList && (
+                        <BrandInfo />
+                    )}
                 </div>
             </div>
         </aside>

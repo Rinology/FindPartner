@@ -10,7 +10,7 @@ export default function Header() {
             <div className="flex items-center justify-between px-4 py-3 md:px-6 md:py-4">
                 {/* Left Side: Title, Subtitle, and Action Buttons */}
                 <div className="flex flex-col gap-1.5">
-                    <div className="text-lg md:text-xl font-bold tracking-tight text-gray-900">전국 대리점 안내</div>
+                    <div className="text-lg md:text-xl font-extrabold tracking-tight text-gray-900">전국 대리점 안내</div>
                     <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
                         <div className="text-xs md:text-sm text-gray-500">가까운 공식 대리점을 검색해보세요</div>
                         {!isMobile && (
