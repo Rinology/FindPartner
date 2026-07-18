@@ -25,6 +25,17 @@ const CONSTANTS = {
     POPUP_OFFSET_DESKTOP: [0, 130]
 };
 
+// [신규] Leaflet MarkerCluster와의 애니메이션 충돌로 인한 Uncaught TypeError 방지용 안전한 리사이즈 함수
+function safeInvalidateSize() {
+    if (!map) return;
+    try {
+        map.invalidateSize({ pan: false });
+    } catch(e) {
+        console.warn("Map resize safely interrupted", e);
+    }
+}
+
+// 지도 데이터 객체
 let map;
 let markers = []; 
 let markerClusterGroup;
@@ -824,7 +835,21 @@ function renderList(data) {
                 const listPanel = document.getElementById('listPanel');
                 if (listPanel) {
                     listPanel.classList.remove('expanded');
-                    if (map) setTimeout(() => map.invalidateSize(), 300); // 레이아웃 변경 후 맵 리사이징
+                    // 모바일에서는 패널 애니메이션(300ms) 완료 후 리사이징 및 지도 포커스를 수행 (Leaflet 애니메이션 충돌 방지)
+                    setTimeout(() => {
+                        safeInvalidateSize();
+                        showSelectedStore(store.name);
+                        if (map && targetPos) {
+                            if (isClusteringEnabled && markerClusterGroup) {
+                                markerClusterGroup.zoomToShowLayer(store.markerRef, () => {
+                                    focusMarker(store.markerRef, targetPos, store);
+                                });
+                            } else {
+                                focusMarker(store.markerRef, targetPos, store);
+                            }
+                        }
+                    }, 350);
+                    return; // 타이머 내부에서 실행되므로 여기서 종료
                 }
             }
 
@@ -963,13 +988,13 @@ function setupBottomSheet() {
             // 열려있을 때 닫기
             if (deltaY > threshold) {
                 listPanel.classList.remove('expanded');
-                if (map) setTimeout(() => map.invalidateSize(), 300);
+                if (map) setTimeout(() => safeInvalidateSize(), 300);
             }
         } else {
             // 닫혀있을 때 열기
             if (deltaY < -threshold) {
                 listPanel.classList.add('expanded');
-                if (map) setTimeout(() => map.invalidateSize(), 300);
+                if (map) setTimeout(() => safeInvalidateSize(), 300);
             }
         }
         
