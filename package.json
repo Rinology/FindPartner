@@ -6,7 +6,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start-dev": "vercel dev"
+    "start-dev": "npx vercel dev"
   },
   "dependencies": {
     "@upstash/ratelimit": "^1.0.1",
