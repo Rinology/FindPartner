@@ -178,12 +178,13 @@ export function getPopupHTML(store) {
     });
 
     let badges = '';
-    if (isPremium) badges += `<span class="inline-flex items-center gap-1 bg-amber-100 text-amber-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1"><i class="fa-solid fa-star text-[9px]"></i> 우수</span>`;
-    if (isOneCare) badges += `<span class="inline-flex items-center gap-1 bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1"><i class="fa-solid fa-screwdriver-wrench text-[9px]"></i> 원케어</span>`;
+    if (isPremium) badges += `<span title="본사가 인증한 최우수 서비스 매장" class="inline-flex items-center gap-1 bg-amber-100 text-amber-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1 cursor-help"><i class="fa-solid fa-star text-[9px]"></i> 우수</span>`;
+    if (isOneCare) badges += `<span title="원스톱 A/S 및 케어 서비스 제공" class="inline-flex items-center gap-1 bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1 cursor-help"><i class="fa-solid fa-screwdriver-wrench text-[9px]"></i> 원케어</span>`;
     
     let brandTags = '';
     displayBrands.forEach(brand => {
         let bgClass = "bg-gray-100 text-gray-600";
+        let brandTitle = brand + " 취급 대리점";
         if (brand === '퀄리스포츠&엑스트론') {
             bgClass = "bg-gradient-to-br from-[#2f6286] to-[#231f20] text-white border border-white/20 shadow-sm";
         } else if (brand === '퀄리바이크') {
@@ -191,7 +192,7 @@ export function getPopupHTML(store) {
         } else if (brand === '케어엑스' || brand === '케이엑스') {
             bgClass = "bg-[#ff3b30] text-white shadow-sm";
         }
-        brandTags += `<span class="inline-block ${bgClass} text-[10px] px-1.5 py-0.5 rounded mr-1 mb-1 font-bold">${brand}</span>`;
+        brandTags += `<span title="${brandTitle}" class="inline-block ${bgClass} text-[10px] px-1.5 py-0.5 rounded mr-1 mb-1 font-bold cursor-help">${brand}</span>`;
     });
 
     const storeName = store.name || '';

@@ -59,7 +59,7 @@ export default function StoreCard({ store }) {
 
             <div className="flex flex-wrap gap-2 mb-4">
                 {displayBrands.map((brand, i) => (
-                    <span key={i} className={`px-2.5 py-1 text-[11px] font-bold rounded-md ${getBrandBadgeClass(brand)}`}>
+                    <span key={i} title={`${brand} 취급 대리점`} className={`px-2.5 py-1 text-[11px] font-bold rounded-md cursor-help ${getBrandBadgeClass(brand)}`}>
                         {brand}
                     </span>
                 ))}
@@ -69,12 +69,12 @@ export default function StoreCard({ store }) {
             {(isPremium || isOneCare) && (
                 <div className="flex gap-2 mb-3">
                     {isPremium && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold bg-amber-100 text-amber-700">
+                        <span title="본사가 인증한 최우수 서비스 매장" className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold bg-amber-100 text-amber-700 cursor-help">
                             <i className="fa-solid fa-star text-[10px]"></i> 우수협력점
                         </span>
                     )}
                     {isOneCare && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold bg-blue-100 text-blue-700">
+                        <span title="원스톱 A/S 및 케어 서비스 제공" className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold bg-blue-100 text-blue-700 cursor-help">
                             <i className="fa-solid fa-screwdriver-wrench text-[10px]"></i> 원케어
                         </span>
                     )}

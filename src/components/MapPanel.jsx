@@ -19,6 +19,7 @@ export default function MapPanel() {
     const mapInstance = useRef(null);
     const markerClusterGroup = useRef(null);
     const markersRef = useRef([]);
+    const userMarkerRef = useRef(null);
 
     useEffect(() => {
         if (!mapInstance.current && window.L) {
@@ -153,6 +154,35 @@ export default function MapPanel() {
         markersRef.current = newMarkers;
 
     }, [filteredData, isMobile, isClustered, setSelectedStore, setIsBottomSheetExpanded]);
+
+    // Draw user location marker
+    useEffect(() => {
+        if (!mapInstance.current || !window.L) return;
+        const L = window.L;
+        const map = mapInstance.current;
+
+        // Remove existing user marker if it exists
+        if (userMarkerRef.current) {
+            map.removeLayer(userMarkerRef.current);
+            userMarkerRef.current = null;
+        }
+
+        if (userLocation) {
+            const userIcon = L.divIcon({
+                className: 'user-location-marker relative flex items-center justify-center',
+                html: `
+                    <div class="absolute w-12 h-12 bg-blue-500 rounded-full opacity-30 animate-ping"></div>
+                    <div class="relative z-10 w-6 h-6 bg-blue-600 border-2 border-white rounded-full shadow-lg flex items-center justify-center">
+                        <div class="w-2 h-2 bg-white rounded-full"></div>
+                    </div>
+                `,
+                iconSize: [48, 48],
+                iconAnchor: [24, 24]
+            });
+
+            userMarkerRef.current = L.marker([userLocation.lat, userLocation.lng], { icon: userIcon, zIndexOffset: 1000 }).addTo(map);
+        }
+    }, [userLocation]);
 
     // Focus marker when selectedStore changes
     useEffect(() => {
