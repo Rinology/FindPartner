@@ -106,11 +106,8 @@ export function getBrandsFromStore(store) {
 export function getDisplayBrands(store) {
     const rawBrands = getBrandsFromStore(store);
     let displayBrands = [];
-    if (rawBrands.includes('퀄리스포츠') || rawBrands.includes('엑스트론')) {
-        displayBrands.push('퀄리스포츠&엑스트론');
-    }
     rawBrands.forEach(b => {
-        if (b !== '퀄리스포츠' && b !== '엑스트론' && !displayBrands.includes(b)) {
+        if (!displayBrands.includes(b)) {
             displayBrands.push(b);
         }
     });
@@ -119,8 +116,10 @@ export function getDisplayBrands(store) {
 
 export function getBrandBadgeClass(brand) {
     let bgClass = "bg-gray-100 text-gray-600";
-    if (brand === '퀄리스포츠&엑스트론') {
-        bgClass = "bg-gradient-to-br from-[#2f6286] to-[#231f20] text-white border border-white/20 shadow-sm";
+    if (brand === '퀄리스포츠') {
+        bgClass = "bg-[#2f6286] text-white shadow-sm";
+    } else if (brand === '엑스트론') {
+        bgClass = "bg-[#231f20] text-white shadow-sm";
     } else if (brand === '퀄리바이크') {
         bgClass = "bg-[#72bf44] text-white shadow-sm";
     } else if (brand === '케어엑스' || brand === '케이엑스') {

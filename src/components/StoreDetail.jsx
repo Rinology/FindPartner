@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStoreContext } from '../StoreContext';
-import { getDisplayBrands, getBrandBadgeClass } from '../utils/mapUtils';
+import { getDisplayBrands, getBrandBadgeClass, openNaverNavi } from '../utils/mapUtils';
 
 export default function StoreDetail() {
     const { selectedStore, setSelectedStore } = useStoreContext();
@@ -120,9 +120,7 @@ export default function StoreDetail() {
                 )}
                 <button 
                     onClick={() => {
-                        if (window.openNaverNavi) {
-                            window.openNaverNavi(selectedStore.lat, selectedStore.lng, selectedStore.name);
-                        }
+                        openNaverNavi(selectedStore.lat, selectedStore.lng, selectedStore.name);
                     }}
                     className="flex-1 flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-colors shadow-md shadow-blue-200"
                 >

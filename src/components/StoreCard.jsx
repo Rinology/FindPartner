@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStoreContext } from '../StoreContext';
-import { getStoreLatLng, getDisplayBrands, getBrandBadgeClass } from '../utils/mapUtils';
+import { getStoreLatLng, getDisplayBrands, getBrandBadgeClass, openNaverNavi } from '../utils/mapUtils';
 
 export default function StoreCard({ store }) {
     const { setSelectedStore, isMobile, setIsBottomSheetExpanded } = useStoreContext();
@@ -90,9 +90,7 @@ export default function StoreCard({ store }) {
                 <button 
                     onClick={(e) => {
                         e.stopPropagation();
-                        const uLat = window.userLocation ? window.userLocation.lat : '';
-                        const uLng = window.userLocation ? window.userLocation.lng : '';
-                        window.open(`https://map.naver.com/index.nhn?slng=${uLng}&slat=${uLat}&stext=&elng=${store.lng}&elat=${store.lat}&pathType=0&showMap=true&etext=${store.name}&menu=route`, '_blank');
+                        openNaverNavi(store.lat, store.lng, store.name);
                     }} 
                     className="flex-1 flex justify-center items-center gap-2 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-semibold transition-colors"
                 >

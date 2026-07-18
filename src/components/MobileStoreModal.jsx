@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useStoreContext } from '../StoreContext';
-import { getBrandsFromStore, getStoreLatLng } from '../utils/mapUtils';
+import { getBrandsFromStore, getStoreLatLng, openNaverNavi } from '../utils/mapUtils';
 
 export default function MobileStoreModal() {
     const { selectedStore, setSelectedStore } = useStoreContext();
@@ -61,9 +61,7 @@ export default function MobileStoreModal() {
     };
 
     const handleNavi = () => {
-        if (window.openNaverNavi) {
-            window.openNaverNavi(selectedStore.lat, selectedStore.lng, selectedStore.name);
-        }
+        openNaverNavi(selectedStore.lat, selectedStore.lng, selectedStore.name);
     };
 
     const handleViewMap = () => {

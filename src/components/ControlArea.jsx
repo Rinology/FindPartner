@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useStoreContext } from '../StoreContext';
 
 export default function ControlArea() {
-    const { searchQuery, setSearchQuery, selectedRegion, setSelectedRegion } = useStoreContext();
+    const { searchQuery, setSearchQuery, selectedRegion, setSelectedRegion, resetFilters } = useStoreContext();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -17,8 +17,18 @@ export default function ControlArea() {
     const REGIONS = ['서울', '경기', '인천', '강원', '충북', '충남', '대전', '세종', '경북', '경남', '대구', '울산', '부산', '전북', '전남', '광주', '제주'];
 
     return (
-        <div className="flex flex-col gap-3 p-4 bg-white border-b border-gray-200 shrink-0">
-            <div className="flex gap-2">
+        <div className="bg-white p-4 shrink-0 shadow-sm border-b border-gray-100 flex flex-col gap-3 relative z-50">
+            {/* Top row: Home Button + Region Selector + Search Bar */}
+            <div className="flex gap-2 w-full">
+                {/* Home Button */}
+                <button
+                    onClick={resetFilters}
+                    className="w-[42px] shrink-0 bg-gray-50 border border-gray-200 text-gray-600 rounded-xl flex items-center justify-center hover:bg-gray-100 hover:text-blue-600 transition-colors shadow-sm"
+                    title="초기화 (홈)"
+                >
+                    <i className="fa-solid fa-house"></i>
+                </button>
+
                 {/* Region Dropdown */}
                 <div className="relative flex-shrink-0 w-28">
                     <select

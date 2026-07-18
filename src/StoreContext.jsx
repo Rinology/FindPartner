@@ -76,12 +76,7 @@ export function StoreProvider({ children }) {
             if (selectedBrands.length > 0) {
                 if (!(store.brand || store.brands)) return false;
                 const storeBrands = (store.brand || store.brands).split(',').map(b => b.trim());
-                const hasMatch = selectedBrands.some(brand => {
-                    if (brand === '퀄리스포츠&엑스트론') {
-                        return storeBrands.includes('퀄리스포츠') || storeBrands.includes('엑스트론');
-                    }
-                    return storeBrands.includes(brand);
-                });
+                const hasMatch = selectedBrands.some(brand => storeBrands.includes(brand));
                 if (!hasMatch) return false;
             }
 
@@ -95,6 +90,15 @@ export function StoreProvider({ children }) {
         });
     }, [allData, selectedRegion, searchQuery, selectedBrands, isPremiumOnly, isOneCareOnly]);
 
+    const resetFilters = () => {
+        setSearchQuery("");
+        setSelectedRegion("all");
+        setSelectedBrands([]);
+        setIsPremiumOnly(false);
+        setIsOneCareOnly(false);
+        setSelectedStore(null);
+    };
+
     const value = {
         allData, filteredData, loading, error,
         searchQuery, setSearchQuery,
@@ -105,7 +109,8 @@ export function StoreProvider({ children }) {
         userLocation, setUserLocation,
         selectedStore, setSelectedStore,
         isMobile,
-        isBottomSheetExpanded, setIsBottomSheetExpanded
+        isBottomSheetExpanded, setIsBottomSheetExpanded,
+        resetFilters
     };
 
     return (

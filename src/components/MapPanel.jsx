@@ -4,7 +4,7 @@ import { escapeHTML, getMarkerIcon, getStoreLatLng, getPopupHTML } from '../util
 import { CONFIG } from '../config';
 
 export default function MapPanel() {
-    const { filteredData, selectedStore, setSelectedStore, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation, selectedBrands, setSelectedBrands, isPremiumOnly, setIsPremiumOnly, isOneCareOnly, setIsOneCareOnly } = useStoreContext();
+    const { filteredData, selectedStore, setSelectedStore, isBottomSheetExpanded, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation, selectedBrands, setSelectedBrands, isPremiumOnly, setIsPremiumOnly, isOneCareOnly, setIsOneCareOnly, selectedRegion } = useStoreContext();
     const [isClustered, setIsClustered] = React.useState(true);
     const [isBrandDropdownOpen, setIsBrandDropdownOpen] = React.useState(false);
 
@@ -46,6 +46,12 @@ export default function MapPanel() {
                 maxZoom: 19
             }).addTo(map);
 
+            // Map events
+            map.on('click', () => {
+                setSelectedStore(null);
+                setIsBrandDropdownOpen(false);
+            });
+
             // Map controls are managed via React UI, no native zoom control needed
             
             // Cluster Group
@@ -57,10 +63,11 @@ export default function MapPanel() {
                 zoomToBoundsOnClick: true,
                 iconCreateFunction: function (cluster) {
                     var childCount = cluster.getChildCount();
-                    // 브랜드 남색 계열로 통일
                     return new L.DivIcon({
-                        html: `<div style="background-color: rgba(47, 98, 134, 0.4);"><span style="background-color: rgba(47, 98, 134, 0.9); color: white;">${childCount}</span></div>`,
-                        className: 'marker-cluster',
+                        html: `<div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                                  <span class="text-white font-bold text-xs">${childCount}</span>
+                               </div>`,
+                        className: 'custom-cluster-icon',
                         iconSize: new L.Point(40, 40)
                     });
                 }
@@ -68,6 +75,28 @@ export default function MapPanel() {
             map.addLayer(markerClusterGroup.current);
         }
     }, []);
+
+    // Handle Region Focus
+    useEffect(() => {
+        if (!mapInstance.current || !filteredData || filteredData.length === 0) return;
+        if (selectedRegion !== 'all') {
+            const bounds = [];
+            filteredData.forEach(store => {
+                const pos = getStoreLatLng(store);
+                if (pos) bounds.push([pos.lat, pos.lng]);
+            });
+            if (bounds.length > 0) {
+                mapInstance.current.fitBounds(bounds, { padding: [50, 50], maxZoom: 13, animate: true, duration: 1.0 });
+            }
+        }
+    }, [selectedRegion]);
+    
+    // Auto-close Brand Dropdown when ListPanel is used
+    useEffect(() => {
+        if (selectedStore || isBottomSheetExpanded) {
+            setIsBrandDropdownOpen(false);
+        }
+    }, [selectedStore, isBottomSheetExpanded]);
 
     // Update markers when filteredData changes
     useEffect(() => {
@@ -98,6 +127,7 @@ export default function MapPanel() {
 
                 marker.on('click', () => {
                     setSelectedStore(store);
+                    setIsBrandDropdownOpen(false);
                     const zoomLvl = isMobile ? 17 : 16;
                     map.setView(pos, zoomLvl, { animate: true, duration: 0.5 });
                 });
