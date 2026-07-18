@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useStoreContext } from '../StoreContext';
 
 export default function ControlArea() {
@@ -36,9 +36,9 @@ export default function ControlArea() {
             </div>
 
             {/* Filters Row */}
-            <div className="flex flex-wrap gap-2 items-center">
+            <div className="flex flex-nowrap gap-2 items-center overflow-x-auto scrollbar-hide pb-1 -mb-1">
                 {/* Region Dropdown */}
-                <div className="relative">
+                <div className="relative flex-shrink-0 whitespace-nowrap">
                     <select
                         value={selectedRegion}
                         onChange={(e) => setSelectedRegion(e.target.value)}
@@ -53,7 +53,7 @@ export default function ControlArea() {
                 </div>
 
                 {/* Brand Dropdown (Simplified as a popover) */}
-                <div className="relative">
+                <div className="relative flex-shrink-0 whitespace-nowrap">
                     <button 
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold transition-colors border ${selectedBrands.length > 0 ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}
@@ -87,7 +87,7 @@ export default function ControlArea() {
                 </div>
 
                 {/* Premium Filter */}
-                <label className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold cursor-pointer transition-colors border ${isPremiumOnly ? 'border-amber-500 bg-amber-50 text-amber-600' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}>
+                <label className={`flex-shrink-0 whitespace-nowrap flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold cursor-pointer transition-colors border ${isPremiumOnly ? 'border-amber-500 bg-amber-50 text-amber-600' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}>
                     <input 
                         type="checkbox" 
                         className="hidden" 
@@ -99,7 +99,7 @@ export default function ControlArea() {
                 </label>
 
                 {/* OneCare Filter */}
-                <label className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold cursor-pointer transition-colors border ${isOneCareOnly ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}>
+                <label className={`flex-shrink-0 whitespace-nowrap flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold cursor-pointer transition-colors border ${isOneCareOnly ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}>
                     <input 
                         type="checkbox" 
                         className="hidden" 

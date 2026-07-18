@@ -1,10 +1,11 @@
-﻿import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useStoreContext } from '../StoreContext';
 import { escapeHTML, getMarkerIcon, getStoreLatLng, getPopupHTML } from '../utils/mapUtils';
 import { CONFIG } from '../config';
 
 export default function MapPanel() {
-    const { filteredData, selectedStore, setSelectedStore, setIsBottomSheetExpanded, isMobile } = useStoreContext();
+    const { filteredData, selectedStore, setSelectedStore, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation } = useStoreContext();
+    const [isClustered, setIsClustered] = React.useState(true);
     const mapRef = useRef(null);
     const mapInstance = useRef(null);
     const markerClusterGroup = useRef(null);
@@ -37,7 +38,7 @@ export default function MapPanel() {
             }).addTo(map);
 
             // Zoom control
-            L.control.zoom({ position: 'bottomright' }).addTo(map);
+            L.control.zoom({ position: 'topleft' }).addTo(map);
 
             // Cluster Group
             markerClusterGroup.current = L.markerClusterGroup({
@@ -101,43 +102,78 @@ export default function MapPanel() {
                 });
 
                 newMarkers.push(marker);
+                
+                if (!isClustered) {
+                    marker.addTo(map);
+                }
             }
         });
 
-        clusterGroup.addLayers(newMarkers);
+        if (isClustered) {
+            clusterGroup.addLayers(newMarkers);
+            if (!map.hasLayer(clusterGroup)) {
+                map.addLayer(clusterGroup);
+            }
+        } else {
+            if (map.hasLayer(clusterGroup)) {
+                map.removeLayer(clusterGroup);
+            }
+        }
+        
         markersRef.current = newMarkers;
 
-    }, [filteredData, isMobile, setSelectedStore, setIsBottomSheetExpanded]);
+    }, [filteredData, isMobile, isClustered, setSelectedStore, setIsBottomSheetExpanded]);
 
     // Open popup when selectedStore changes externally (e.g. from list)
     useEffect(() => {
         if (!mapInstance.current || !selectedStore) return;
         const targetMarker = markersRef.current.find(m => m.storeData === selectedStore);
         if (targetMarker) {
-            if (markerClusterGroup.current) {
+            if (isClustered && markerClusterGroup.current && mapInstance.current.hasLayer(markerClusterGroup.current)) {
                 markerClusterGroup.current.zoomToShowLayer(targetMarker, () => targetMarker.openPopup());
             } else {
                 targetMarker.openPopup();
+                // Optionally center map if needed, but MapPanel usually already centers on click
             }
         }
-    }, [selectedStore]);
+    }, [selectedStore, isClustered]);
+
+    const handleMyLocation = () => {
+        if (!mapInstance.current) return;
+        const map = mapInstance.current;
+        if (userLocation) {
+            map.flyTo([userLocation.lat, userLocation.lng], 15, { animate: true, duration: 1.0 });
+        } else if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                setUserLocation(loc);
+                window.userLocation = loc;
+                map.flyTo([loc.lat, loc.lng], 15, { animate: true, duration: 1.0 });
+            });
+        }
+    };
 
     return (
         <div className="absolute inset-0 z-0">
             <div ref={mapRef} className="w-full h-full z-0" style={{ touchAction: 'none' }}></div>
             
-            {/* Map Controls */}
-            {!isMobile && (
-                <div className="absolute left-6 top-6 z-[1000] flex flex-col gap-3">
-                    <button className="w-12 h-12 bg-gray-900 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-800 transition-colors">
-                        <i className="fa-solid fa-layer-group"></i>
-                    </button>
-                    <button className="w-12 h-12 bg-white text-gray-900 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors">
-                        <i className="fa-solid fa-location-crosshairs text-blue-600"></i>
-                    </button>
-                </div>
-            )}
+            {/* Map Controls (Positioned exactly below the Top-Left Zoom Controls) */}
+            <div className="absolute left-[10px] top-[90px] z-[1000] flex flex-col gap-2">
+                <button 
+                    onClick={() => setIsClustered(!isClustered)}
+                    title={isClustered ? "핀 풀어보기" : "핀 묶어보기"}
+                    className={`w-[34px] h-[34px] rounded bg-white text-gray-700 shadow-[0_1px_5px_rgba(0,0,0,0.65)] flex items-center justify-center hover:bg-gray-50 transition-colors border-2 border-black/20 ${isClustered ? 'text-blue-600' : ''}`}
+                >
+                    <i className="fa-solid fa-layer-group text-[15px]"></i>
+                </button>
+                <button 
+                    onClick={handleMyLocation}
+                    title="내 위치 찾기"
+                    className="w-[34px] h-[34px] rounded bg-white text-gray-700 shadow-[0_1px_5px_rgba(0,0,0,0.65)] flex items-center justify-center hover:bg-gray-50 transition-colors border-2 border-black/20"
+                >
+                    <i className="fa-solid fa-location-crosshairs text-[16px]"></i>
+                </button>
+            </div>
         </div>
     );
 }
-

@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { fetchStoreData } from './api';
 
 const StoreContext = createContext();
@@ -27,6 +27,22 @@ export function StoreProvider({ children }) {
         const handleResize = () => setIsMobile(window.innerWidth <= 900);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Get user location on initial load
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
+                    setUserLocation(loc);
+                    window.userLocation = loc; // Globally accessible for non-react utils
+                },
+                (error) => {
+                    console.warn("Location permission denied or error.");
+                }
+            );
+        }
     }, []);
 
     useEffect(() => {
