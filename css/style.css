@@ -230,7 +230,8 @@ body.dark-mode .brand-logo .logo-dark {
 }
 
 .header-action-buttons .btn-kakao-sm,
-.header-action-buttons .btn-regist-sm {
+.header-action-buttons .btn-regist-sm,
+.header-action-buttons .btn-guide-sm {
     height: 34px;
     padding: 0 16px;
     border-radius: 8px;
@@ -273,8 +274,23 @@ body.dark-mode .brand-logo .logo-dark {
     line-height: inherit;
 }
 
+.header-action-buttons .btn-guide-sm {
+    background-color: var(--quali-white);
+    color: var(--quali-dark);
+    border: 1px solid #d1d1d6;
+}
+
+.header-action-buttons .btn-guide-sm i {
+    font-size: 12.5px;
+    color: var(--quali-dark);
+    display: inline-block;
+    margin: 0;
+    line-height: inherit;
+}
+
 .header-action-buttons .btn-kakao-sm:hover,
-.header-action-buttons .btn-regist-sm:hover {
+.header-action-buttons .btn-regist-sm:hover,
+.header-action-buttons .btn-guide-sm:hover {
     transform: translateY(-1px);
     filter: brightness(0.95);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -743,6 +759,8 @@ body.dark-mode .brand-logo .logo-dark {
 .fab-menu-item.kakao { background: var(--color-kakao-bg); color: var(--color-kakao-text); }
 .fab-menu-item.regist { background: var(--quali-blue); color: #fff; }
 .fab-menu-item.regist i { color: #fff; }
+.fab-menu-item.guide { background: var(--quali-white); color: var(--quali-dark); border-bottom: 1px solid #f2f2f7; }
+.fab-menu-item.guide i { color: var(--quali-dark); }
 .fab-menu-item.active { background: var(--quali-dark); color: #fff; }
 .fab-menu-item.active i { color: #fff; }
 
