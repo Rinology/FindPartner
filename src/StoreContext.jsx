@@ -87,6 +87,11 @@ export function StoreProvider({ children }) {
             if (isOneCareOnly && store.oneCare !== 'O') return false;
 
             return true;
+        }).sort((a, b) => {
+            // S grade stores always come first
+            if (a.grade === 'S' && b.grade !== 'S') return -1;
+            if (a.grade !== 'S' && b.grade === 'S') return 1;
+            return 0;
         });
     }, [allData, selectedRegion, searchQuery, selectedBrands, isPremiumOnly, isOneCareOnly]);
 

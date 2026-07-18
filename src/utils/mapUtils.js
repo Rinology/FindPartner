@@ -71,11 +71,11 @@ export function getMarkerIcon(category, grade, isSelected = false) {
 }
 
 export function openNaverNavi(lat, lng, name) {
-    let url = `https://map.naver.com/index.nhn?elat=${lat}&elng=${lng}&etext=${name}&menu=route`;
+    let url = `https://map.naver.com/index.nhn?elat=${lat}&elng=${lng}&etext=${encodeURIComponent(name)}&menu=route`;
     
     const go = (uLat, uLng) => {
         if (uLat && uLng) {
-            url += `&slat=${uLat}&slng=${uLng}&stext=내위치`;
+            url += `&slat=${uLat}&slng=${uLng}&stext=${encodeURIComponent('내위치')}`;
         }
         window.open(url, '_blank');
     };

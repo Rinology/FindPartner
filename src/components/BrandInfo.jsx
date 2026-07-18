@@ -6,12 +6,22 @@ export default function BrandInfo() {
             <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-6">
                 <i className="fa-solid fa-bicycle text-3xl text-blue-500"></i>
             </div>
-            <h3 className="text-xl font-extrabold text-gray-900 mb-2 tracking-tight">퀄리스포츠 공식 대리점 안내</h3>
-            <p className="text-sm leading-relaxed mb-8">
-                상단의 검색창이나 지도를 통해<br/>
+            <h3 className="text-xl font-extrabold text-gray-900 mb-2 tracking-tight">퀄리스포츠 X 엑스트론</h3>
+            <p className="text-sm leading-relaxed mb-6">
                 가까운 공식 대리점과 우수협력점을 찾아보세요.<br/>
-                원케어 매장에서는 더욱 특별한 서비스를 제공합니다.
+                가장 스마트한 모빌리티 라이프를 시작하세요.
             </p>
+
+            <div className="w-full mb-8 rounded-2xl overflow-hidden shadow-md aspect-video relative">
+                <iframe 
+                    className="absolute top-0 left-0 w-full h-full"
+                    src="https://www.youtube.com/embed/n30Dk7wG5B4?autoplay=1&mute=1&loop=1&playlist=n30Dk7wG5B4" 
+                    title="Quali Sports Video" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen>
+                </iframe>
+            </div>
             
             <div className="w-full bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-left space-y-4">
                 <div className="flex items-center gap-3">

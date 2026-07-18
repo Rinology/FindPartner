@@ -48,7 +48,6 @@ export default function MapPanel() {
 
             // Map events
             map.on('click', () => {
-                setSelectedStore(null);
                 setIsBrandDropdownOpen(false);
             });
 
@@ -155,22 +154,44 @@ export default function MapPanel() {
 
     }, [filteredData, isMobile, isClustered, setSelectedStore, setIsBottomSheetExpanded]);
 
-    // Center map when selectedStore changes externally (e.g. from list)
+    // Focus marker when selectedStore changes
     useEffect(() => {
         if (!mapInstance.current || !selectedStore) return;
-        const targetMarker = markersRef.current.find(m => m.storeData.name === selectedStore.name);
-        if (targetMarker) {
-            if (isClustered && markerClusterGroup.current && mapInstance.current.hasLayer(markerClusterGroup.current)) {
-                markerClusterGroup.current.zoomToShowLayer(targetMarker, () => {
-                    const zoomLvl = mapInstance.current.getZoom();
-                    mapInstance.current.setView(targetMarker.getLatLng(), zoomLvl, { animate: true, duration: 0.5 });
-                });
-            } else {
-                const zoomLvl = mapInstance.current.getZoom();
-                mapInstance.current.setView(targetMarker.getLatLng(), zoomLvl, { animate: true, duration: 0.5 });
+
+        // Remove active-pin class from all markers
+        document.querySelectorAll('.custom-pin').forEach(el => {
+            el.classList.remove('active-pin', 'animate-pulse-scale');
+            el.style.zIndex = "";
+        });
+
+        const storeMarker = markersRef.current.find(m => m.storeData === selectedStore);
+        if (storeMarker) {
+            // Add active-pin class to selected marker
+            if (storeMarker.getElement()) {
+                const iconEl = storeMarker.getElement();
+                iconEl.classList.add('active-pin', 'animate-pulse-scale');
+                iconEl.style.zIndex = 9999;
+            }
+
+            if (!isMobile) {
+                // Focus and slightly offset
+                const pos = getStoreLatLng(selectedStore);
+                if (pos) {
+                    const currentZoom = mapInstance.current.getZoom();
+                    const targetZoom = currentZoom < 14 ? 14 : currentZoom;
+                    
+                    // Add an offset so the marker isn't hidden behind the new detail panel
+                    // Detail panel is ~360px wide on the left (next to the 384px list panel)
+                    // The center of the visible map is offset to the right.
+                    mapInstance.current.flyTo(
+                        [pos.lat, pos.lng], 
+                        targetZoom, 
+                        { animate: true, duration: 1.0, easeLinearity: 0.25 }
+                    );
+                }
             }
         }
-    }, [selectedStore]);
+    }, [selectedStore, isMobile]);
 
     const handleMyLocation = () => {
         if (!mapInstance.current) return;
@@ -210,7 +231,7 @@ export default function MapPanel() {
                             >
                                 선택 해제
                             </button>
-                            {['퀄리스포츠&엑스트론', '퀄리바이크', '케어엑스'].map(brand => (
+                            {['퀄리스포츠', '엑스트론', '퀄리바이크', '케어엑스'].map(brand => (
                                 <label key={brand} className="flex items-center gap-2 px-4 py-2.5 cursor-pointer hover:bg-gray-50 transition-colors">
                                     <input 
                                         type="checkbox" 
