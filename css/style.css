@@ -314,7 +314,6 @@ body.dark-mode .brand-logo .logo-dark {
 .main-container {
     display: flex;
     flex: 1;
-    height: calc(100vh - var(--header-height));
     overflow: hidden;
 }
 
@@ -2048,6 +2047,7 @@ body.modal-open .mobile-fab-container {
         flex-direction: column;
     }
 
+
     .main-container {
         display: flex;
         flex-direction: column-reverse;
@@ -2066,8 +2066,8 @@ body.modal-open .mobile-fab-container {
 
     .list-panel {
         flex: none;
-        height: 50px; /* Fallback for browsers not supporting env() */
-        height: calc(50px + env(safe-area-inset-bottom)); /* 여유 있게 높이고 안전영역 확보 */
+        height: 40px; /* Fallback for browsers not supporting env() */
+        height: calc(40px + env(safe-area-inset-bottom)); /* 여유 있게 아이폰 안전영역 확보 */
         width: 100%;
         background: var(--bg-panel);
         border-radius: 24px 24px 0 0;
@@ -2185,12 +2185,6 @@ body.modal-open .mobile-fab-container {
         background-color: rgba(30, 30, 30, 0.95);
     }
 
-    /* 모바일에서 body 스크롤 시 헤더 고정 보장 */
-    body {
-        display: block;
-        height: auto;
-        overflow-y: auto;
-    }
 
     .btn-top {
         position: fixed;
