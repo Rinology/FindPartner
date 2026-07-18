@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "vite",
     "vite-dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
