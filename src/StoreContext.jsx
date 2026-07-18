@@ -23,8 +23,13 @@ export function StoreProvider({ children }) {
     // Responsive / Layout State
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
     const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
-    const [isLocationActive, setIsLocationActive] = useState(false);
+    const [isLocationActive, setIsLocationActiveState] = useState(false);
     const [isShowAllActive, setIsShowAllActive] = useState(false);
+
+    const setIsLocationActive = (val) => {
+        setIsLocationActiveState(val);
+        window.isLocationActive = val;
+    };
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 900);

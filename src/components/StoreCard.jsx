@@ -90,7 +90,7 @@ export default function StoreCard({ store }) {
                 <button 
                     onClick={(e) => {
                         e.stopPropagation();
-                        openNaverNavi(store.lat, store.lng, store.name);
+                        openNaverNavi(store);
                     }} 
                     className="flex-1 flex justify-center items-center gap-2 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-semibold transition-colors"
                 >

@@ -61,7 +61,7 @@ export default function MobileStoreModal() {
     };
 
     const handleNavi = () => {
-        openNaverNavi(selectedStore.lat, selectedStore.lng, selectedStore.name);
+        openNaverNavi(selectedStore);
     };
 
     const handleViewMap = () => {

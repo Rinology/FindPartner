@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useStoreContext } from '../StoreContext';
 
 export default function MobileFAB() {
@@ -11,14 +11,21 @@ export default function MobileFAB() {
                 <button className="flex items-center justify-center gap-2.5 px-4 py-3 bg-gray-900 text-white rounded-xl shadow-lg font-semibold text-sm min-w-[160px] pointer-events-auto transition-transform active:scale-95">
                     <i className="fa-solid fa-layer-group text-white"></i> 지도 핀 모아보기
                 </button>
-                <button className="flex items-center justify-center gap-2.5 px-4 py-3 bg-white text-gray-900 rounded-xl shadow-lg font-semibold text-sm min-w-[160px] pointer-events-auto transition-transform active:scale-95">
-                    <i className="fa-solid fa-location-crosshairs text-blue-600"></i> 내 위치 검색
+                <button 
+                    onClick={() => {
+                        const mapBtn = document.querySelector('button[title="내 위치 끄기"], button[title="내 위치 찾기"]');
+                        if (mapBtn) mapBtn.click();
+                        setIsOpen(false);
+                    }}
+                    className="flex items-center justify-center gap-2.5 px-4 py-3 bg-white text-gray-900 rounded-xl shadow-lg font-semibold text-sm min-w-[160px] pointer-events-auto transition-transform active:scale-95"
+                >
+                    <i className="fa-solid fa-location-crosshairs text-blue-600"></i> 내 위치 토글
                 </button>
-                <a href="http://pf.kakao.com/_xhxhRZxl/chat" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2.5 px-4 py-3 bg-[#FEE500] text-[#191919] rounded-xl shadow-lg font-semibold text-sm min-w-[160px] pointer-events-auto transition-transform active:scale-95">
-                    <i className="fa-brands fa-kakao"></i> 카카오톡 문의
+                <a href="http://pf.kakao.com/_xhxhRZxl/chat" target="_blank" rel="noreferrer" className="flex items-center justify-center px-4 py-3 bg-[#FEE500] text-[#191919] rounded-xl shadow-lg font-semibold text-sm min-w-[160px] pointer-events-auto transition-transform active:scale-95">
+                    카카오톡 문의
                 </a>
-                <a href="https://xtroncare.kr" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2.5 px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg font-semibold text-sm min-w-[160px] pointer-events-auto transition-transform active:scale-95">
-                    <i className="fa-solid fa-file-signature text-white"></i> 제품등록센터
+                <a href="https://xtroncare.kr" target="_blank" rel="noreferrer" className="flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-xl shadow-lg font-semibold text-sm min-w-[160px] pointer-events-auto transition-transform active:scale-95">
+                    제품등록센터
                 </a>
             </div>
 

@@ -7,17 +7,38 @@
     <title>퀄리스포츠 전국 대리점</title>
     <!-- 폰트 아이콘 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 기존 로컬 지도 리소스 유지 -->
-    <script type="module" crossorigin src="/assets/index-DxQT-Xlz.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-dBDuP-QZ.css">
+    <!-- 기존 로컬 지도 리소스 유지 -->
+    <link rel="stylesheet" href="/lib/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="/lib/markercluster/MarkerCluster.css" />
+    <link rel="stylesheet" href="/lib/markercluster/MarkerCluster.Default.css" />
+    <script type="module" crossorigin src="/assets/index-CfScRTog.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CVVq7sKa.css">
   </head>
+<!-- [보안] 우클릭/드래그/선택 방지 적용 -->
+
   <body class="no-select">
     <div id="root"></div>
     <!-- 기존 로컬 스크립트 리소스 유지 -->
     <script src="/lib/leaflet/leaflet.js"></script>
     <script src="/lib/markercluster/leaflet.markercluster.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
-    
+    
+    <script>
+      // [보안] 우클릭/드래그/선택 및 개발자 도구 단축키 방지
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      document.addEventListener('dragstart', e => e.preventDefault());
+      document.addEventListener('selectstart', e => e.preventDefault());
+      document.addEventListener('keydown', e => {
+        // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U 방지
+        if (
+          e.key === 'F12' ||
+          (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) ||
+          (e.ctrlKey && (e.key === 'U' || e.key === 'u'))
+        ) {
+          e.preventDefault();
+        }
+      });
+    </script>
   </body>
 </html>
 

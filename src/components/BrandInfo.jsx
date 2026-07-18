@@ -1,36 +1,44 @@
 import React from 'react';
 import { useStoreContext } from '../StoreContext';
 import { getClosestStoreRegion } from '../utils/mapUtils';
+import eventBannerImg from '../assets/event_banner.png';
 
 export default function BrandInfo() {
-    const { allData, setUserLocation, setIsLocationActive, setSelectedRegion } = useStoreContext();
+    const { allData, setUserLocation, setIsLocationActive, setSelectedRegion, isLocationActive } = useStoreContext();
 
     const handleRequestLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                pos => {
-                    const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                    setUserLocation(loc);
-                    window.userLocation = loc;
-                    setIsLocationActive(true);
-                    
-                    // 가장 가까운 매장의 지역을 찾아 자동 설정
-                    const closestRegion = getClosestStoreRegion(allData, loc.lat, loc.lng);
-                    if (closestRegion) {
-                        setSelectedRegion(closestRegion);
-                    }
-
-                    // 지도 이동 트리거 (MapPanel.jsx에서 감지)
-                    if (window.mapInstance && window.mapInstance.current) {
-                        window.mapInstance.current.flyTo([loc.lat, loc.lng], 15, { animate: true, duration: 1.0 });
-                    }
-                },
-                err => {
-                    alert("위치 정보를 가져올 수 없습니다. 브라우저 주소창 왼쪽의 자물쇠 아이콘을 눌러 위치 권한이 '허용'되어 있는지 확인해주세요.");
-                }
-            );
+        if (isLocationActive) {
+            setIsLocationActive(false);
+            window.isLocationActive = false;
         } else {
-            alert("이 브라우저에서는 위치 기반 서비스를 지원하지 않습니다.");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
+                        setUserLocation(loc);
+                        window.userLocation = loc;
+                        setIsLocationActive(true);
+                        window.isLocationActive = true;
+                        
+                        // 가장 가까운 매장의 지역을 찾아 자동 설정
+                        const closestRegion = getClosestStoreRegion(allData, loc.lat, loc.lng);
+                        if (closestRegion) {
+                            setSelectedRegion(closestRegion);
+                        }
+
+                        // 지도 이동 트리거 (MapPanel.jsx에서 감지)
+                        if (window.mapInstance && window.mapInstance.current) {
+                            window.mapInstance.current.flyTo([loc.lat, loc.lng], 15, { animate: true, duration: 1.0 });
+                        }
+                    },
+                    (error) => {
+                        console.error("Error getting location:", error);
+                        alert("위치 정보를 가져올 수 없습니다. 브라우저 주소창 왼쪽의 자물쇠 아이콘을 눌러 위치 권한이 '허용'되어 있는지 확인해주세요.");
+                    }
+                );
+            } else {
+                alert("이 브라우저에서는 위치 기반 서비스를 지원하지 않습니다.");
+            }
         }
     };
 
@@ -46,9 +54,9 @@ export default function BrandInfo() {
 
             <button 
                 onClick={handleRequestLocation}
-                className="mb-6 w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md shadow-blue-200 transition-all flex items-center justify-center gap-2"
+                className={`mb-6 w-full py-3.5 rounded-xl font-bold shadow-md transition-all flex items-center justify-center gap-2 ${isLocationActive ? 'bg-white text-blue-600 border border-blue-600 hover:bg-gray-50' : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200'}`}
             >
-                <i className="fa-solid fa-location-crosshairs"></i> 내 주변 매장 찾기
+                <i className="fa-solid fa-location-crosshairs"></i> {isLocationActive ? "내 위치 끄기" : "내 주변 매장 찾기"}
             </button>
 
 
@@ -60,7 +68,7 @@ export default function BrandInfo() {
             >
                 {/* TODO: 나중에 S3 호스팅 이미지 주소로 src를 갈아끼워주세요. */}
                 <img 
-                    src="https://placehold.co/800x400/2f6286/white?text=24%EA%B0%9C%EC%9B%94+%EB%AC%B4%EC%9D%B4%EC%9E%90+%EC%9D%B4%EB%B2%A4%ED%8A%B8" 
+                    src={eventBannerImg} 
                     alt="퀄리스포츠 X 엑스트론 무이자 24개월 이벤트" 
                     className="w-full h-auto object-cover"
                 />

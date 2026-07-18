@@ -111,17 +111,17 @@ export function getMarkerIcon(category, grade, isSelected = false) {
     });
 }
 
-export function openNaverNavi(lat, lng, name) {
-    let url = `https://map.naver.com/p/directions/`;
-    
-    if (window.userLocation) {
-        url += `${window.userLocation.lng},${window.userLocation.lat},${encodeURIComponent('내위치')}/`;
-    } else {
-        url += `-/`;
+export function openNaverNavi(store) {
+    const pos = getStoreLatLng(store);
+    if (!pos) {
+        alert("해당 매장의 위치 정보를 찾을 수 없습니다.");
+        return;
     }
-    
-    url += `${lng},${lat},${encodeURIComponent(name)}/-/car?c=15.00,0,0,0,dh`;
-    
+    const name = store.name || '';
+    let url = `https://map.naver.com/index.nhn?elat=${pos.lat}&elng=${pos.lng}&etext=${name}&menu=route`;
+    if (window.userLocation && window.isLocationActive) {
+        url += `&slat=${window.userLocation.lat}&slng=${window.userLocation.lng}&stext=내위치`;
+    }
     window.open(url, '_blank');
 }
 
@@ -200,13 +200,15 @@ export function getPopupHTML(store) {
     const storeAddress = store.address || '';
     const storePhone = store.phone || '';
     
-    const userLat = window.userLocation ? window.userLocation.lat : '';
-    const userLng = window.userLocation ? window.userLocation.lng : '';
+    // 좌표 파싱 (store.coord 문자열에서 추출)
+    const storePos = getStoreLatLng(store);
+    const storeLat = storePos ? storePos.lat : '';
+    const storeLng = storePos ? storePos.lng : '';
     
-    // 네이버 길찾기 연동 (출발지 텍스트 포함)
-    let naverUrl = `https://map.naver.com/index.nhn?elng=${store.lng}&elat=${store.lat}&pathType=0&showMap=true&etext=${escapeHTML(storeName)}&menu=route`;
-    if (userLat && userLng) {
-        naverUrl += `&slng=${userLng}&slat=${userLat}&stext=내위치`;
+    // 네이버 길찾기 연동 (마스터 브랜치 방식: index.nhn, 위치정보 활성화 시에만 출발지 입력)
+    let naverUrl = `https://map.naver.com/index.nhn?elat=${storeLat}&elng=${storeLng}&etext=${storeName}&menu=route`;
+    if (window.userLocation && window.isLocationActive) {
+        naverUrl += `&slat=${window.userLocation.lat}&slng=${window.userLocation.lng}&stext=내위치`;
     }
     
     return `

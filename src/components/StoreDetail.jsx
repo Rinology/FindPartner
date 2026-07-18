@@ -120,7 +120,7 @@ export default function StoreDetail() {
                 )}
                 <button 
                     onClick={() => {
-                        openNaverNavi(selectedStore.lat, selectedStore.lng, selectedStore.name);
+                        openNaverNavi(selectedStore);
                     }}
                     className="flex-1 flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-colors shadow-md shadow-blue-200"
                 >

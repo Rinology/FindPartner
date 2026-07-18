@@ -4,7 +4,7 @@ import { escapeHTML, getMarkerIcon, getStoreLatLng, getPopupHTML } from '../util
 import { CONFIG } from '../config';
 
 export default function MapPanel() {
-    const { filteredData, selectedStore, setSelectedStore, isBottomSheetExpanded, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation, selectedBrands, setSelectedBrands, isPremiumOnly, setIsPremiumOnly, isOneCareOnly, setIsOneCareOnly, selectedRegion, setIsLocationActive } = useStoreContext();
+    const { filteredData, selectedStore, setSelectedStore, isBottomSheetExpanded, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation, selectedBrands, setSelectedBrands, isPremiumOnly, setIsPremiumOnly, isOneCareOnly, setIsOneCareOnly, selectedRegion, isLocationActive, setIsLocationActive } = useStoreContext();
     const [isClustered, setIsClustered] = React.useState(true);
     const [isBrandDropdownOpen, setIsBrandDropdownOpen] = React.useState(false);
 
@@ -226,22 +226,33 @@ export default function MapPanel() {
     const handleMyLocation = () => {
         if (!mapInstance.current) return;
         const map = mapInstance.current;
-        if (userLocation) {
-            setIsLocationActive(true);
-            map.flyTo([userLocation.lat, userLocation.lng], 15, { animate: true, duration: 1.0 });
-        } else if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                pos => {
-                    const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                    setUserLocation(loc);
-                    window.userLocation = loc;
-                    setIsLocationActive(true);
-                    map.flyTo([loc.lat, loc.lng], 15, { animate: true, duration: 1.0 });
-                },
-                err => {
-                    alert("위치 정보를 가져올 수 없습니다. 브라우저의 위치 권한 설정을 확인해주세요.");
-                }
-            );
+        
+        // 만약 이미 내 위치가 활성화되어 있다면 -> 토글 OFF
+        if (isLocationActive) {
+            setIsLocationActive(false);
+            window.isLocationActive = false;
+            // 지도를 전체 보기 상태나 초기 상태로 돌릴 수 있음 (선택 사항)
+        } else {
+            // 토글 ON
+            if (userLocation) {
+                setIsLocationActive(true);
+                window.isLocationActive = true;
+                map.flyTo([userLocation.lat, userLocation.lng], 15, { animate: true, duration: 1.0 });
+            } else if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    pos => {
+                        const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                        setUserLocation(loc);
+                        window.userLocation = loc;
+                        setIsLocationActive(true);
+                        window.isLocationActive = true;
+                        map.flyTo([loc.lat, loc.lng], 15, { animate: true, duration: 1.0 });
+                    },
+                    err => {
+                        alert("위치 정보를 가져올 수 없습니다. 브라우저의 위치 권한 설정을 확인해주세요.");
+                    }
+                );
+            }
         }
     };
 
@@ -323,8 +334,8 @@ export default function MapPanel() {
 
                 <button 
                     onClick={handleMyLocation}
-                    className="w-10 h-10 bg-white rounded-xl shadow-lg border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-colors"
-                    title="내 위치 찾기"
+                    className={`w-10 h-10 rounded-xl shadow-lg border flex items-center justify-center transition-colors ${isLocationActive ? 'bg-blue-600 border-blue-700 text-white' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+                    title={isLocationActive ? "내 위치 끄기" : "내 위치 찾기"}
                 >
                     <i className="fa-solid fa-crosshairs"></i>
                 </button>
