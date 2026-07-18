@@ -692,6 +692,7 @@ body.dark-mode .brand-logo .logo-dark {
     flex-direction: column;
     align-items: flex-end;
     gap: 12px;
+    pointer-events: none; /* 빈 공간이 지도 클릭을 막지 않도록 함 */
 }
 
 .fab-menu {
@@ -748,6 +749,7 @@ body.dark-mode .brand-logo .logo-dark {
     border: none;
     cursor: pointer;
     min-width: 160px;
+    pointer-events: auto; /* 터치 이벤트 허용 */
 }
 
 .fab-menu-item i {
@@ -1991,6 +1993,7 @@ body.dark-mode .map-popup-header {
     flex-direction: column;
     gap: 12px;
     z-index: 2100;
+    pointer-events: none; /* 모바일에서도 빈 공간 터치 통과 */
 }
 
 .fab-btn {
@@ -2008,6 +2011,7 @@ body.dark-mode .map-popup-header {
     text-decoration: none;
     transition: all 0.2s ease-in-out;
     letter-spacing: -0.02em;
+    pointer-events: auto; /* 버튼 자체는 클릭 가능하게 함 */
 }
 
 .fab-btn.kakao {
@@ -2067,36 +2071,38 @@ body.modal-open .mobile-fab-container {
 
 
     .main-container {
-        display: flex;
-        flex-direction: column-reverse;
+        display: block; /* 모바일에서 플렉스 대신 block 사용 */
         flex: 1;
-        min-height: 0;
         position: relative;
     }
 
     .map-panel {
-        flex: 1;
-        min-height: 0;
-        position: relative;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
         z-index: 5;
         touch-action: none;
     }
 
     .list-panel {
-        flex: none;
-        height: 40px; /* Fallback for browsers not supporting env() */
-        height: calc(40px + env(safe-area-inset-bottom)); /* 여유 있게 아이폰 안전영역 확보 */
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: calc(40px + env(safe-area-inset-bottom)); /* 닫혔을 때 높이 */
         width: 100%;
-        background: var(--bg-panel);
-        border-radius: 24px 24px 0 0;
-        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+        background: transparent; /* 배경을 투명하게 하여 지도 클릭 통과 */
+        box-shadow: none; /* 그림자는 핸들에 적용 */
+        border: none;
         z-index: 1000;
         display: flex;
         flex-direction: column;
         transition: height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        border-right: none;
-        padding-top: 8px;
-        overflow: hidden; /* 높이가 작을 때 리스트 숨김 */
+        padding-top: 0; /* 패딩은 핸들에 적용 */
+        overflow: hidden;
+        pointer-events: none; /* 패널 자체는 터치를 통과시킴 (지도 조작 가능하게) */
     }
     
     .list-panel.expanded {
@@ -2111,11 +2117,14 @@ body.modal-open .mobile-fab-container {
         width: 100%;
         display: flex;
         justify-content: center;
-        padding: 4px 0 12px 0;
+        padding: 12px 0;
         cursor: grab;
         flex-shrink: 0;
-        background: transparent;
+        background: var(--bg-panel);
+        border-radius: 24px 24px 0 0;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
         touch-action: pan-y;
+        pointer-events: auto; /* 핸들은 터치 잡음 */
     }
     
     .bottom-sheet-handle:active {
@@ -2138,6 +2147,8 @@ body.modal-open .mobile-fab-container {
         overflow-y: auto;
         padding: 16px;
         flex: 1;
+        background: var(--bg-panel); /* 내용 영역 배경 */
+        pointer-events: auto; /* 내용 영역 터치 잡음 */
     }
 
     header {
