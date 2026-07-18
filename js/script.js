@@ -277,9 +277,20 @@ function handleResponsiveLayout() {
         if (controlArea.parentElement !== mobilePortal) {
             mobilePortal.appendChild(controlArea);
         }
+        // [수정] 선택된 대리점 바를 헤더 외부(body)로 이동하여 backdrop-filter에 의한 fixed 위치 버그 해결
+        const selectedStoreBar = document.getElementById('selectedStoreBar');
+        if (selectedStoreBar && selectedStoreBar.parentElement !== document.body) {
+            document.body.appendChild(selectedStoreBar);
+        }
     } else {
         if (controlArea.parentElement !== aside) {
             aside.insertBefore(controlArea, aside.firstChild);
+        }
+        // [수정] 데스크탑에서는 다시 controlArea 내부(필터 버튼 밑)로 복구
+        const selectedStoreBar = document.getElementById('selectedStoreBar');
+        const filterButtonsContainer = document.getElementById('filterButtonsContainer');
+        if (selectedStoreBar && filterButtonsContainer && selectedStoreBar.parentElement !== controlArea) {
+            controlArea.insertBefore(selectedStoreBar, filterButtonsContainer.nextSibling);
         }
     }
 }
