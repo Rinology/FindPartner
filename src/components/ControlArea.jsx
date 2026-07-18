@@ -2,9 +2,19 @@ import React, { useState } from 'react';
 import { useStoreContext } from '../StoreContext';
 
 export default function ControlArea() {
-    const { searchQuery, setSearchQuery, selectedRegion, setSelectedRegion, resetFilters } = useStoreContext();
+    const { searchQuery, setSearchQuery, selectedRegion, setSelectedRegion, resetFilters, selectedBrands, setSelectedBrands, isPremiumOnly, isOneCareOnly, isLocationActive, isShowAllActive, setIsShowAllActive } = useStoreContext();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const hasFilters = searchQuery !== "" || selectedBrands.length > 0 || selectedRegion !== 'all' || isPremiumOnly || isOneCareOnly || isLocationActive;
+
+    const handleHomeClick = () => {
+        if (!hasFilters) {
+            setIsShowAllActive(!isShowAllActive);
+        } else {
+            resetFilters();
+        }
+    };
 
     const toggleBrand = (brand) => {
         if (selectedBrands.includes(brand)) {
@@ -22,11 +32,15 @@ export default function ControlArea() {
             <div className="flex gap-2 w-full">
                 {/* Home Button */}
                 <button
-                    onClick={resetFilters}
+                    onClick={handleHomeClick}
                     className="w-[42px] shrink-0 bg-gray-50 border border-gray-200 text-gray-600 rounded-xl flex items-center justify-center hover:bg-gray-100 hover:text-blue-600 transition-colors shadow-sm"
-                    title="초기화 (홈)"
+                    title={!hasFilters && !isShowAllActive ? "전체 목록 보기" : "초기화 (홈)"}
                 >
-                    <i className="fa-solid fa-house"></i>
+                    {!hasFilters && !isShowAllActive ? (
+                        <i className="fa-solid fa-list"></i>
+                    ) : (
+                        <i className="fa-solid fa-house"></i>
+                    )}
                 </button>
 
                 {/* Region Dropdown */}

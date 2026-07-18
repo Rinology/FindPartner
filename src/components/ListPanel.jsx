@@ -10,7 +10,7 @@ export default function ListPanel() {
         filteredData, loading, error, 
         isMobile, 
         selectedStore,
-        searchQuery, selectedBrands, selectedRegion, isPremiumOnly, isOneCareOnly, isLocationActive,
+        searchQuery, selectedBrands, selectedRegion, isPremiumOnly, isOneCareOnly, isLocationActive, isShowAllActive,
         isBottomSheetExpanded, setIsBottomSheetExpanded 
     } = useStoreContext();
     
@@ -71,7 +71,7 @@ export default function ListPanel() {
     }, [isMobile, setIsBottomSheetExpanded]);
 
     const hasFilters = searchQuery !== "" || selectedBrands.length > 0 || selectedRegion !== 'all' || isPremiumOnly || isOneCareOnly;
-    const showList = hasFilters || isLocationActive;
+    const showList = hasFilters || isLocationActive || isShowAllActive;
 
     if (!isMobile) {
         // Desktop View: Left Sidebar

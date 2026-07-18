@@ -24,6 +24,7 @@ export function StoreProvider({ children }) {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
     const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
     const [isLocationActive, setIsLocationActive] = useState(false);
+    const [isShowAllActive, setIsShowAllActive] = useState(false);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 900);
@@ -117,6 +118,7 @@ export function StoreProvider({ children }) {
         setIsOneCareOnly(false);
         setSelectedStore(null);
         setIsLocationActive(false);
+        setIsShowAllActive(false);
     };
 
     const value = {
@@ -131,7 +133,8 @@ export function StoreProvider({ children }) {
         isMobile,
         isBottomSheetExpanded, setIsBottomSheetExpanded,
         resetFilters,
-        isLocationActive, setIsLocationActive
+        isLocationActive, setIsLocationActive,
+        isShowAllActive, setIsShowAllActive
     };
 
     return (

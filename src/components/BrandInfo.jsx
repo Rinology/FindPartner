@@ -60,7 +60,7 @@ export default function BrandInfo() {
             >
                 {/* TODO: 나중에 S3 호스팅 이미지 주소로 src를 갈아끼워주세요. */}
                 <img 
-                    src="https://via.placeholder.com/800x800.png?text=24%EA%B0%9C%EC%9B%94+%EB%AC%B4%EC%9D%B4%EC%9E%90+%EC%9D%B4%EB%B2%A4%ED%8A%B8" 
+                    src="https://placehold.co/800x400/2f6286/white?text=24%EA%B0%9C%EC%9B%94+%EB%AC%B4%EC%9D%B4%EC%9E%90+%EC%9D%B4%EB%B2%A4%ED%8A%B8" 
                     alt="퀄리스포츠 X 엑스트론 무이자 24개월 이벤트" 
                     className="w-full h-auto object-cover"
                 />
@@ -68,8 +68,8 @@ export default function BrandInfo() {
 
             <div className="w-full mb-6 rounded-2xl overflow-hidden shadow-md aspect-video relative min-h-[250px] shrink-0">
                 <iframe 
-                    className="absolute top-0 left-0 w-full h-full"
-                    src="https://www.youtube.com/embed/PaRQ9nw8VWw?rel=0" 
+                    className="absolute top-0 left-0 w-full h-full z-10 pointer-events-auto"
+                    src="https://www.youtube.com/embed/PaRQ9nw8VWw?rel=0&playsinline=1" 
                     title="Quali Sports Video" 
                     frameBorder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
