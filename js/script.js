@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener('dragstart', e => e.preventDefault());
 
     setupEventListeners();
+    setupBottomSheet();
 
     initMap();
 
@@ -458,7 +459,7 @@ function updateMarkers(stores) {
             // [상세 정보 HTML 생성]
             let branchHtml = '';
             if (store.branch && String(store.branch).trim() !== '') {
-                branchHtml = `<div class="map-popup-branch">퀄리스포츠&엑스트론 ${escapeHTML(store.branch)}</div>`;
+                branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
             }
 
             // [변경] 웹사이트(데스크탑)에서 정보를 모두 표시하기 위해 팝업 내용은 항상 전체 정보를 포함하도록 생성
@@ -793,7 +794,7 @@ function renderList(data) {
 
         let branchHtml = '';
         if (store.branch && String(store.branch).trim() !== '') {
-            branchHtml = `<div class="store-branch">퀄리스포츠&엑스트론 ${escapeHTML(store.branch)}</div>`;
+            branchHtml = `<div class="store-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
         }
 
         const card = document.createElement("div");
@@ -805,7 +806,16 @@ function renderList(data) {
 
             document.querySelectorAll('.store-card').forEach(c => c.classList.remove('active-card'));
             card.classList.add('active-card');
-            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.scrollIntoView({ behavior: 'auto', block: 'center' }); // 즉시 이동
+
+            const isMobile = window.innerWidth <= 900;
+            if (isMobile) {
+                const listPanel = document.getElementById('listPanel');
+                if (listPanel) {
+                    listPanel.classList.remove('expanded');
+                    if (map) setTimeout(() => map.invalidateSize(), 300); // 레이아웃 변경 후 맵 리사이징
+                }
+            }
 
             showSelectedStore(store.name);
 
@@ -899,13 +909,65 @@ function highlightListItem(storeName, shouldScroll = true) {
     if (targetCard && shouldScroll) {
         const isMobile = window.innerWidth <= 900;
         if (isMobile) {
-            // 모바일: 최상단으로 스크롤 (start)
-            targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // 모바일: 즉각 이동(auto)
+            targetCard.scrollIntoView({ behavior: 'auto', block: 'start' });
         } else {
-            // 데스크탑: 중앙으로 스크롤 (center)
-            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // 데스크탑: 중앙으로 스크롤 (center), 즉각 이동(auto)
+            targetCard.scrollIntoView({ behavior: 'auto', block: 'center' });
         }
     }
+}
+
+// [신규] 모바일 바텀시트 터치 이벤트 설정 (Flexbox 레이아웃 기반)
+function setupBottomSheet() {
+    const listPanel = document.getElementById('listPanel');
+    const handle = document.getElementById('bottomSheetHandle');
+    if (!listPanel || !handle) return;
+
+    let startY = 0;
+    let currentY = 0;
+    let isDragging = false;
+
+    handle.addEventListener('touchstart', (e) => {
+        if (window.innerWidth > 900) return;
+        isDragging = true;
+        startY = e.touches[0].clientY;
+        listPanel.classList.add('dragging');
+    }, { passive: true });
+
+    handle.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentY = e.touches[0].clientY;
+    }, { passive: true });
+
+    handle.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        listPanel.classList.remove('dragging');
+        
+        const deltaY = currentY - startY;
+        const threshold = 30; // 약간만 당겨도 토글
+        
+        if (listPanel.classList.contains('expanded')) {
+            // 열려있을 때 닫기
+            if (deltaY > threshold) {
+                listPanel.classList.remove('expanded');
+                if (map) setTimeout(() => map.invalidateSize(), 300);
+            }
+        } else {
+            // 닫혀있을 때 열기
+            if (deltaY < -threshold) {
+                listPanel.classList.add('expanded');
+                if (map) setTimeout(() => map.invalidateSize(), 300);
+            }
+        }
+        
+        // 클릭(짧은 터치) 시 토글
+        if (Math.abs(deltaY) < 10) {
+            listPanel.classList.toggle('expanded');
+            if (map) setTimeout(() => map.invalidateSize(), 300);
+        }
+    });
 }
 
 function scrollTabs(direction) {
@@ -1013,7 +1075,7 @@ function showMobileModal(store) {
 
     let branchHtml = '';
     if (store.branch && String(store.branch).trim() !== '') {
-        branchHtml = `<div class="map-popup-branch">퀄리스포츠&엑스트론 ${escapeHTML(store.branch)}</div>`;
+        branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
     }
 
     let popupLinkBtn = '';
@@ -1149,7 +1211,7 @@ function applyFilter() {
     if (brandDropdownToggle) {
         const textSpan = brandDropdownToggle.querySelector("span");
         if (selectedBrands.length === 0) {
-            textSpan.innerText = "브랜드 전체";
+            textSpan.innerText = "브랜드 검색";
             brandDropdown.classList.remove("has-selection");
         } else if (selectedBrands.length === 1) {
             textSpan.innerText = selectedBrands[0];

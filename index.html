@@ -54,7 +54,11 @@
 
     <div class="main-container">
         <!-- 왼쪽 패널 -->
-        <aside class="list-panel">
+        <aside class="list-panel" id="listPanel">
+            <!-- [신규] 모바일 바텀시트 핸들 -->
+            <div id="bottomSheetHandle" class="bottom-sheet-handle mobile-only">
+                <span class="handle-bar"></span>
+            </div>
 
             <div class="control-area" id="controlArea">
                 <div class="search-and-controls-row">
@@ -70,7 +74,7 @@
                     <div class="custom-dropdown" id="brandDropdown">
                         <button class="dropdown-toggle filter-btn" id="brandDropdownToggle">
                             <i class="fa-solid fa-bicycle"></i>
-                            <span>브랜드 전체</span>
+                            <span>브랜드 검색</span>
                             <i class="fa-solid fa-chevron-down chevron-icon"></i>
                         </button>
                         <div class="dropdown-menu" id="brandDropdownMenu">

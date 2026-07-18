@@ -135,14 +135,18 @@ textarea {
     font-family: inherit;
 }
 
-body {
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
     font-family: 'Paperozi', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
     color: var(--text-primary);
     background-color: var(--bg-body);
-    height: 100vh;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     letter-spacing: -0.01em;
@@ -1321,6 +1325,10 @@ body.dark-mode .brand-logo .logo-dark {
     font-weight: 500;
 }
 
+.map-popup-header .store-brand-badges {
+    justify-content: center;
+}
+
 /* Leaflet Popup Customization */
 .leaflet-popup-content-wrapper {
     background: rgba(255, 255, 255, 0.95);
@@ -1385,6 +1393,10 @@ body.dark-mode .brand-logo .logo-dark {
     .map-popup-header {
         margin-bottom: 4px;
         padding-bottom: 6px;
+    }
+    
+    .map-popup-header .store-brand-badges {
+        justify-content: center;
     }
 
     .map-popup-body {
@@ -2014,36 +2026,88 @@ body.modal-open .mobile-fab-container {
 }
 
 @media (max-width: 900px) {
+    html, body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
     body {
-        display: block;
-        height: auto;
-        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
     }
 
     .main-container {
+        display: flex;
         flex-direction: column-reverse;
-        height: auto;
+        flex: 1;
+        min-height: 0;
+        position: relative;
     }
 
     .map-panel {
-        height: 300px;
-        flex: none;
+        flex: 1;
+        min-height: 0;
         position: relative;
-        top: 0;
         z-index: 5;
+        touch-action: none;
     }
 
     .list-panel {
-        width: 100%;
-        height: auto;
         flex: none;
+        height: 40px; /* 기본은 핸들만 노출 */
+        width: 100%;
+        background: var(--bg-panel);
+        border-radius: 24px 24px 0 0;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        transition: height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         border-right: none;
+        padding-top: 8px;
+        overflow: hidden; /* 높이가 작을 때 리스트 숨김 */
+    }
+    
+    .list-panel.expanded {
+        height: 60vh;
+    }
+    
+    .list-panel.dragging {
+        transition: none;
+    }
+
+    .bottom-sheet-handle {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 4px 0 12px 0;
+        cursor: grab;
+        flex-shrink: 0;
+        background: transparent;
+        touch-action: pan-y;
+    }
+    
+    .bottom-sheet-handle:active {
+        cursor: grabbing;
+    }
+
+    .handle-bar {
+        width: 40px;
+        height: 5px;
+        background-color: #d1d1d6;
+        border-radius: 3px;
+    }
+    
+    body.dark-mode .handle-bar {
+        background-color: #555;
     }
 
     .list-content {
         max-height: none;
-        overflow: visible;
+        overflow-y: auto;
         padding: 16px;
+        flex: 1;
     }
 
     header {
@@ -2092,6 +2156,16 @@ body.modal-open .mobile-fab-container {
     .mobile-only-header-controls .tabs-container {
         margin-top: 0;
         padding-bottom: 0;
+    }
+
+    .tabs-container::before,
+    .tabs-container::after {
+        display: none !important;
+    }
+
+    .category-tabs {
+        touch-action: pan-x;
+        scroll-behavior: auto;
     }
 
     /* 다크모드 헤더 대응 */
