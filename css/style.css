@@ -491,34 +491,16 @@ body.dark-mode .brand-logo .logo-dark {
    통합 버튼 디자인 시스템 (icon-control-btn + filter-btn 공통 베이스)
    ============================================== */
 
-/* 신규 컴팩트 지도 제어 버튼 영역 (지도 플로팅) */
-.map-controls-compact {
+/* 신규 컴팩트 지도 제어 버튼 영역 (지도 플로팅 좌측) */
+.map-controls-left {
     position: absolute;
     top: 92px; /* Leaflet 줌 컨트롤 바로 아래에 배치 (웹버전 기준) */
     left: 12px;
-    right: auto;
     z-index: 1000;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
-
-.map-controls-compact .map-menu-panel {
-    left: 0;
-    right: auto;
-}
-
-@media (max-width: 900px) {
-    .map-controls-compact {
-        top: 12px;
-        right: 12px;
-        left: auto;
-        align-items: flex-end;
-    }
-    .map-controls-compact .map-menu-panel {
-        left: auto;
-        right: 0;
-    }
+    gap: 8px;
 }
 
 /* 브랜드 뱃지 공통 스타일 */
@@ -539,17 +521,11 @@ body.dark-mode .brand-logo .logo-dark {
     line-height: 1.2;
 }
 
-/* 퀄리스포츠 - 파란색 */
-.brand-badge.brand-qualisports {
-    background-color: var(--quali-blue);
+/* 퀄리스포츠&엑스트론 통합 - 파란색 그라데이션 또는 단색 */
+.brand-badge.brand-qualisports-xtron {
+    background: linear-gradient(135deg, var(--quali-blue), var(--quali-dark));
     color: #ffffff;
-}
-
-/* 엑스트론 - 검정색배경 & 흰색글씨 & 테두리 */
-.brand-badge.brand-xtron {
-    background-color: var(--quali-dark);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* 퀄리바이크 - 녹색 */
@@ -685,55 +661,86 @@ body.dark-mode .brand-logo .logo-dark {
 }
 
 /* ==============================================
-   지도 퀵 메뉴 패널 스타일
+   모바일 FAB 통합 메뉴
    ============================================== */
-.map-menu-panel {
-    display: none;
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    min-width: 140px;
-    z-index: 1000;
-    padding: 8px;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.map-menu-panel.open {
+.mobile-fab-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: var(--z-header);
     display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
 }
 
-.map-menu-item {
+.fab-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-origin: bottom right;
+}
+
+.fab-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.fab-btn.main-fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--quali-blue);
+    color: #fff;
+    font-size: 24px;
+    border: none;
+    box-shadow: 0 4px 14px rgba(47, 98, 134, 0.4);
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: none;
-    background: transparent;
+    justify-content: center;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-    font-size: 14px;
-    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.fab-btn.main-fab:active {
+    transform: scale(0.92);
+}
+
+.fab-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
     color: var(--text-primary);
-    text-align: left;
-    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    min-width: 160px;
 }
 
-.map-menu-item:hover {
-    background: rgba(0, 0, 0, 0.05);
+.fab-menu-item i {
+    font-size: 16px;
+    color: var(--quali-blue);
 }
 
-.map-menu-item.active {
-    background: var(--quali-dark);
-    color: #fff;
-}
+.fab-menu-item.kakao i { color: var(--color-kakao-text); }
+.fab-menu-item.kakao { background: var(--color-kakao-bg); color: var(--color-kakao-text); }
+.fab-menu-item.regist { background: var(--quali-blue); color: #fff; }
+.fab-menu-item.regist i { color: #fff; }
+.fab-menu-item.active { background: var(--quali-dark); color: #fff; }
+.fab-menu-item.active i { color: #fff; }
 
 /* ==============================================
    커스텀 드롭다운 스타일 (브랜드 선택)

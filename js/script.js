@@ -55,12 +55,21 @@ function escapeHTML(str) {
 // [신규] 취급브랜드 뱃지 생성 함수
 function getBrandBadgesHtml(brandStr) {
     if (!brandStr) return '';
-    const brands = brandStr.split(',').map(b => b.trim()).filter(b => b !== '');
+    const rawBrands = brandStr.split(',').map(b => b.trim()).filter(b => b !== '');
+    
+    let brands = new Set();
+    rawBrands.forEach(b => {
+        if (b === '퀄리스포츠' || b === '엑스트론' || b === '퀄리스포츠&엑스트론') {
+            brands.add('퀄리스포츠&엑스트론');
+        } else {
+            brands.add(b);
+        }
+    });
+
     let html = '<div class="store-brand-badges">';
     brands.forEach(b => {
         let badgeClass = '';
-        if (b === '퀄리스포츠') badgeClass = 'brand-qualisports';
-        else if (b === '엑스트론') badgeClass = 'brand-xtron';
+        if (b === '퀄리스포츠&엑스트론') badgeClass = 'brand-qualisports-xtron';
         else if (b === '퀄리바이크') badgeClass = 'brand-qualibike';
         else if (b === '케어엑스') badgeClass = 'brand-carex';
         else return; // '부품' 등 매칭되지 않는 텍스트 무시
@@ -120,28 +129,55 @@ function setupEventListeners() {
         }
     });
 
-    // 지도 퀵 메뉴 (기존 지도 제어 버튼 통합)
-    const btnMapMenu = document.getElementById("btnMapMenu");
-    const mapMenuPanel = document.getElementById("mapMenuPanel");
+    // 지도 퀵 메뉴 (데스크탑 좌측 + 모바일 통합 메뉴 공통 적용)
+    const btnClusters = document.querySelectorAll(".btn-cluster");
+    const btnMyLocations = document.querySelectorAll(".btn-my-location");
 
-    if (btnMapMenu && mapMenuPanel) {
-        btnMapMenu.addEventListener("click", (e) => {
+    btnClusters.forEach(btn => {
+        btn.addEventListener("click", (e) => {
             e.stopPropagation();
-            mapMenuPanel.classList.toggle("open");
+            toggleClustering();
+            document.getElementById("mobileFabMenu")?.classList.remove("open");
+        });
+    });
+
+    btnMyLocations.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleMyLocation();
+            document.getElementById("mobileFabMenu")?.classList.remove("open");
+        });
+    });
+
+    // 모바일 FAB 메뉴 토글
+    const mobileFabToggle = document.getElementById("mobileFabToggle");
+    const mobileFabMenu = document.getElementById("mobileFabMenu");
+    
+    if (mobileFabToggle && mobileFabMenu) {
+        mobileFabToggle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            mobileFabMenu.classList.toggle("open");
+            // 메뉴가 열려있으면 아이콘 변경 (X 모양 등)
+            const icon = mobileFabToggle.querySelector('i');
+            if(mobileFabMenu.classList.contains("open")) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
         });
         
         // 외부 클릭 시 닫기
         document.addEventListener("click", (e) => {
-            if (!mapMenuPanel.contains(e.target) && e.target !== btnMapMenu && !btnMapMenu.contains(e.target)) {
-                mapMenuPanel.classList.remove("open");
+            if (!mobileFabMenu.contains(e.target) && e.target !== mobileFabToggle && !mobileFabToggle.contains(e.target)) {
+                mobileFabMenu.classList.remove("open");
+                const icon = mobileFabToggle.querySelector('i');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
             }
         });
     }
-
-    document.getElementById("btnCluster")?.addEventListener("click", () => { toggleClustering(); mapMenuPanel?.classList.remove("open"); });
-    document.getElementById("btnMyLocation")?.addEventListener("click", () => { toggleMyLocation(); mapMenuPanel?.classList.remove("open"); });
-    // 다크모드는 주석처리하여 사용하지 않음
-    // document.getElementById("btnDarkMode")?.addEventListener("click", () => { toggleDarkMode(); mapMenuPanel?.classList.remove("open"); });
 
     // 2단: 필터 버튼 (이벤트 위임)
     const filterContainer = document.getElementById("filterButtonsContainer");
@@ -422,7 +458,7 @@ function updateMarkers(stores) {
             // [상세 정보 HTML 생성]
             let branchHtml = '';
             if (store.branch && String(store.branch).trim() !== '') {
-                branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
+                branchHtml = `<div class="map-popup-branch">퀄리스포츠&엑스트론 ${escapeHTML(store.branch)}</div>`;
             }
 
             // [변경] 웹사이트(데스크탑)에서 정보를 모두 표시하기 위해 팝업 내용은 항상 전체 정보를 포함하도록 생성
@@ -613,13 +649,13 @@ function openNaverNavi(lat, lng, name) {
 // [신규 기능] 클러스터링 토글
 function toggleClustering() {
     isClusteringEnabled = !isClusteringEnabled;
-    const btn = document.getElementById('btnCluster'); // ID 변경
+    const btns = document.querySelectorAll('.btn-cluster');
 
     if (isClusteringEnabled) {
-        btn.classList.add('active');
+        btns.forEach(btn => btn.classList.add('active'));
         applyFilter();
     } else {
-        btn.classList.remove('active');
+        btns.forEach(btn => btn.classList.remove('active'));
         applyFilter();
     }
 }
@@ -651,13 +687,13 @@ function toggleDarkMode() {
 
 // [신규 기능] 내 위치 토글 (Toggle)
 function toggleMyLocation() {
-    const btn = document.getElementById('btnMyLocation');
+    const btns = document.querySelectorAll('.btn-my-location');
 
     // 이미 마커가 있다면 -> 끄기 (제거)
     if (window.myLocationMarker) {
         map.removeLayer(window.myLocationMarker);
         window.myLocationMarker = null;
-        btn.classList.remove('active');
+        btns.forEach(btn => btn.classList.remove('active'));
         return;
     }
 
@@ -704,11 +740,11 @@ function toggleMyLocation() {
                 .openPopup();
 
             // 버튼 활성화
-            btn.classList.add('active');
+            btns.forEach(btn => btn.classList.add('active'));
         },
         (error) => {
             alert("위치 정보를 가져올 수 없습니다. 권한을 확인해주세요.");
-            btn.classList.remove('active');
+            btns.forEach(btn => btn.classList.remove('active'));
         }
     );
 }
@@ -757,7 +793,7 @@ function renderList(data) {
 
         let branchHtml = '';
         if (store.branch && String(store.branch).trim() !== '') {
-            branchHtml = `<div class="store-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
+            branchHtml = `<div class="store-branch">퀄리스포츠&엑스트론 ${escapeHTML(store.branch)}</div>`;
         }
 
         const card = document.createElement("div");
@@ -977,7 +1013,7 @@ function showMobileModal(store) {
 
     let branchHtml = '';
     if (store.branch && String(store.branch).trim() !== '') {
-        branchHtml = `<div class="map-popup-branch">퀄리스포츠 ${escapeHTML(store.branch)}</div>`;
+        branchHtml = `<div class="map-popup-branch">퀄리스포츠&엑스트론 ${escapeHTML(store.branch)}</div>`;
     }
 
     let popupLinkBtn = '';
@@ -1141,19 +1177,22 @@ function applyFilter() {
             storeBrands = brandVal.split(',').map(b => b.trim()).filter(b => b !== '');
         }
 
+        // 퀄리스포츠/엑스트론 통합 매핑
+        let mappedStoreBrands = storeBrands.map(b => (b === '퀄리스포츠' || b === '엑스트론') ? '퀄리스포츠&엑스트론' : b);
+
         // '부품' 제외 처리 로직 
-        // 매장이 오직 '부품'만 취급하는 경우 노출하지 않음 (유효한 4개 브랜드가 하나도 없으면 노출 제외)
-        const validBrands = ['퀄리스포츠', '엑스트론', '퀄리바이크', '케어엑스'];
-        const hasValidBrand = storeBrands.some(b => validBrands.includes(b));
+        // 매장이 오직 '부품'만 취급하는 경우 노출하지 않음 (유효한 3개 브랜드가 하나도 없으면 노출 제외)
+        const validBrands = ['퀄리스포츠&엑스트론', '퀄리바이크', '케어엑스'];
+        const hasValidBrand = mappedStoreBrands.some(b => validBrands.includes(b));
         
         // 유효한 브랜드가 하나도 없는 매장(예: '부품'만 있는 경우)은 리스트에서 제외
-        if (!hasValidBrand && storeBrands.length > 0) {
+        if (!hasValidBrand && mappedStoreBrands.length > 0) {
             return false;
         }
 
         // 선택된 브랜드가 있을 경우 (OR 조건)
         if (selectedBrands.length > 0) {
-            const hasMatch = selectedBrands.some(selected => storeBrands.includes(selected));
+            const hasMatch = selectedBrands.some(selected => mappedStoreBrands.includes(selected));
             if (!hasMatch) return false;
         }
 

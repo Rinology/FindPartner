@@ -76,12 +76,8 @@
                         <div class="dropdown-menu" id="brandDropdownMenu">
                             <button type="button" class="btn-reset-brands" id="btnClearBrands">선택 해제</button>
                             <label class="dropdown-item">
-                                <input type="checkbox" value="퀄리스포츠" class="brand-check">
-                                <span>퀄리스포츠</span>
-                            </label>
-                            <label class="dropdown-item">
-                                <input type="checkbox" value="엑스트론" class="brand-check">
-                                <span>엑스트론</span>
+                                <input type="checkbox" value="퀄리스포츠&엑스트론" class="brand-check">
+                                <span>퀄리스포츠&엑스트론</span>
                             </label>
                             <label class="dropdown-item">
                                 <input type="checkbox" value="퀄리바이크" class="brand-check">
@@ -157,25 +153,14 @@
         <!-- 오른쪽 패널: Leaflet Map -->
         <main class="map-panel">
             <div id="map"></div>
-            <!-- [신규] 지도 퀵 메뉴 (지도 위에 absolute 배치) -->
-            <div class="map-controls-compact">
-                <button id="btnMapMenu" class="icon-control-btn" title="지도 메뉴">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>퀵메뉴</span>
+            <!-- [신규] 지도 좌측 퀵 메뉴 (데스크탑) -->
+            <div class="map-controls-left desktop-only">
+                <button class="icon-control-btn active btn-cluster" title="지도 핀 모아보기">
+                    <i class="fa-solid fa-layer-group"></i>
                 </button>
-                    <div id="mapMenuPanel" class="map-menu-panel">
-                        <button id="btnCluster" class="map-menu-item active">
-                            <span>핀 묶어보기</span>
-                        </button>
-                        <button id="btnMyLocation" class="map-menu-item">
-                            <span>내 위치</span>
-                        </button>
-                        <!-- 다크모드는 주석처리하여 사용하지 않음
-                        <button id="btnDarkMode" class="map-menu-item">
-                            <span>다크모드</span>
-                        </button>
-                        -->
-                    </div>
+                <button class="icon-control-btn btn-my-location" title="내 위치 검색">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                </button>
             </div>
         </main>
     </div>
@@ -188,10 +173,25 @@
         </div>
     </div>
 
-    <!-- [신규] 모바일 플로팅 액션 버튼 (FAB) -->
+    <!-- [신규] 모바일 플로팅 액션 버튼 (FAB) 통합 메뉴 -->
     <div class="mobile-fab-container mobile-only">
-        <a href="#" id="fabRegistBtn" target="_blank" class="fab-btn regist">제품등록</a>
-        <a href="#" id="fabKakaoBtn" target="_blank" class="fab-btn kakao">카카오톡 문의</a>
+        <div class="fab-menu" id="mobileFabMenu">
+            <button class="fab-menu-item active btn-cluster">
+                <i class="fa-solid fa-layer-group"></i> 지도 핀 모아보기
+            </button>
+            <button class="fab-menu-item btn-my-location">
+                <i class="fa-solid fa-location-crosshairs"></i> 내 위치 검색
+            </button>
+            <a href="#" id="fabKakaoBtn" target="_blank" class="fab-menu-item kakao">
+                <i class="fa-brands fa-kakao"></i> 카카오톡 문의
+            </a>
+            <a href="#" id="fabRegistBtn" target="_blank" class="fab-menu-item regist">
+                <i class="fa-solid fa-file-signature"></i> 제품등록센터
+            </a>
+        </div>
+        <button id="mobileFabToggle" class="fab-btn main-fab">
+            <i class="fa-solid fa-bars"></i>
+        </button>
     </div>
 
     <!-- [필수] Leaflet.js (Local) -->
