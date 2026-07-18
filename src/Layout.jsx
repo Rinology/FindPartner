@@ -3,7 +3,6 @@ import Header from './components/Header';
 import ListPanel from './components/ListPanel';
 import StoreDetail from './components/StoreDetail';
 import MapPanel from './components/MapPanel';
-import MobileFAB from './components/MobileFAB';
 import MobileStoreModal from './components/MobileStoreModal';
 import { useStoreContext } from './StoreContext';
 
@@ -28,7 +27,6 @@ export default function Layout() {
             {/* Mobile: Full Screen Modal when store is selected */}
             {isMobile && selectedStore && <MobileStoreModal />}
 
-            {isMobile && !selectedStore && <MobileFAB />}
         </div>
     );
 }

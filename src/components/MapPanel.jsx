@@ -339,6 +339,29 @@ export default function MapPanel() {
                 >
                     <i className="fa-solid fa-crosshairs"></i>
                 </button>
+
+                {isMobile && (
+                    <>
+                        <a 
+                            href="http://pf.kakao.com/_xhxhRZxl/chat"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="w-10 h-10 bg-[#FEE500] text-[#191919] rounded-xl shadow-lg flex items-center justify-center transition-transform active:scale-95"
+                            title="카카오톡 문의"
+                        >
+                            <i className="fa-solid fa-comment"></i>
+                        </a>
+                        <a 
+                            href="https://xtroncare.kr"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="w-10 h-10 bg-[#2f6286] text-white rounded-xl shadow-lg flex items-center justify-center transition-transform active:scale-95"
+                            title="제품등록센터"
+                        >
+                            <i className="fa-solid fa-file-signature"></i>
+                        </a>
+                    </>
+                )}
             </div>
         </div>
     );

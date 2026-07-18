@@ -61,12 +61,11 @@ export default function BrandInfo() {
 
 
 
-            {/* Event Banner Space */}
+            {/* Event Banner Space (Hidden by request)
             <div 
                 className="w-full mb-6 relative rounded-2xl overflow-hidden shadow-md cursor-pointer hover:shadow-lg transition-shadow" 
                 onClick={() => window.open('https://buyxtron.com/', '_blank')}
             >
-                {/* TODO: 나중에 S3 호스팅 이미지 주소로 src를 갈아끼워주세요. */}
                 <img 
                     src={eventBannerImg} 
                     alt="퀄리스포츠 X 엑스트론 무이자 24개월 이벤트" 
@@ -84,6 +83,7 @@ export default function BrandInfo() {
                     allowFullScreen>
                 </iframe>
             </div>
+            */}
 
             <div className="w-full bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-left space-y-4">
                 <div className="flex items-center gap-3">
