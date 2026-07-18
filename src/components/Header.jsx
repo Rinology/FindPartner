@@ -16,10 +16,10 @@ export default function Header() {
                         {!isMobile && (
                             <div className="flex items-center gap-2">
                                 <a href="http://pf.kakao.com/_xhxhRZxl/chat" target="_blank" rel="noreferrer" className="flex items-center gap-1.5 px-3 py-1 bg-[#FEE500] hover:bg-[#F4DC00] text-[#000000] text-xs font-bold rounded-full transition-colors shadow-sm">
-                                    <i className="fa-brands fa-kakao text-sm"></i> 카카오톡
+                                    <i className="fa-brands fa-kakao text-sm"></i> 카카오톡 1:1상담 하기
                                 </a>
-                                <a href="https://xtroncare.kr" target="_blank" rel="noreferrer" className="flex items-center gap-1.5 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-full transition-colors shadow-sm">
-                                    <i className="fa-solid fa-file-signature text-sm"></i> 정품등록센터
+                                <a href="https://xtroncare.kr" target="_blank" rel="noreferrer" className="flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-full transition-colors shadow-sm">
+                                    정품등록센터
                                 </a>
                             </div>
                         )}

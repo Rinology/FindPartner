@@ -18,13 +18,6 @@ export default function Layout() {
                 {/* Desktop: Sidebar on the left */}
                 {!isMobile && <ListPanel />}
                 
-                {/* Desktop: Detail Panel sliding in next to ListPanel */}
-                {!isMobile && selectedStore && (
-                    <aside className="w-[360px] bg-white shadow-xl z-[900] shrink-0 h-full border-r border-gray-200 animate-slide-in-left absolute left-96 top-0 bottom-0 overflow-y-auto">
-                        <StoreDetail />
-                    </aside>
-                )}
-                
                 {/* Map occupies remaining space */}
                 <MapPanel />
                 

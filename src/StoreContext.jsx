@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { fetchStoreData } from './api';
+import { calculateDistance, getStoreLatLng } from './utils/mapUtils';
 
 const StoreContext = createContext();
 
@@ -22,6 +23,7 @@ export function StoreProvider({ children }) {
     // Responsive / Layout State
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
     const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
+    const [isLocationActive, setIsLocationActive] = useState(false);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 900);
@@ -88,12 +90,24 @@ export function StoreProvider({ children }) {
 
             return true;
         }).sort((a, b) => {
+            // 위치 기반 검색 활성화 시, 거리순 정렬 우선
+            if (isLocationActive && userLocation) {
+                const posA = getStoreLatLng(a);
+                const posB = getStoreLatLng(b);
+                if (posA && posB) {
+                    const distA = calculateDistance(userLocation.lat, userLocation.lng, posA.lat, posA.lng);
+                    const distB = calculateDistance(userLocation.lat, userLocation.lng, posB.lat, posB.lng);
+                    // 거리순 정렬 후 S등급 여부는 고려하지 않음 (가까운게 최고)
+                    return distA - distB;
+                }
+            }
+
             // S grade stores always come first
             if (a.grade === 'S' && b.grade !== 'S') return -1;
             if (a.grade !== 'S' && b.grade === 'S') return 1;
             return 0;
         });
-    }, [allData, selectedRegion, searchQuery, selectedBrands, isPremiumOnly, isOneCareOnly]);
+    }, [allData, selectedRegion, searchQuery, selectedBrands, isPremiumOnly, isOneCareOnly, isLocationActive, userLocation]);
 
     const resetFilters = () => {
         setSearchQuery("");
@@ -102,6 +116,7 @@ export function StoreProvider({ children }) {
         setIsPremiumOnly(false);
         setIsOneCareOnly(false);
         setSelectedStore(null);
+        setIsLocationActive(false);
     };
 
     const value = {
@@ -115,7 +130,8 @@ export function StoreProvider({ children }) {
         selectedStore, setSelectedStore,
         isMobile,
         isBottomSheetExpanded, setIsBottomSheetExpanded,
-        resetFilters
+        resetFilters,
+        isLocationActive, setIsLocationActive
     };
 
     return (

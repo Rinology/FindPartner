@@ -4,7 +4,7 @@ import { escapeHTML, getMarkerIcon, getStoreLatLng, getPopupHTML } from '../util
 import { CONFIG } from '../config';
 
 export default function MapPanel() {
-    const { filteredData, selectedStore, setSelectedStore, isBottomSheetExpanded, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation, selectedBrands, setSelectedBrands, isPremiumOnly, setIsPremiumOnly, isOneCareOnly, setIsOneCareOnly, selectedRegion } = useStoreContext();
+    const { filteredData, selectedStore, setSelectedStore, isBottomSheetExpanded, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation, selectedBrands, setSelectedBrands, isPremiumOnly, setIsPremiumOnly, isOneCareOnly, setIsOneCareOnly, selectedRegion, setIsLocationActive } = useStoreContext();
     const [isClustered, setIsClustered] = React.useState(true);
     const [isBrandDropdownOpen, setIsBrandDropdownOpen] = React.useState(false);
 
@@ -39,6 +39,7 @@ export default function MapPanel() {
                 zoomControl: false
             });
             mapInstance.current = map;
+            window.mapInstance = mapInstance;
 
             // Base maps
             L.tileLayer(CONFIG.MAP.LIGHT_TILE, {
@@ -127,20 +128,19 @@ export default function MapPanel() {
                 marker.on('click', () => {
                     setSelectedStore(store);
                     setIsBrandDropdownOpen(false);
-                    const zoomLvl = isMobile ? 17 : 16;
-                    map.setView(pos, zoomLvl, { animate: true, duration: 0.5 });
                 });
 
                 newMarkers.push(marker);
                 
-                if (!isClustered) {
+                if (isClustered) {
+                    clusterGroup.addLayer(marker);
+                } else {
                     marker.addTo(map);
                 }
             }
         });
 
         if (isClustered) {
-            clusterGroup.addLayers(newMarkers);
             if (!map.hasLayer(clusterGroup)) {
                 map.addLayer(clusterGroup);
             }
@@ -158,37 +158,37 @@ export default function MapPanel() {
     useEffect(() => {
         if (!mapInstance.current || !selectedStore) return;
 
-        // Remove active-pin class from all markers
+        // Remove custom z-index from all markers
         document.querySelectorAll('.custom-pin').forEach(el => {
-            el.classList.remove('active-pin', 'animate-pulse-scale');
             el.style.zIndex = "";
         });
 
         const storeMarker = markersRef.current.find(m => m.storeData === selectedStore);
         if (storeMarker) {
-            // Add active-pin class to selected marker
+            // Bring selected marker to front
             if (storeMarker.getElement()) {
                 const iconEl = storeMarker.getElement();
-                iconEl.classList.add('active-pin', 'animate-pulse-scale');
                 iconEl.style.zIndex = 9999;
             }
 
             if (!isMobile) {
-                // Focus and slightly offset
+                // Focus marker directly in the center for desktop
                 const pos = getStoreLatLng(selectedStore);
                 if (pos) {
                     const currentZoom = mapInstance.current.getZoom();
-                    const targetZoom = currentZoom < 14 ? 14 : currentZoom;
-                    
-                    // Add an offset so the marker isn't hidden behind the new detail panel
-                    // Detail panel is ~360px wide on the left (next to the 384px list panel)
-                    // The center of the visible map is offset to the right.
-                    mapInstance.current.flyTo(
-                        [pos.lat, pos.lng], 
-                        targetZoom, 
-                        { animate: true, duration: 1.0, easeLinearity: 0.25 }
-                    );
+                    const targetZoom = currentZoom < 17 ? 17 : currentZoom;
+                    mapInstance.current.flyTo([pos.lat, pos.lng], targetZoom, { animate: true, duration: 1.0 });
                 }
+            } else {
+                // Wait for bottom sheet animation for mobile
+                setTimeout(() => {
+                    const pos = getStoreLatLng(selectedStore);
+                    if (pos) {
+                        const currentZoom = mapInstance.current.getZoom();
+                        const targetZoom = currentZoom < 17 ? 17 : currentZoom;
+                        mapInstance.current.flyTo([pos.lat, pos.lng], targetZoom, { animate: true, duration: 0.5 });
+                    }
+                }, 300);
             }
         }
     }, [selectedStore, isMobile]);
@@ -197,14 +197,21 @@ export default function MapPanel() {
         if (!mapInstance.current) return;
         const map = mapInstance.current;
         if (userLocation) {
+            setIsLocationActive(true);
             map.flyTo([userLocation.lat, userLocation.lng], 15, { animate: true, duration: 1.0 });
         } else if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(pos => {
-                const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                setUserLocation(loc);
-                window.userLocation = loc;
-                map.flyTo([loc.lat, loc.lng], 15, { animate: true, duration: 1.0 });
-            });
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    setUserLocation(loc);
+                    window.userLocation = loc;
+                    setIsLocationActive(true);
+                    map.flyTo([loc.lat, loc.lng], 15, { animate: true, duration: 1.0 });
+                },
+                err => {
+                    alert("위치 정보를 가져올 수 없습니다. 브라우저의 위치 권한 설정을 확인해주세요.");
+                }
+            );
         }
     };
 

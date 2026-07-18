@@ -39,6 +39,47 @@ export function getStoreLatLng(store) {
     return null;
 }
 
+export function calculateDistance(lat1, lon1, lat2, lon2) {
+    const toRad = x => x * Math.PI / 180;
+    const R = 6371; // Earth's radius in km
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
+export function getClosestStoreRegion(stores, userLat, userLng) {
+    if (!stores || stores.length === 0 || !userLat || !userLng) return null;
+
+    let closestStore = null;
+    let minDistance = Infinity;
+
+    stores.forEach(store => {
+        const pos = getStoreLatLng(store);
+        if (pos) {
+            const d = calculateDistance(userLat, userLng, pos.lat, pos.lng);
+            if (d < minDistance) {
+                minDistance = d;
+                closestStore = store;
+            }
+        }
+    });
+
+    if (closestStore && closestStore.address) {
+        const REGIONS = ['서울', '경기', '인천', '강원', '충북', '충남', '대전', '세종', '경북', '경남', '대구', '울산', '부산', '전북', '전남', '광주', '제주'];
+        for (const r of REGIONS) {
+            if (closestStore.address.includes(r)) {
+                return r;
+            }
+        }
+    }
+
+    return null;
+}
+
 export function getMarkerIcon(category, grade, isSelected = false) {
     const L = window.L;
     if (!L) return null;
@@ -71,25 +112,17 @@ export function getMarkerIcon(category, grade, isSelected = false) {
 }
 
 export function openNaverNavi(lat, lng, name) {
-    let url = `https://map.naver.com/index.nhn?elat=${lat}&elng=${lng}&etext=${encodeURIComponent(name)}&menu=route`;
+    let url = `https://map.naver.com/p/directions/`;
     
-    const go = (uLat, uLng) => {
-        if (uLat && uLng) {
-            url += `&slat=${uLat}&slng=${uLng}&stext=${encodeURIComponent('내위치')}`;
-        }
-        window.open(url, '_blank');
-    };
-
     if (window.userLocation) {
-        go(window.userLocation.lat, window.userLocation.lng);
-    } else if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (pos) => go(pos.coords.latitude, pos.coords.longitude),
-            () => go()
-        );
+        url += `${window.userLocation.lng},${window.userLocation.lat},${encodeURIComponent('내위치')}/`;
     } else {
-        go();
+        url += `-/`;
     }
+    
+    url += `${lng},${lat},${encodeURIComponent(name)}/-/car?c=15.00,0,0,0,dh`;
+    
+    window.open(url, '_blank');
 }
 
 export function getBrandsFromStore(store) {

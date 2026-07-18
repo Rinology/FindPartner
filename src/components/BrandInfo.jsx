@@ -1,28 +1,82 @@
 import React from 'react';
+import { useStoreContext } from '../StoreContext';
+import { getClosestStoreRegion } from '../utils/mapUtils';
 
 export default function BrandInfo() {
+    const { allData, setUserLocation, setIsLocationActive, setSelectedRegion } = useStoreContext();
+
+    const handleRequestLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    setUserLocation(loc);
+                    window.userLocation = loc;
+                    setIsLocationActive(true);
+                    
+                    // 가장 가까운 매장의 지역을 찾아 자동 설정
+                    const closestRegion = getClosestStoreRegion(allData, loc.lat, loc.lng);
+                    if (closestRegion) {
+                        setSelectedRegion(closestRegion);
+                    }
+
+                    // 지도 이동 트리거 (MapPanel.jsx에서 감지)
+                    if (window.mapInstance && window.mapInstance.current) {
+                        window.mapInstance.current.flyTo([loc.lat, loc.lng], 15, { animate: true, duration: 1.0 });
+                    }
+                },
+                err => {
+                    alert("위치 정보를 가져올 수 없습니다. 브라우저 주소창 왼쪽의 자물쇠 아이콘을 눌러 위치 권한이 '허용'되어 있는지 확인해주세요.");
+                }
+            );
+        } else {
+            alert("이 브라우저에서는 위치 기반 서비스를 지원하지 않습니다.");
+        }
+    };
+
     return (
-        <div className="flex flex-col items-center justify-center h-full p-8 text-center text-gray-500 animate-in fade-in duration-500">
-            <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-6">
-                <i className="fa-solid fa-bicycle text-3xl text-blue-500"></i>
+        <div className="flex flex-col items-center justify-start min-h-full p-8 text-center text-gray-500 animate-in fade-in duration-500">
+            <div className="mb-4">
+                <img src="https://cdn.xtron-guide.kr/common/logos/Xtron_x_Qualisports_Logo_Black.webp" alt="Qualisports x Xtron Logo" className="h-10 object-contain mx-auto" />
             </div>
-            <h3 className="text-xl font-extrabold text-gray-900 mb-2 tracking-tight">퀄리스포츠 X 엑스트론</h3>
-            <p className="text-sm leading-relaxed mb-6">
+            <p className="text-sm leading-relaxed mb-6 font-medium text-gray-600">
                 가까운 공식 대리점과 우수협력점을 찾아보세요.<br/>
                 가장 스마트한 모빌리티 라이프를 시작하세요.
             </p>
 
-            <div className="w-full mb-8 rounded-2xl overflow-hidden shadow-md aspect-video relative">
+            <button 
+                onClick={handleRequestLocation}
+                className="mb-6 w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md shadow-blue-200 transition-all flex items-center justify-center gap-2"
+            >
+                <i className="fa-solid fa-location-crosshairs"></i> 내 주변 매장 찾기
+            </button>
+
+
+
+            {/* Event Banner Space */}
+            <div 
+                className="w-full mb-6 relative rounded-2xl overflow-hidden shadow-md cursor-pointer hover:shadow-lg transition-shadow" 
+                onClick={() => window.open('https://buyxtron.com/', '_blank')}
+            >
+                {/* TODO: 나중에 S3 호스팅 이미지 주소로 src를 갈아끼워주세요. */}
+                <img 
+                    src="https://via.placeholder.com/800x800.png?text=24%EA%B0%9C%EC%9B%94+%EB%AC%B4%EC%9D%B4%EC%9E%90+%EC%9D%B4%EB%B2%A4%ED%8A%B8" 
+                    alt="퀄리스포츠 X 엑스트론 무이자 24개월 이벤트" 
+                    className="w-full h-auto object-cover"
+                />
+            </div>
+
+            <div className="w-full mb-6 rounded-2xl overflow-hidden shadow-md aspect-video relative min-h-[250px] shrink-0">
                 <iframe 
                     className="absolute top-0 left-0 w-full h-full"
-                    src="https://www.youtube.com/embed/n30Dk7wG5B4?autoplay=1&mute=1&loop=1&playlist=n30Dk7wG5B4" 
+                    src="https://www.youtube.com/embed/PaRQ9nw8VWw?rel=0" 
                     title="Quali Sports Video" 
                     frameBorder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowFullScreen>
                 </iframe>
             </div>
-            
+
             <div className="w-full bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-left space-y-4">
                 <div className="flex items-center gap-3">
                     <span className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
