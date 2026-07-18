@@ -137,6 +137,7 @@ textarea {
 
 html, body {
     height: 100%;
+    height: 100dvh;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -757,6 +758,10 @@ body.dark-mode .brand-logo .logo-dark {
     display: inline-block;
 }
 
+.dropdown-toggle {
+    white-space: nowrap;
+}
+
 .dropdown-toggle .chevron-icon {
     font-size: 0.75rem;
     margin-left: 2px;
@@ -833,6 +838,11 @@ body.dark-mode .brand-logo .logo-dark {
     font-size: 14px;
     font-weight: 500;
     color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.dropdown-item span {
+    white-space: nowrap;
 }
 
 .dropdown-item:hover {
@@ -2028,6 +2038,7 @@ body.modal-open .mobile-fab-container {
 @media (max-width: 900px) {
     html, body {
         height: 100%;
+        height: 100dvh;
         width: 100%;
         overflow: hidden;
     }
@@ -2055,7 +2066,8 @@ body.modal-open .mobile-fab-container {
 
     .list-panel {
         flex: none;
-        height: 40px; /* 기본은 핸들만 노출 */
+        height: 50px; /* Fallback for browsers not supporting env() */
+        height: calc(50px + env(safe-area-inset-bottom)); /* 여유 있게 높이고 안전영역 확보 */
         width: 100%;
         background: var(--bg-panel);
         border-radius: 24px 24px 0 0;
