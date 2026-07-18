@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+﻿import React, { useEffect, useRef } from 'react';
 import { useStoreContext } from '../StoreContext';
-import { escapeHTML, getMarkerIcon, getStoreLatLng } from '../utils/mapUtils';
+import { escapeHTML, getMarkerIcon, getStoreLatLng, getPopupHTML } from '../utils/mapUtils';
 import { CONFIG } from '../config';
 
 export default function MapPanel() {
-    const { filteredData, setSelectedStore, setIsBottomSheetExpanded, isMobile } = useStoreContext();
+    const { filteredData, selectedStore, setSelectedStore, setIsBottomSheetExpanded, isMobile } = useStoreContext();
     const mapRef = useRef(null);
     const mapInstance = useRef(null);
     const markerClusterGroup = useRef(null);
@@ -79,10 +79,11 @@ export default function MapPanel() {
         filteredData.forEach(store => {
             const pos = getStoreLatLng(store);
             if (pos) {
-                const grade = store.Grade;
-                const customIcon = getMarkerIcon(store.Category, grade);
+                const grade = store.grade;
+                const customIcon = getMarkerIcon(store.category, grade);
                 const marker = L.marker([pos.lat, pos.lng], { icon: customIcon });
-
+                marker.storeData = store;
+                marker.bindPopup(getPopupHTML(store), { offset: [0, -10], className: 'custom-leaflet-popup' });
                 marker.on('click', () => {
                     setSelectedStore(store);
                     if (isMobile) {
@@ -107,6 +108,19 @@ export default function MapPanel() {
         markersRef.current = newMarkers;
 
     }, [filteredData, isMobile, setSelectedStore, setIsBottomSheetExpanded]);
+
+    // Open popup when selectedStore changes externally (e.g. from list)
+    useEffect(() => {
+        if (!mapInstance.current || !selectedStore) return;
+        const targetMarker = markersRef.current.find(m => m.storeData === selectedStore);
+        if (targetMarker) {
+            if (markerClusterGroup.current) {
+                markerClusterGroup.current.zoomToShowLayer(targetMarker, () => targetMarker.openPopup());
+            } else {
+                targetMarker.openPopup();
+            }
+        }
+    }, [selectedStore]);
 
     return (
         <div className="absolute inset-0 z-0">

@@ -46,8 +46,8 @@ export function getMarkerIcon(category, grade) {
     if (grade === 'S') {
         let gradeClass = `grade-s-star`;
         return L.divIcon({
-            className: `custom-pin grade-star-pin ${gradeClass} flex items-center justify-center bg-amber-400 text-white rounded-full shadow-lg border-2 border-white`,
-            html: `<i class="fa-solid fa-star text-lg drop-shadow-sm"></i>`,
+            className: `custom-pin premium-pin ${gradeClass} flex items-center justify-center`,
+            html: `<i class="fa-solid fa-star drop-shadow-sm" style="font-size: 42px; color: #FFD700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.5), -1px -1px 0 rgba(255, 255, 255, 0.9) inset, 1px 1px 2px rgba(255, 255, 255, 0.8);"></i>`,
             iconSize: [42, 42],
             iconAnchor: [21, 21],
             popupAnchor: [0, -20]
@@ -67,3 +67,32 @@ export function getMarkerIcon(category, grade) {
     });
 }
 
+
+
+export function getPopupHTML(store) {
+    const isPremium = store.grade === 'S';
+    const isOneCare = store.oneCare === 'O';
+    let badges = '';
+    if (isPremium) badges += `<span class="inline-block bg-amber-100 text-amber-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1"><i class="fa-solid fa-star text-[9px]"></i> 우수</span>`;
+    if (isOneCare) badges += `<span class="inline-block bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1"><i class="fa-solid fa-screwdriver-wrench text-[9px]"></i> 원케어</span>`;
+    let brandTags = '';
+    if (store.brand || store.brands) {
+        brandTags = (store.brand || store.brands).split(',').map(b => `<span class="inline-block bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded mr-1 mb-1">${b.trim()}</span>`).join('');
+    }
+    const storeName = store.name || '';
+    const storeAddress = store.address || '';
+    const storePhone = store.phone || '';
+    const escapeHTML = (str) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return `
+        <div class="p-1 min-w-[180px]">
+            <div class="mb-1">${badges}</div>
+            <h4 class="text-sm font-bold text-gray-900 mb-1">${escapeHTML(storeName)}</h4>
+            <p class="text-xs text-gray-600 leading-tight mb-2">${escapeHTML(storeAddress)}</p>
+            <div class="mb-2">${brandTags}</div>
+            <div class="flex gap-2 mt-2 pt-2 border-t border-gray-100">
+                ${storePhone ? `<a href="tel:${storePhone}" class="flex-1 text-center bg-gray-50 hover:bg-gray-100 text-gray-700 text-xs font-semibold py-1.5 rounded transition-colors" style="text-decoration:none;"><i class="fa-solid fa-phone"></i> 전화</a>` : ''}
+                <a href="https://map.naver.com/index.nhn?slng=&slat=&stext=&elng=${store.lng}&elat=${store.lat}&pathType=0&showMap=true&etext=${escapeHTML(storeName)}&menu=route" target="_blank" class="flex-1 text-center bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold py-1.5 rounded transition-colors" style="text-decoration:none;"><i class="fa-solid fa-route"></i> 길찾기</a>
+            </div>
+        </div>
+    `;
+}

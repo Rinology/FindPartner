@@ -25,8 +25,8 @@ export default function StoreCard({ store }) {
         }
     };
 
-    const isPremium = store.Grade === 'S';
-    const isOneCare = store.OneCare === 'TRUE';
+    const isPremium = store.grade === 'S';
+    const isOneCare = store.oneCare === 'O';
 
     return (
         <div 
@@ -36,7 +36,7 @@ export default function StoreCard({ store }) {
             <div className="flex justify-between items-start mb-2">
                 <div className="flex gap-2 items-center flex-wrap">
                     <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                        {store.StoreName}
+                        {store.name}
                     </h3>
                     {isPremium && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-bold bg-amber-100 text-amber-600">
@@ -53,11 +53,11 @@ export default function StoreCard({ store }) {
             
             <p className="text-sm text-gray-600 mb-3 flex items-start gap-2">
                 <i className="fa-solid fa-location-dot mt-1 text-gray-400"></i>
-                <span>{store.Address}</span>
+                <span>{store.address}</span>
             </p>
 
             <div className="flex flex-wrap gap-2 mb-4">
-                {store.Brands && store.Brands.split(',').map((brand, i) => (
+                {(store.brand || store.brands) && (store.brand || store.brands).split(',').map((brand, i) => (
                     <span key={i} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md">
                         {brand.trim()}
                     </span>
@@ -65,15 +65,15 @@ export default function StoreCard({ store }) {
             </div>
 
             <div className="flex gap-2 mt-4 pt-4 border-t border-gray-50">
-                {store.Phone && (
-                    <a href={`tel:${store.Phone}`} onClick={(e) => e.stopPropagation()} className="flex-1 flex justify-center items-center gap-2 py-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-semibold transition-colors">
+                {store.phone && (
+                    <a href={`tel:${store.phone}`} onClick={(e) => e.stopPropagation()} className="flex-1 flex justify-center items-center gap-2 py-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-semibold transition-colors">
                         <i className="fa-solid fa-phone"></i> 전화
                     </a>
                 )}
                 <button 
                     onClick={(e) => {
                         e.stopPropagation();
-                        window.open(`https://map.naver.com/index.nhn?slng=&slat=&stext=&elng=${store.lng}&elat=${store.lat}&pathType=0&showMap=true&etext=${store.StoreName}&menu=route`, '_blank');
+                        window.open(`https://map.naver.com/index.nhn?slng=&slat=&stext=&elng=${store.lng}&elat=${store.lat}&pathType=0&showMap=true&etext=${store.name}&menu=route`, '_blank');
                     }} 
                     className="flex-1 flex justify-center items-center gap-2 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-semibold transition-colors"
                 >

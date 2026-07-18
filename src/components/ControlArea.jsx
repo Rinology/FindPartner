@@ -2,13 +2,12 @@
 import { useStoreContext } from '../StoreContext';
 
 export default function ControlArea() {
-    const {
-        searchQuery, setSearchQuery,
+    const { searchQuery, setSearchQuery,
         selectedBrands, setSelectedBrands,
         isPremiumOnly, setIsPremiumOnly,
         isOneCareOnly, setIsOneCareOnly,
         isMobile
-    } = useStoreContext();
+    , selectedRegion, setSelectedRegion } = useStoreContext();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -19,6 +18,8 @@ export default function ControlArea() {
             setSelectedBrands([...selectedBrands, brand]);
         }
     };
+
+    const REGIONS = ['서울', '경기', '인천', '강원', '충북', '충남', '대전', '세종', '경북', '경남', '대구', '울산', '부산', '전북', '전남', '광주', '제주'];
 
     return (
         <div className="flex flex-col gap-3 p-4 bg-white border-b border-gray-200 shrink-0">
@@ -36,6 +37,21 @@ export default function ControlArea() {
 
             {/* Filters Row */}
             <div className="flex flex-wrap gap-2 items-center">
+                {/* Region Dropdown */}
+                <div className="relative">
+                    <select
+                        value={selectedRegion}
+                        onChange={(e) => setSelectedRegion(e.target.value)}
+                        className={`appearance-none flex items-center gap-1.5 px-3 py-1.5 pr-8 rounded-full text-sm font-semibold transition-colors border outline-none ${selectedRegion !== 'all' ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}
+                    >
+                        <option value="all">전국 (시/도)</option>
+                        {REGIONS.map(r => (
+                            <option key={r} value={r}>{r}</option>
+                        ))}
+                    </select>
+                    <i className="fa-solid fa-chevron-down text-xs absolute right-3 top-[50%] -translate-y-[50%] pointer-events-none text-gray-500"></i>
+                </div>
+
                 {/* Brand Dropdown (Simplified as a popover) */}
                 <div className="relative">
                     <button 

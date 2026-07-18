@@ -44,29 +44,29 @@ export function StoreProvider({ children }) {
     const filteredData = useMemo(() => {
         return allData.filter(store => {
             // Region Filter
-            if (selectedRegion !== 'all' && store.Region !== selectedRegion) return false;
+            if (selectedRegion !== 'all' && store.region !== selectedRegion) return false;
             
             // Search Query Filter
             if (searchQuery) {
                 const query = searchQuery.toLowerCase();
-                const matchName = store.StoreName && store.StoreName.toLowerCase().includes(query);
-                const matchAddr = store.Address && store.Address.toLowerCase().includes(query);
+                const matchName = store.name && store.name.toLowerCase().includes(query);
+                const matchAddr = store.address && store.address.toLowerCase().includes(query);
                 if (!matchName && !matchAddr) return false;
             }
 
             // Brand Filter
             if (selectedBrands.length > 0) {
-                if (!store.Brands) return false;
-                const storeBrands = store.Brands.split(',').map(b => b.trim());
+                if (!(store.brand || store.brands)) return false;
+                const storeBrands = (store.brand || store.brands).split(',').map(b => b.trim());
                 const hasMatch = selectedBrands.some(brand => storeBrands.includes(brand));
                 if (!hasMatch) return false;
             }
 
             // Premium Filter
-            if (isPremiumOnly && store.Grade !== 'S') return false;
+            if (isPremiumOnly && store.grade !== 'S') return false;
 
             // OneCare Filter
-            if (isOneCareOnly && store.OneCare !== 'TRUE') return false;
+            if (isOneCareOnly && store.oneCare !== 'O') return false;
 
             return true;
         });
