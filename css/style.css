@@ -720,7 +720,7 @@ body.dark-mode .brand-logo .logo-dark {
 .fab-menu-item {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 10px;
     padding: 12px 16px;
     background: #fff;
