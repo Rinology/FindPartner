@@ -41,8 +41,15 @@
   }
 }
 
-
 @layer utilities {
+    @keyframes float {
+        0%, 100% { transform: translateY(0) scale(1.25); }
+        50% { transform: translateY(-8px) scale(1.25); }
+    }
+    .animate-float {
+        animation: float 1.5s ease-in-out infinite;
+    }
+    
     .scrollbar-hide {
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */

@@ -95,15 +95,15 @@ export function getMarkerIcon(category, grade, isSelected = false) {
     const L = window.L;
     if (!L) return null;
 
-    // 선택 효과: 어색한 배경색 제거, 크기 125%로 확대 (요청 1, 4)
-    const selectedClass = isSelected ? 'scale-125 z-50 transition-transform' : 'transition-transform';
-    const selectedStyle = isSelected ? 'filter: drop-shadow(0 0 10px rgba(59,130,246,0.9));' : '';
+    // 선택 효과: 어색한 배경색 제거, 크기 125%로 확대 (요청 1, 4), 선택시 부유 효과(둥실둥실) 추가
+    const selectedClass = isSelected ? 'scale-125 transition-transform animate-float' : 'transition-transform';
+    const selectedStyle = isSelected ? 'filter: drop-shadow(0 0 12px rgba(59,130,246,0.9));' : '';
 
     if (grade === 'S') {
         let gradeClass = `grade-s-star`;
         return L.divIcon({
-            className: `custom-pin premium-pin ${gradeClass} flex items-center justify-center ${selectedClass}`,
-            html: `<i class="fa-solid fa-star drop-shadow-sm" style="font-size: 42px; color: #FFD700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.5), -1px -1px 0 rgba(255, 255, 255, 0.9) inset, 1px 1px 2px rgba(255, 255, 255, 0.8); ${selectedStyle}"></i>`,
+            className: `custom-pin premium-pin ${gradeClass} flex items-center justify-center ${isSelected ? 'z-[9999]' : ''}`,
+            html: `<i class="fa-solid fa-star drop-shadow-sm ${selectedClass}" style="font-size: 42px; color: #FFD700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.5), -1px -1px 0 rgba(255, 255, 255, 0.9) inset, 1px 1px 2px rgba(255, 255, 255, 0.8); ${selectedStyle}"></i>`,
             iconSize: isSelected ? [48, 48] : [42, 42],
             iconAnchor: isSelected ? [24, 24] : [21, 21],
             popupAnchor: [0, -20]
@@ -116,8 +116,8 @@ export function getMarkerIcon(category, grade, isSelected = false) {
     if (category === 'onecare') color = '#3a86ff';
 
     return L.divIcon({
-        className: `custom-pin ${selectedClass}`,
-        html: `<i class="fa-solid fa-location-dot" style="color:${color}; font-size:30px; drop-shadow: 0 4px 6px rgba(0,0,0,0.3); ${selectedStyle}"></i>`,
+        className: `custom-pin flex items-center justify-center ${isSelected ? 'z-[9999]' : ''}`,
+        html: `<i class="fa-solid fa-location-dot ${selectedClass}" style="color:${color}; font-size:30px; drop-shadow: 0 4px 6px rgba(0,0,0,0.3); ${selectedStyle}"></i>`,
         iconSize: isSelected ? [36, 36] : [30, 30],
         iconAnchor: isSelected ? [18, 36] : [15, 30],
         popupAnchor: [0, -32]

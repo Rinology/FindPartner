@@ -45,7 +45,8 @@ export function StoreProvider({ children }) {
                 (position) => {
                     const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
                     setUserLocation(loc);
-                    window.userLocation = loc; // Globally accessible for non-react utils
+                    window.userLocation = loc;
+                    setIsLocationActive(true); // 권한이 허용되면 토글도 즉시 켜지도록 연동
                 },
                 (error) => {
                     console.warn("Location permission denied or error.");

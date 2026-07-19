@@ -51,7 +51,8 @@ export default function BrandInfo() {
             </div>
             <p className="text-sm leading-relaxed mb-6 font-medium text-gray-600">
                 가까운 공식 대리점과 우수협력점을 찾아보세요.<br/>
-                가장 스마트한 모빌리티 라이프를 시작하세요.
+                <span className="text-blue-600 font-bold">상단의 지역을 선택</span>하시거나 <span className="text-blue-600 font-bold">내 주변 매장 찾기</span>를 통해<br/>
+                대리점 리스트를 바로 확인하실 수 있습니다.
             </p>
 
             <button 

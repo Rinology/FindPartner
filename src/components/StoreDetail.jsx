@@ -68,33 +68,22 @@ export default function StoreDetail() {
                 )}
 
                 {/* Info Card */}
-                <div className="bg-gray-50 rounded-2xl p-5 space-y-4 border border-gray-100">
-                    <div className="flex items-start gap-3">
-                        <i className="fa-solid fa-location-dot mt-1 text-gray-400 w-4 text-center"></i>
-                        <div>
-                            <p className="text-sm font-medium text-gray-800 mb-0.5">주소</p>
-                            <p className="text-sm text-gray-600 leading-relaxed">{selectedStore.address}</p>
-                        </div>
-                    </div>
+                <div className="bg-gray-50 rounded-2xl p-5 space-y-3 border border-gray-100 flex flex-col items-start">
+                    <p className="text-sm text-gray-600 flex items-start gap-2">
+                        <i className="fa-solid fa-location-dot mt-1 text-gray-400 w-3 text-center"></i>
+                        <span>{selectedStore.address}</span>
+                    </p>
                     
-                    <div className="flex items-start gap-3">
-                        <i className={`fa-regular fa-calendar-xmark mt-1 w-4 text-center ${isClosedToday ? 'text-red-500' : 'text-gray-400'}`}></i>
-                        <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-800 mb-0.5">휴무일</p>
-                            <p className={`text-sm ${isClosedToday ? 'text-red-600 font-bold bg-red-50 p-1.5 rounded-lg border border-red-100 inline-block mt-0.5' : 'text-gray-600'}`}>
-                                {selectedStore.closed || '없음'}
-                            </p>
-                        </div>
+                    <div className={`text-sm flex items-start gap-2 ${isClosedToday ? 'text-red-600 font-bold bg-red-50 p-1.5 rounded-lg border border-red-100 inline-flex' : 'text-gray-600'}`}>
+                        <i className={`fa-regular fa-calendar-xmark mt-1 w-3 text-center ${isClosedToday ? 'text-red-500' : 'text-gray-400'}`}></i>
+                        <span>휴무: {selectedStore.closed || '없음'}</span>
                     </div>
 
                     {selectedStore.phone && (
-                        <div className="flex items-start gap-3">
-                            <i className="fa-solid fa-phone mt-1 text-gray-400 w-4 text-center"></i>
-                            <div>
-                                <p className="text-sm font-medium text-gray-800 mb-0.5">연락처</p>
-                                <p className="text-sm text-gray-600">{selectedStore.phone}</p>
-                            </div>
-                        </div>
+                        <p className="text-sm text-gray-600 flex items-center gap-2">
+                            <i className="fa-solid fa-phone text-gray-400 w-3 text-center"></i>
+                            <span>{selectedStore.phone}</span>
+                        </p>
                     )}
                 </div>
 

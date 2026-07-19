@@ -121,14 +121,12 @@ export default function MapPanel() {
                 marker.storeData = store;
                 
                 // Tooltip
-                if (!isMobile) {
-                    marker.bindTooltip(store.name, { 
-                        permanent: isSelected, 
-                        direction: 'top', 
-                        offset: [0, -25], 
-                        className: `font-bold text-xs shadow-sm rounded ${isSelected ? 'bg-blue-600 text-white border-blue-700' : ''}` 
-                    });
-                }
+                marker.bindTooltip(store.name, { 
+                    permanent: isSelected, 
+                    direction: 'top', 
+                    offset: [0, -25], 
+                    className: `font-bold text-xs shadow-sm rounded ${isSelected ? 'bg-blue-600 text-white border-blue-700' : ''}` 
+                });
 
                 marker.on('click', () => {
                     setSelectedStore(store);
@@ -190,21 +188,38 @@ export default function MapPanel() {
 
     // Focus marker when selectedStore changes
     useEffect(() => {
-        if (!mapInstance.current || !selectedStore) return;
+        if (!mapInstance.current) return;
 
-        // Remove custom z-index from all markers
-        document.querySelectorAll('.custom-pin').forEach(el => {
-            el.style.zIndex = "";
-        });
+        // Update all markers dynamically
+        if (markersRef.current) {
+            markersRef.current.forEach(m => {
+                const isSelected = selectedStore && m.storeData.name === selectedStore.name;
+                
+                // Update Icon
+                m.setIcon(getMarkerIcon(m.storeData.category, m.storeData.grade, isSelected));
+                
+                // Update Tooltip
+                m.unbindTooltip();
+                m.bindTooltip(m.storeData.name, { 
+                    permanent: isSelected, 
+                    direction: 'top', 
+                    offset: [0, -25], 
+                    className: `font-bold text-xs shadow-sm rounded ${isSelected ? 'bg-blue-600 text-white border-blue-700' : ''}` 
+                });
+                
+                // Z-index management
+                if (isSelected && m.getElement()) {
+                    m.getElement().style.zIndex = 9999;
+                } else if (!isSelected && m.getElement()) {
+                    m.getElement().style.zIndex = "";
+                }
+            });
+        }
 
-        const storeMarker = markersRef.current.find(m => m.storeData === selectedStore);
+        if (!selectedStore) return;
+
+        const storeMarker = markersRef.current.find(m => m.storeData.name === selectedStore.name);
         if (storeMarker) {
-            // Bring selected marker to front
-            if (storeMarker.getElement()) {
-                const iconEl = storeMarker.getElement();
-                iconEl.style.zIndex = 9999;
-            }
-
             if (!isMobile) {
                 // Focus marker directly in the center for desktop
                 const pos = getStoreLatLng(selectedStore);

@@ -97,74 +97,73 @@ export default function MobileStoreModal() {
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-5 pb-6">
-                    <div className="text-center mb-4">
-                        <h2 className="text-xl font-black text-gray-900 mb-1">{selectedStore.name}</h2>
+                <div className="flex-1 overflow-y-auto p-6">
+                    <div className="mb-6">
+                        <div className="flex items-center gap-2 mb-2">
+                            {isPremium && (
+                                <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-[11px] font-extrabold rounded-md">
+                                    우수협력점
+                                </span>
+                            )}
+                            {isOneCare && (
+                                <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-[11px] font-extrabold rounded-md">
+                                    원케어
+                                </span>
+                            )}
+                        </div>
+                        <h2 className="text-2xl font-black text-gray-900 leading-tight mb-1">{selectedStore.name}</h2>
                         {formattedBranch && <p className="text-sm font-semibold text-gray-500">{formattedBranch}</p>}
                     </div>
 
-                    <div className="flex flex-wrap justify-center gap-1.5 mb-5">
-                        {isPremium && (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold bg-amber-100 text-amber-700">
-                                <i className="fa-solid fa-star text-[9px]"></i> 우수협력점
-                            </span>
-                        )}
-                        {isOneCare && (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold bg-blue-100 text-blue-700">
-                                <i className="fa-solid fa-screwdriver-wrench text-[9px]"></i> 원케어
-                            </span>
-                        )}
-                        {displayBrands.map((brand, i) => (
-                            <span key={i} className={`px-2 py-1 text-[10px] font-bold rounded ${getBrandBadgeClass(brand)}`}>
-                                {brand}
-                            </span>
-                        ))}
-                    </div>
-
-                    <div className="space-y-4 mb-6 px-2">
-                        <div className="flex items-start gap-3">
-                            <i className="fa-solid fa-location-dot mt-1 text-gray-400 w-4 text-center"></i>
-                            <p className="text-sm text-gray-700 font-medium leading-relaxed">{selectedStore.address}</p>
-                        </div>
-                        {selectedStore.phone && (
-                            <div className="flex items-center gap-3">
-                                <i className="fa-solid fa-phone text-gray-400 w-4 text-center"></i>
-                                <p className="text-sm text-gray-700 font-medium">{selectedStore.phone}</p>
-                            </div>
-                        )}
-                        <div className="flex items-start gap-3">
-                            <i className={`fa-regular fa-calendar-xmark mt-1 w-4 text-center ${isClosedToday ? 'text-red-500' : 'text-gray-400'}`}></i>
-                            <div className="flex-1">
-                                <p className={`text-sm ${isClosedToday ? 'text-red-600 font-bold bg-red-50 p-1.5 rounded-lg border border-red-100 inline-block mt-0.5' : 'text-gray-700 font-medium'}`}>
-                                    휴무: {selectedStore.closed || '없음'}
-                                </p>
-                            </div>
+                    <div className="space-y-3 mb-5">
+                        <p className="text-sm text-gray-600 flex items-start gap-2">
+                            <i className="fa-solid fa-location-dot mt-1 text-gray-400 w-3 text-center"></i>
+                            <span>{selectedStore.address}</span>
+                        </p>
+                        
+                        <div className={`text-sm flex items-start gap-2 ${isClosedToday ? 'text-red-600 font-bold bg-red-50 p-1.5 rounded-lg border border-red-100 inline-flex' : 'text-gray-600'}`}>
+                            <i className={`fa-regular fa-calendar-xmark mt-1 w-3 text-center ${isClosedToday ? 'text-red-500' : 'text-gray-400'}`}></i>
+                            <span>휴무: {selectedStore.closed || '없음'}</span>
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-2.5">
+                    {displayBrands.length > 0 && (
+                        <div className="mb-6">
+                            <p className="text-sm font-bold text-gray-800 mb-2">취급 브랜드</p>
+                            <div className="flex flex-wrap gap-2">
+                                {displayBrands.map((brand, i) => (
+                                    <span key={i} className={`px-2.5 py-1 text-[11px] font-bold rounded-md border ${getBrandBadgeClass(brand)}`}>
+                                        {brand}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="flex gap-2">
                         {selectedStore.phone && (
                             <a 
                                 href={`tel:${selectedStore.phone}`}
-                                className="w-full flex items-center justify-center gap-2 py-3.5 bg-gray-50 hover:bg-gray-100 text-gray-800 text-sm font-bold rounded-xl border border-gray-200 transition-colors"
+                                className="flex-1 flex justify-center items-center gap-2 py-3 bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-bold rounded-xl transition-colors"
                             >
-                                <i className="fa-solid fa-phone"></i> 전화하기
+                                <i className="fa-solid fa-phone"></i> 전화
                             </a>
                         )}
                         <button 
                             onClick={handleNavi}
-                            className="w-full py-3.5 bg-[#00C73C] hover:bg-[#00b035] text-white text-sm font-bold rounded-xl shadow-md transition-colors flex items-center justify-center gap-2"
+                            className="flex-1 flex justify-center items-center gap-2 py-3 bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-bold rounded-xl transition-colors"
                         >
-                            <i className="fa-solid fa-location-arrow"></i> 네이버 길찾기
+                            <i className="fa-solid fa-route"></i> 길찾기
                         </button>
                     </div>
 
-                    <div className="mt-5 text-center">
-                        <p className="text-[11px] text-gray-400 flex items-center justify-center gap-1.5">
-                            <i className="fa-solid fa-circle-info"></i>
-                            시승 가능 여부는 해당 매장에 문의해 주시기 바랍니다.
-                        </p>
-                    </div>
+                    {selectedStore.category === 'testride' && (
+                        <div className="mt-4 text-center">
+                            <p className="text-[11px] text-gray-500 font-medium bg-gray-50 p-2 rounded-md border border-gray-100 inline-block">
+                                <i className="fa-solid fa-circle-info mr-1 text-gray-400"></i> 시승 가능 여부는 해당 매장에 문의해 주시기 바랍니다.
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
