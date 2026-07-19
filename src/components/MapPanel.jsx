@@ -122,7 +122,12 @@ export default function MapPanel() {
                 
                 // Tooltip
                 if (!isMobile) {
-                    marker.bindTooltip(store.name, { direction: 'top', offset: [0, -25], className: 'font-bold text-xs shadow-sm rounded' });
+                    marker.bindTooltip(store.name, { 
+                        permanent: isSelected, 
+                        direction: 'top', 
+                        offset: [0, -25], 
+                        className: `font-bold text-xs shadow-sm rounded ${isSelected ? 'bg-blue-600 text-white border-blue-700' : ''}` 
+                    });
                 }
 
                 marker.on('click', () => {
@@ -230,7 +235,8 @@ export default function MapPanel() {
         if (isLocationActive) {
             setIsLocationActive(false);
             window.isLocationActive = false;
-            // 지도를 전체 보기 상태나 초기 상태로 돌릴 수 있음 (선택 사항)
+            setUserLocation(null);
+            window.userLocation = null;
         } else {
             // 토글 ON
             if (userLocation) {

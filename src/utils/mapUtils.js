@@ -14,6 +14,17 @@ export function escapeHTML(str) {
     );
 }
 
+export function formatBranchName(branch) {
+    if (!branch) return '';
+    const trimmed = branch.trim();
+    if (trimmed.endsWith('점')) {
+        // 이미 퀄리스포츠가 포함되어 있다면 중복 추가 방지
+        if (trimmed.includes('퀄리스포츠')) return trimmed;
+        return `퀄리스포츠 ${trimmed}`;
+    }
+    return '';
+}
+
 export function getStoreLatLng(store) {
     let lat = null;
     let lng = null;
@@ -84,8 +95,9 @@ export function getMarkerIcon(category, grade, isSelected = false) {
     const L = window.L;
     if (!L) return null;
 
-    const selectedClass = isSelected ? 'ring-4 ring-blue-500 rounded-full bg-white scale-110 z-50' : '';
-    const selectedStyle = isSelected ? 'filter: drop-shadow(0 0 8px rgba(59,130,246,0.8));' : '';
+    // 선택 효과: 어색한 배경색 제거, 크기 125%로 확대 (요청 1, 4)
+    const selectedClass = isSelected ? 'scale-125 z-50 transition-transform' : 'transition-transform';
+    const selectedStyle = isSelected ? 'filter: drop-shadow(0 0 10px rgba(59,130,246,0.9));' : '';
 
     if (grade === 'S') {
         let gradeClass = `grade-s-star`;
@@ -98,7 +110,8 @@ export function getMarkerIcon(category, grade, isSelected = false) {
         });
     }
 
-    let color = '#888';
+    // 일반 대리점 핀 색상 브랜드 블루로 변경 (요청 8)
+    let color = '#2f6286';
     if (category === 'testride') color = '#72bf44';
     if (category === 'onecare') color = '#3a86ff';
 
@@ -119,7 +132,8 @@ export function openNaverNavi(store) {
     }
     const name = store.name || '';
     let url = `https://map.naver.com/index.nhn?elat=${pos.lat}&elng=${pos.lng}&etext=${encodeURIComponent(name)}&menu=route`;
-    if (window.userLocation && window.isLocationActive) {
+    // 내 위치 권한 허용시 토글 무관하게 위치 전송 (요청 6)
+    if (window.userLocation) {
         url += `&slat=${window.userLocation.lat}&slng=${window.userLocation.lng}&stext=${encodeURIComponent('내위치')}`;
     }
     window.open(url, '_blank');
@@ -179,7 +193,8 @@ export function getPopupHTML(store) {
 
     let badges = '';
     if (isPremium) badges += `<span title="본사가 인증한 최우수 서비스 매장" class="inline-flex items-center gap-1 bg-amber-100 text-amber-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1 cursor-help"><i class="fa-solid fa-star text-[9px]"></i> 우수</span>`;
-    if (isOneCare) badges += `<span title="원스톱 A/S 및 케어 서비스 제공" class="inline-flex items-center gap-1 bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1 cursor-help"><i class="fa-solid fa-screwdriver-wrench text-[9px]"></i> 원케어</span>`;
+    // 원케어 툴팁 간소화 (요청 9)
+    if (isOneCare) badges += `<span title="집에서 가까운 대리점에서 제품수령!" class="inline-flex items-center gap-1 bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded mr-1 cursor-help"><i class="fa-solid fa-screwdriver-wrench text-[9px]"></i> 원케어</span>`;
     
     let brandTags = '';
     displayBrands.forEach(brand => {
@@ -196,7 +211,8 @@ export function getPopupHTML(store) {
     });
 
     const storeName = store.name || '';
-    const storeBranch = store.branch ? `<p class="text-[11px] font-semibold text-gray-500 mt-1">${escapeHTML(store.branch)}</p>` : '';
+    const formattedBranch = formatBranchName(store.branch);
+    const storeBranch = formattedBranch ? `<p class="text-[11px] font-semibold text-gray-500 mt-1">${escapeHTML(formattedBranch)}</p>` : '';
     const storeAddress = store.address || '';
     const storePhone = store.phone || '';
     
@@ -207,7 +223,7 @@ export function getPopupHTML(store) {
     
     // 네이버 길찾기 연동 (마스터 브랜치 방식: index.nhn, 위치정보 활성화 시에만 출발지 입력)
     let naverUrl = `https://map.naver.com/index.nhn?elat=${storeLat}&elng=${storeLng}&etext=${encodeURIComponent(storeName)}&menu=route`;
-    if (window.userLocation && window.isLocationActive) {
+    if (window.userLocation) {
         naverUrl += `&slat=${window.userLocation.lat}&slng=${window.userLocation.lng}&stext=${encodeURIComponent('내위치')}`;
     }
     

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useStoreContext } from '../StoreContext';
-import { getBrandsFromStore, getStoreLatLng, openNaverNavi } from '../utils/mapUtils';
+import { getStoreLatLng, openNaverNavi, formatBranchName, getDisplayBrands, getBrandBadgeClass } from '../utils/mapUtils';
 
 export default function MobileStoreModal() {
     const { selectedStore, setSelectedStore } = useStoreContext();
@@ -68,6 +68,13 @@ export default function MobileStoreModal() {
         window.open(`https://map.naver.com/v5/search/${encodeURIComponent(selectedStore.name)}`, '_blank');
     };
 
+    const formattedBranch = formatBranchName(selectedStore.branch);
+    const displayBrands = getDisplayBrands(selectedStore);
+    const isPremium = selectedStore.grade === 'S';
+    const isOneCare = selectedStore.oneCare === 'O';
+    const todayStr = ['일','월','화','수','목','금','토'][new Date().getDay()];
+    const isClosedToday = selectedStore.closed && selectedStore.closed.includes(todayStr);
+
     return (
         <div className="fixed inset-0 z-[3000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
@@ -91,9 +98,27 @@ export default function MobileStoreModal() {
 
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto p-5 pb-6">
-                    <div className="text-center mb-6">
+                    <div className="text-center mb-4">
                         <h2 className="text-xl font-black text-gray-900 mb-1">{selectedStore.name}</h2>
-                        {selectedStore.branch && <p className="text-sm font-semibold text-gray-500">{selectedStore.branch}</p>}
+                        {formattedBranch && <p className="text-sm font-semibold text-gray-500">{formattedBranch}</p>}
+                    </div>
+
+                    <div className="flex flex-wrap justify-center gap-1.5 mb-5">
+                        {isPremium && (
+                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold bg-amber-100 text-amber-700">
+                                <i className="fa-solid fa-star text-[9px]"></i> 우수협력점
+                            </span>
+                        )}
+                        {isOneCare && (
+                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold bg-blue-100 text-blue-700">
+                                <i className="fa-solid fa-screwdriver-wrench text-[9px]"></i> 원케어
+                            </span>
+                        )}
+                        {displayBrands.map((brand, i) => (
+                            <span key={i} className={`px-2 py-1 text-[10px] font-bold rounded ${getBrandBadgeClass(brand)}`}>
+                                {brand}
+                            </span>
+                        ))}
                     </div>
 
                     <div className="space-y-4 mb-6 px-2">
@@ -107,19 +132,25 @@ export default function MobileStoreModal() {
                                 <p className="text-sm text-gray-700 font-medium">{selectedStore.phone}</p>
                             </div>
                         )}
-                        <div className="flex items-center gap-3">
-                            <i className="fa-regular fa-calendar-xmark text-gray-400 w-4 text-center"></i>
-                            <p className="text-sm text-gray-700 font-medium">휴무: {selectedStore.closed || '없음'}</p>
+                        <div className="flex items-start gap-3">
+                            <i className={`fa-regular fa-calendar-xmark mt-1 w-4 text-center ${isClosedToday ? 'text-red-500' : 'text-gray-400'}`}></i>
+                            <div className="flex-1">
+                                <p className={`text-sm ${isClosedToday ? 'text-red-600 font-bold bg-red-50 p-1.5 rounded-lg border border-red-100 inline-block mt-0.5' : 'text-gray-700 font-medium'}`}>
+                                    휴무: {selectedStore.closed || '없음'}
+                                </p>
+                            </div>
                         </div>
                     </div>
 
                     <div className="flex flex-col gap-2.5">
-                        <button 
-                            onClick={handleViewMap}
-                            className="w-full py-3.5 bg-gray-50 hover:bg-gray-100 text-blue-700 text-sm font-bold rounded-xl border border-gray-200 transition-colors"
-                        >
-                            네이버 지도로 보기
-                        </button>
+                        {selectedStore.phone && (
+                            <a 
+                                href={`tel:${selectedStore.phone}`}
+                                className="w-full flex items-center justify-center gap-2 py-3.5 bg-gray-50 hover:bg-gray-100 text-gray-800 text-sm font-bold rounded-xl border border-gray-200 transition-colors"
+                            >
+                                <i className="fa-solid fa-phone"></i> 전화하기
+                            </a>
+                        )}
                         <button 
                             onClick={handleNavi}
                             className="w-full py-3.5 bg-[#00C73C] hover:bg-[#00b035] text-white text-sm font-bold rounded-xl shadow-md transition-colors flex items-center justify-center gap-2"

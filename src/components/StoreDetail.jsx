@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStoreContext } from '../StoreContext';
-import { getDisplayBrands, getBrandBadgeClass, openNaverNavi } from '../utils/mapUtils';
+import { getDisplayBrands, getBrandBadgeClass, openNaverNavi, formatBranchName } from '../utils/mapUtils';
 
 export default function StoreDetail() {
     const { selectedStore, setSelectedStore } = useStoreContext();
@@ -13,8 +13,14 @@ export default function StoreDetail() {
 
     const brands = getDisplayBrands(selectedStore);
 
+    const formattedBranch = formatBranchName(selectedStore.branch);
+
+    // Check if closed today
+    const todayStr = ['일','월','화','수','목','금','토'][new Date().getDay()];
+    const isClosedToday = selectedStore.closed && selectedStore.closed.includes(todayStr);
+
     return (
-        <div className="flex flex-col h-full bg-white animate-in slide-in-from-left-4 duration-300">
+        <div key={selectedStore.id || selectedStore.name} className="flex flex-col h-full bg-white animate-in slide-in-from-left-4 duration-300">
             {/* Header / Actions */}
             <div className="flex items-center justify-between p-4 border-b border-gray-100 shrink-0">
                 <button 
@@ -42,8 +48,8 @@ export default function StoreDetail() {
                         {selectedStore.oneCare === 'O' && <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-[11px] font-extrabold rounded-md">원케어</span>}
                     </div>
                     <h2 className="text-2xl font-black text-gray-900 leading-tight mb-1">{selectedStore.name}</h2>
-                    {selectedStore.branch && (
-                        <p className="text-sm font-semibold text-gray-500">{selectedStore.branch}</p>
+                    {formattedBranch && (
+                        <p className="text-sm font-semibold text-gray-500">{formattedBranch}</p>
                     )}
                 </div>
 
@@ -72,10 +78,12 @@ export default function StoreDetail() {
                     </div>
                     
                     <div className="flex items-start gap-3">
-                        <i className="fa-regular fa-calendar-xmark mt-1 text-gray-400 w-4 text-center"></i>
-                        <div>
+                        <i className={`fa-regular fa-calendar-xmark mt-1 w-4 text-center ${isClosedToday ? 'text-red-500' : 'text-gray-400'}`}></i>
+                        <div className="flex-1">
                             <p className="text-sm font-medium text-gray-800 mb-0.5">휴무일</p>
-                            <p className="text-sm text-gray-600">{selectedStore.closed || '없음'}</p>
+                            <p className={`text-sm ${isClosedToday ? 'text-red-600 font-bold bg-red-50 p-1.5 rounded-lg border border-red-100 inline-block mt-0.5' : 'text-gray-600'}`}>
+                                {selectedStore.closed || '없음'}
+                            </p>
                         </div>
                     </div>
 
@@ -90,11 +98,31 @@ export default function StoreDetail() {
                     )}
                 </div>
 
+                {/* Actions moved below Info Card */}
+                <div className="flex gap-3 pt-2">
+                    {selectedStore.phone && (
+                        <a 
+                            href={`tel:${selectedStore.phone}`} 
+                            className="flex-1 flex justify-center items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3.5 rounded-xl transition-colors"
+                        >
+                            <i className="fa-solid fa-phone"></i> 전화하기
+                        </a>
+                    )}
+                    <button 
+                        onClick={() => {
+                            openNaverNavi(selectedStore);
+                        }}
+                        className="flex-1 flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-colors shadow-md shadow-blue-200"
+                    >
+                        <i className="fa-solid fa-route"></i> 네이버 길찾기
+                    </button>
+                </div>
+
                 {/* Services */}
                 {(selectedStore.category === 'service' || selectedStore.category === 'testride') && (
-                    <div>
+                    <div className="pt-2">
                         <h3 className="text-sm font-bold text-gray-800 mb-2">제공 서비스</h3>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
                             <span className="px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-semibold rounded-md border border-gray-200">
                                 <i className="fa-solid fa-wrench mr-1"></i> 서비스 가능
                             </span>
@@ -104,28 +132,13 @@ export default function StoreDetail() {
                                 </span>
                             )}
                         </div>
+                        {selectedStore.category === 'testride' && (
+                            <p className="text-[11px] text-gray-500 mt-3 font-medium bg-gray-50 p-2.5 rounded-lg border border-gray-100">
+                                <i className="fa-solid fa-circle-info mr-1 text-gray-400"></i> 시승 가능 여부는 해당 매장에 문의해 주시기 바랍니다.
+                            </p>
+                        )}
                     </div>
                 )}
-            </div>
-
-            {/* Bottom Fixed Actions */}
-            <div className="p-4 bg-white border-t border-gray-100 flex gap-3 shrink-0">
-                {selectedStore.phone && (
-                    <a 
-                        href={`tel:${selectedStore.phone}`} 
-                        className="flex-1 flex justify-center items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3.5 rounded-xl transition-colors"
-                    >
-                        <i className="fa-solid fa-phone"></i> 전화하기
-                    </a>
-                )}
-                <button 
-                    onClick={() => {
-                        openNaverNavi(selectedStore);
-                    }}
-                    className="flex-1 flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-colors shadow-md shadow-blue-200"
-                >
-                    <i className="fa-solid fa-route"></i> 네이버 길찾기
-                </button>
             </div>
         </div>
     );

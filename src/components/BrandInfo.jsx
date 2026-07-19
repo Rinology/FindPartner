@@ -10,6 +10,8 @@ export default function BrandInfo() {
         if (isLocationActive) {
             setIsLocationActive(false);
             window.isLocationActive = false;
+            setUserLocation(null);
+            window.userLocation = null;
         } else {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -86,22 +88,26 @@ export default function BrandInfo() {
             */}
 
             <div className="w-full bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-left space-y-4">
-                <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+                <div className="flex items-start gap-3">
+                    <span className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0 mt-1">
                         <i className="fa-solid fa-star text-xs"></i>
                     </span>
                     <div>
-                        <p className="text-sm font-bold text-gray-900">우수협력점</p>
-                        <p className="text-xs text-gray-500">본사가 인증한 최우수 서비스 매장</p>
+                        <p className="text-sm font-bold text-gray-900 mb-0.5">우수협력점</p>
+                        <p className="text-[11.5px] text-gray-500 break-keep">본사가 인증한 최우수 서비스 매장</p>
                     </div>
                 </div>
-                <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
+                <div className="flex items-start gap-3">
+                    <span className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0 mt-1">
                         <i className="fa-solid fa-screwdriver-wrench text-xs"></i>
                     </span>
                     <div>
-                        <p className="text-sm font-bold text-gray-900">원케어 매장</p>
-                        <p className="text-xs text-gray-500">원스톱 A/S 및 케어 서비스 제공</p>
+                        <p className="text-sm font-bold text-gray-900 mb-1">원케어 매장</p>
+                        <ul className="text-[11.5px] text-gray-500 space-y-0.5 list-disc list-outside pl-3.5 leading-relaxed font-medium tracking-tight break-keep">
+                            <li>퀄리스포츠 공식 스토어에서 안심구매 가능!</li>
+                            <li>집에서 가까운 대리점에서 제품 수령!</li>
+                            <li>수령 받은 대리점이 책임지는 AS관리까지!</li>
+                        </ul>
                     </div>
                 </div>
             </div>
