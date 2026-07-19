@@ -132,7 +132,7 @@ export function openNaverNavi(store) {
     }
     const name = store.name || '';
     let url = `https://map.naver.com/index.nhn?elat=${pos.lat}&elng=${pos.lng}&etext=${encodeURIComponent(name)}&menu=route`;
-    // 내 위치 권한 허용시 토글 무관하게 위치 전송 (요청 6)
+    // 내 위치 권한 허용시 위치 전송
     if (window.userLocation) {
         url += `&slat=${window.userLocation.lat}&slng=${window.userLocation.lng}&stext=${encodeURIComponent('내위치')}`;
     }

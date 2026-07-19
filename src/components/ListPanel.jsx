@@ -9,7 +9,7 @@ export default function ListPanel() {
     const { 
         filteredData, loading, error, 
         isMobile, 
-        selectedStore,
+        selectedStore, setSelectedStore,
         searchQuery, selectedBrands, selectedRegion, isPremiumOnly, isOneCareOnly, isLocationActive, isShowAllActive,
         isBottomSheetExpanded, setIsBottomSheetExpanded 
     } = useStoreContext();
@@ -71,7 +71,7 @@ export default function ListPanel() {
     }, [isMobile, setIsBottomSheetExpanded]);
 
     const hasFilters = searchQuery !== "" || selectedBrands.length > 0 || selectedRegion !== 'all' || isPremiumOnly || isOneCareOnly;
-    const showList = hasFilters || isLocationActive || isShowAllActive;
+    const showList = hasFilters || isShowAllActive;
 
     if (!isMobile) {
         // Desktop View: Left Sidebar
@@ -89,7 +89,13 @@ export default function ListPanel() {
                             {!loading && !error && showList && filteredData.length === 0 && <div className="text-center py-10 text-gray-500">조건에 맞는 대리점이 없습니다.</div>}
                             
                             {!loading && !error && showList && filteredData.map((store, i) => (
-                                <StoreCard key={i} store={store} />
+                                <StoreCard 
+                                    key={store.id || i} 
+                                    store={store} 
+                                    setSelectedStore={setSelectedStore} 
+                                    isMobile={isMobile} 
+                                    setIsBottomSheetExpanded={setIsBottomSheetExpanded} 
+                                />
                             ))}
 
                             {!loading && !error && !showList && (
@@ -118,7 +124,13 @@ export default function ListPanel() {
                     {error && <div className="text-center py-10 text-red-500">데이터 로드 실패</div>}
                     {!loading && !error && showList && filteredData.length === 0 && <div className="text-center py-10 text-gray-500">조건에 맞는 대리점이 없습니다.</div>}
                     {!loading && !error && showList && filteredData.map((store, i) => (
-                        <StoreCard key={i} store={store} />
+                        <StoreCard 
+                            key={store.id || i} 
+                            store={store} 
+                            setSelectedStore={setSelectedStore} 
+                            isMobile={isMobile} 
+                            setIsBottomSheetExpanded={setIsBottomSheetExpanded} 
+                        />
                     ))}
                     {!loading && !error && !showList && (
                         <BrandInfo />

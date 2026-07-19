@@ -94,8 +94,10 @@ export default function BrandInfo() {
                         <i className="fa-solid fa-star text-xs"></i>
                     </span>
                     <div>
-                        <p className="text-sm font-bold text-gray-900 mb-0.5">우수협력점</p>
-                        <p className="text-[11.5px] text-gray-500 break-keep">본사가 인증한 최우수 서비스 매장</p>
+                        <p className="text-[13px] text-gray-700 break-keep flex flex-wrap items-center gap-x-1.5 mt-0.5">
+                            <span className="font-bold text-gray-900 text-sm">우수협력점</span>
+                            <span className="text-[11.5px] text-gray-500">본사가 인증한 최우수 서비스 매장</span>
+                        </p>
                     </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -103,8 +105,11 @@ export default function BrandInfo() {
                         <i className="fa-solid fa-screwdriver-wrench text-xs"></i>
                     </span>
                     <div>
-                        <p className="text-sm font-bold text-gray-900 mb-1">원케어 매장</p>
-                        <ul className="text-[11.5px] text-gray-500 space-y-0.5 list-disc list-outside pl-3.5 leading-relaxed font-medium tracking-tight break-keep">
+                        <p className="text-[13px] text-gray-700 break-keep flex flex-wrap items-center gap-x-1.5 mt-0.5">
+                            <span className="font-bold text-gray-900 text-sm">원케어 매장</span>
+                            <span className="text-[11.5px] text-gray-500">대리점이 책임지는 확실한 AS관리</span>
+                        </p>
+                        <ul className="text-[11.5px] text-gray-500 space-y-0.5 list-disc list-outside pl-3.5 mt-1.5 leading-relaxed font-medium tracking-tight break-keep">
                             <li>퀄리스포츠 공식 스토어에서 안심구매 가능!</li>
                             <li>집에서 가까운 대리점에서 제품 수령!</li>
                             <li>수령 받은 대리점이 책임지는 AS관리까지!</li>

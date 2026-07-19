@@ -47,6 +47,9 @@ export function StoreProvider({ children }) {
                     setUserLocation(loc);
                     window.userLocation = loc;
                     setIsLocationActive(true); // 권한이 허용되면 토글도 즉시 켜지도록 연동
+                    if (window.mapInstance && window.mapInstance.current) {
+                        window.mapInstance.current.flyTo([loc.lat, loc.lng], 15, { animate: true, duration: 1.0 });
+                    }
                 },
                 (error) => {
                     console.warn("Location permission denied or error.");

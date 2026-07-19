@@ -1,9 +1,7 @@
 import React from 'react';
-import { useStoreContext } from '../StoreContext';
 import { getStoreLatLng, getDisplayBrands, getBrandBadgeClass, openNaverNavi, formatBranchName } from '../utils/mapUtils';
 
-export default function StoreCard({ store }) {
-    const { setSelectedStore, isMobile, setIsBottomSheetExpanded } = useStoreContext();
+const StoreCard = React.memo(({ store, setSelectedStore, isMobile, setIsBottomSheetExpanded }) => {
 
     const handleClick = () => {
         setSelectedStore(store);
@@ -112,5 +110,7 @@ export default function StoreCard({ store }) {
             </div>
         </div>
     );
-}
+});
+
+export default StoreCard;
 

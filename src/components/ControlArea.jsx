@@ -33,7 +33,7 @@ export default function ControlArea() {
                 {/* Home Button */}
                 <button
                     onClick={handleHomeClick}
-                    className="w-[42px] shrink-0 bg-gray-50 border border-gray-200 text-gray-600 rounded-xl flex items-center justify-center hover:bg-gray-100 hover:text-blue-600 transition-colors shadow-sm"
+                    className={`w-[42px] shrink-0 border text-gray-600 rounded-xl flex items-center justify-center transition-all shadow-sm ${(!hasFilters && !isShowAllActive) ? 'bg-blue-50 border-blue-400 text-blue-600 ring-2 ring-blue-100' : 'bg-gray-50 border-gray-200 hover:bg-gray-100 hover:text-blue-600'}`}
                     title={!hasFilters && !isShowAllActive ? "전체 목록 보기" : "초기화 (홈)"}
                 >
                     {!hasFilters && !isShowAllActive ? (
@@ -47,7 +47,15 @@ export default function ControlArea() {
                 <div className="relative flex-shrink-0 w-28">
                     <select
                         value={selectedRegion}
-                        onChange={(e) => setSelectedRegion(e.target.value)}
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            setSelectedRegion(val);
+                            if (val === 'all') {
+                                setIsShowAllActive(true);
+                            } else {
+                                setIsShowAllActive(false);
+                            }
+                        }}
                         className={`appearance-none w-full flex items-center px-3 py-2.5 pr-8 rounded-lg text-sm font-semibold transition-colors border outline-none ${selectedRegion !== 'all' ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100'}`}
                     >
                         <option value="all">전국</option>
