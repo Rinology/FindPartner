@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/lib/leaflet/leaflet.css" />
     <link rel="stylesheet" href="/lib/markercluster/MarkerCluster.css" />
     <link rel="stylesheet" href="/lib/markercluster/MarkerCluster.Default.css" />
-    <script type="module" crossorigin src="/assets/index-9He9pLm5.js"></script>
+    <script type="module" crossorigin src="/assets/index-DiaZEbk8.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-CVVq7sKa.css">
   </head>
 <!-- [보안] 우클릭/드래그/선택 방지 적용 -->
@@ -29,11 +29,11 @@
       document.addEventListener('dragstart', e => e.preventDefault());
       document.addEventListener('selectstart', e => e.preventDefault());
       document.addEventListener('keydown', e => {
-        // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U 방지
+        // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S, Ctrl+P 방지
         if (
           e.key === 'F12' ||
           (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) ||
-          (e.ctrlKey && (e.key === 'U' || e.key === 'u'))
+          (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.key === 'S' || e.key === 's' || e.key === 'P' || e.key === 'p'))
         ) {
           e.preventDefault();
         }

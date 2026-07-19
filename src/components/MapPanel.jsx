@@ -343,7 +343,7 @@ export default function MapPanel() {
                 {isMobile && (
                     <>
                         <a 
-                            href="http://pf.kakao.com/_xhxhRZxl/chat"
+                            href={CONFIG.EXTERNAL_SERVICES.KAKAO_CHANNEL}
                             target="_blank"
                             rel="noreferrer"
                             className="w-10 h-10 bg-[#FEE500] text-[#191919] rounded-xl shadow-lg flex items-center justify-center transition-transform active:scale-95"
@@ -352,7 +352,7 @@ export default function MapPanel() {
                             <i className="fa-solid fa-comment"></i>
                         </a>
                         <a 
-                            href="https://xtroncare.kr"
+                            href={CONFIG.EXTERNAL_SERVICES.REGIST_CENTER}
                             target="_blank"
                             rel="noreferrer"
                             className="w-10 h-10 bg-[#2f6286] text-white rounded-xl shadow-lg flex items-center justify-center transition-transform active:scale-95"
