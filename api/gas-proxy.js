@@ -34,12 +34,25 @@ export default async function handler(req, res) {
   const requestOrigin = origin || referer || "";
   
   const isLocalhost = req.headers.host && (req.headers.host.includes('localhost') || req.headers.host.includes('127.0.0.1'));
-
-  const isAllowed = 
-    isLocalhost ||
-    requestOrigin.startsWith(allowedOrigin) || 
-    requestOrigin.startsWith('http://localhost') || 
-    requestOrigin.startsWith('http://127.0.0.1');
+  
+  let isAllowed = isLocalhost;
+  
+  if (!isAllowed && requestOrigin) {
+    try {
+      const originUrl = new URL(requestOrigin);
+      // 포트가 다를 수 있으므로 hostname 체크
+      if (originUrl.hostname === 'localhost' || originUrl.hostname === '127.0.0.1') {
+        isAllowed = true;
+      } else if (originUrl.origin === allowedOrigin || requestOrigin === allowedOrigin) {
+        isAllowed = true;
+      }
+    } catch (e) {
+      // URL 파싱 실패시 완전히 일치하는 경우만 허용
+      if (requestOrigin === allowedOrigin) {
+        isAllowed = true;
+      }
+    }
+  }
 
   if (!isAllowed) {
     if (process.env.NODE_ENV === 'development') {

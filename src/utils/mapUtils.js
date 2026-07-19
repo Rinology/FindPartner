@@ -118,9 +118,9 @@ export function openNaverNavi(store) {
         return;
     }
     const name = store.name || '';
-    let url = `https://map.naver.com/index.nhn?elat=${pos.lat}&elng=${pos.lng}&etext=${name}&menu=route`;
+    let url = `https://map.naver.com/index.nhn?elat=${pos.lat}&elng=${pos.lng}&etext=${encodeURIComponent(name)}&menu=route`;
     if (window.userLocation && window.isLocationActive) {
-        url += `&slat=${window.userLocation.lat}&slng=${window.userLocation.lng}&stext=내위치`;
+        url += `&slat=${window.userLocation.lat}&slng=${window.userLocation.lng}&stext=${encodeURIComponent('내위치')}`;
     }
     window.open(url, '_blank');
 }
@@ -206,9 +206,9 @@ export function getPopupHTML(store) {
     const storeLng = storePos ? storePos.lng : '';
     
     // 네이버 길찾기 연동 (마스터 브랜치 방식: index.nhn, 위치정보 활성화 시에만 출발지 입력)
-    let naverUrl = `https://map.naver.com/index.nhn?elat=${storeLat}&elng=${storeLng}&etext=${storeName}&menu=route`;
+    let naverUrl = `https://map.naver.com/index.nhn?elat=${storeLat}&elng=${storeLng}&etext=${encodeURIComponent(storeName)}&menu=route`;
     if (window.userLocation && window.isLocationActive) {
-        naverUrl += `&slat=${window.userLocation.lat}&slng=${window.userLocation.lng}&stext=내위치`;
+        naverUrl += `&slat=${window.userLocation.lat}&slng=${window.userLocation.lng}&stext=${encodeURIComponent('내위치')}`;
     }
     
     return `
