@@ -157,13 +157,11 @@ export default function MobileStoreModal() {
                         </button>
                     </div>
 
-                    {selectedStore.category === 'testride' && (
-                        <div className="mt-4 text-center">
-                            <p className="text-[11px] text-gray-500 font-medium bg-gray-50 p-2 rounded-md border border-gray-100 inline-block">
-                                <i className="fa-solid fa-circle-info mr-1 text-gray-400"></i> 시승 가능 여부는 해당 매장에 문의해 주시기 바랍니다.
-                            </p>
-                        </div>
-                    )}
+                    <div className="mt-4 text-center">
+                        <p className="text-[11px] text-gray-500 mt-3 font-medium bg-gray-50 p-2.5 rounded-lg border border-gray-100">
+                            <i className="fa-solid fa-circle-info mr-1 text-gray-400"></i> 시승 가능 여부는 해당 매장에 직접 문의해 주시기 바랍니다.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -84,13 +84,11 @@ const StoreCard = React.memo(({ store, setSelectedStore, isMobile, setIsBottomSh
                 </div>
             )}
             
-            {store.category === 'testride' && (
-                <div className="mb-3">
-                    <p className="text-[11px] text-gray-500 font-medium bg-gray-50 p-2 rounded-md border border-gray-100 inline-block">
-                        <i className="fa-solid fa-circle-info mr-1 text-gray-400"></i> 시승 가능 여부는 해당 매장에 문의해 주시기 바랍니다.
-                    </p>
-                </div>
-            )}
+            <div className="mb-3">
+                <p className="text-[11px] text-gray-500 leading-tight">
+                    <i className="fa-solid fa-circle-info mr-1 text-gray-400"></i> 시승 가능 여부는 해당 매장에 직접 문의해 주시기 바랍니다.
+                </p>
+            </div>
 
             <div className="flex gap-2 mt-4 pt-4 border-t border-gray-50">
                 {store.phone && (

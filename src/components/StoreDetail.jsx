@@ -68,8 +68,10 @@ export default function StoreDetail() {
                 )}
 
                 {/* Info Card */}
-                <div className="bg-gray-50 rounded-2xl p-5 space-y-3 border border-gray-100 flex flex-col items-start">
-                    <p className="text-sm text-gray-600 flex items-start gap-2">
+                <div className="bg-white rounded-2xl p-5 space-y-3 border-2 border-blue-400 shadow-[0_4px_24px_rgba(59,130,246,0.25)] flex flex-col items-start relative overflow-hidden">
+                    {/* Optional: subtle gradient glow inside */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent pointer-events-none"></div>
+                    <p className="text-sm text-gray-700 flex items-start gap-2 relative z-10">
                         <i className="fa-solid fa-location-dot mt-1 text-gray-400 w-3 text-center"></i>
                         <span>{selectedStore.address}</span>
                     </p>
@@ -107,27 +109,11 @@ export default function StoreDetail() {
                     </button>
                 </div>
 
-                {/* Services */}
-                {(selectedStore.category === 'service' || selectedStore.category === 'testride') && (
-                    <div className="pt-2">
-                        <h3 className="text-sm font-bold text-gray-800 mb-2">제공 서비스</h3>
-                        <div className="flex flex-wrap gap-2">
-                            <span className="px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-semibold rounded-md border border-gray-200">
-                                <i className="fa-solid fa-wrench mr-1"></i> 서비스 가능
-                            </span>
-                            {selectedStore.category === 'testride' && (
-                                <span className="px-3 py-1.5 bg-green-50 text-green-700 text-xs font-semibold rounded-md border border-green-200">
-                                    <i className="fa-solid fa-person-biking mr-1"></i> 시승 가능
-                                </span>
-                            )}
-                        </div>
-                        {selectedStore.category === 'testride' && (
-                            <p className="text-[11px] text-gray-500 mt-3 font-medium bg-gray-50 p-2.5 rounded-lg border border-gray-100">
-                                <i className="fa-solid fa-circle-info mr-1 text-gray-400"></i> 시승 가능 여부는 해당 매장에 문의해 주시기 바랍니다.
-                            </p>
-                        )}
-                    </div>
-                )}
+                <div className="pt-2">
+                    <p className="text-[11px] text-gray-500 font-medium bg-gray-50 p-2.5 rounded-lg border border-gray-100">
+                        <i className="fa-solid fa-circle-info mr-1 text-gray-400"></i> 시승 가능 여부는 해당 매장에 직접 문의해 주시기 바랍니다.
+                    </p>
+                </div>
             </div>
         </div>
     );
