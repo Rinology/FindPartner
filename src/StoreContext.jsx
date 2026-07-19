@@ -25,6 +25,7 @@ export function StoreProvider({ children }) {
     const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false);
     const [isLocationActive, setIsLocationActiveState] = useState(false);
     const [isShowAllActive, setIsShowAllActive] = useState(false);
+    const [isClustered, setIsClustered] = useState(true);
 
     const setIsLocationActive = (val) => {
         setIsLocationActiveState(val);
@@ -54,9 +55,27 @@ export function StoreProvider({ children }) {
     }, []);
 
     useEffect(() => {
+        const cacheKey = 'findpartner_data_cache';
+        const cacheTimeKey = 'findpartner_data_cache_time';
+        const cachedData = sessionStorage.getItem(cacheKey);
+        const cacheTime = sessionStorage.getItem(cacheTimeKey);
+        const now = new Date().getTime();
+        
+        if (cachedData && cacheTime && now - parseInt(cacheTime, 10) < 30 * 60 * 1000) {
+            try {
+                setAllData(JSON.parse(cachedData));
+                setLoading(false);
+                return;
+            } catch (e) {
+                console.error("Cache parsing error", e);
+            }
+        }
+
         fetchStoreData()
             .then(data => {
                 setAllData(data);
+                sessionStorage.setItem(cacheKey, JSON.stringify(data));
+                sessionStorage.setItem(cacheTimeKey, now.toString());
                 setLoading(false);
             })
             .catch(err => {
@@ -139,7 +158,8 @@ export function StoreProvider({ children }) {
         isBottomSheetExpanded, setIsBottomSheetExpanded,
         resetFilters,
         isLocationActive, setIsLocationActive,
-        isShowAllActive, setIsShowAllActive
+        isShowAllActive, setIsShowAllActive,
+        isClustered, setIsClustered
     };
 
     return (

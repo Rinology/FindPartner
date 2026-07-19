@@ -4,8 +4,7 @@ import { escapeHTML, getMarkerIcon, getStoreLatLng, getPopupHTML } from '../util
 import { CONFIG } from '../config';
 
 export default function MapPanel() {
-    const { filteredData, selectedStore, setSelectedStore, isBottomSheetExpanded, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation, selectedBrands, setSelectedBrands, isPremiumOnly, setIsPremiumOnly, isOneCareOnly, setIsOneCareOnly, selectedRegion, isLocationActive, setIsLocationActive } = useStoreContext();
-    const [isClustered, setIsClustered] = React.useState(true);
+    const { filteredData, selectedStore, setSelectedStore, isBottomSheetExpanded, setIsBottomSheetExpanded, isMobile, userLocation, setUserLocation, selectedBrands, setSelectedBrands, isPremiumOnly, setIsPremiumOnly, isOneCareOnly, setIsOneCareOnly, selectedRegion, isLocationActive, setIsLocationActive, isClustered, setIsClustered } = useStoreContext();
     const [isBrandDropdownOpen, setIsBrandDropdownOpen] = React.useState(false);
 
     const toggleBrand = (brand) => {

@@ -3,14 +3,21 @@ import { useStoreContext } from '../StoreContext';
 import { CONFIG } from '../config';
 
 export default function MobileFAB() {
+    const { isClustered, setIsClustered } = useStoreContext();
     const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div className="fixed bottom-[160px] right-5 z-[2100] flex flex-col items-end gap-3 pointer-events-none">
             {/* Menu Items */}
             <div className={`flex flex-col items-end gap-2.5 transition-all duration-300 origin-bottom-right ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
-                <button className="flex items-center justify-center gap-2.5 px-4 py-3 bg-gray-900 text-white rounded-xl shadow-lg font-semibold text-sm min-w-[160px] pointer-events-auto transition-transform active:scale-95">
-                    <i className="fa-solid fa-layer-group text-white"></i> 지도 핀 모아보기
+                <button 
+                    onClick={() => {
+                        setIsClustered(!isClustered);
+                        setIsOpen(false);
+                    }}
+                    className="flex items-center justify-center gap-2.5 px-4 py-3 bg-gray-900 text-white rounded-xl shadow-lg font-semibold text-sm min-w-[160px] pointer-events-auto transition-transform active:scale-95"
+                >
+                    <i className="fa-solid fa-layer-group text-white"></i> {isClustered ? '지도 핀 펼쳐보기' : '지도 핀 모아보기'}
                 </button>
                 <button 
                     onClick={() => {
