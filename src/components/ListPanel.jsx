@@ -42,19 +42,27 @@ export default function ListPanel() {
             }
             currentY.current = e.touches[0].clientY;
             const deltaY = currentY.current - startY.current;
-            if (deltaY > 0) {
-                // Dragging down (closing)
-                panel.style.transform = `translateY(${deltaY}px)`;
-            }
+            
+            const maxOffset = panel.offsetHeight - 32; // 2rem handle height
+            const baseOffset = isBottomSheetExpanded ? 0 : maxOffset;
+            let targetY = baseOffset + deltaY;
+            
+            // Clamp between 0 (fully open) and maxOffset (fully closed)
+            if (targetY < 0) targetY = 0;
+            if (targetY > maxOffset) targetY = maxOffset;
+
+            panel.style.transform = `translateY(${targetY}px)`;
         };
 
         const handleTouchEnd = () => {
             panel.style.transition = 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)';
             panel.style.transform = '';
             const deltaY = currentY.current - startY.current;
-            if (deltaY > 100) {
+            
+            // Determine intent based on drag distance
+            if (isBottomSheetExpanded && deltaY > 80) {
                 setIsBottomSheetExpanded(false);
-            } else if (deltaY < -50) {
+            } else if (!isBottomSheetExpanded && deltaY < -80) {
                 setIsBottomSheetExpanded(true);
             }
         };
@@ -68,7 +76,7 @@ export default function ListPanel() {
             panel.removeEventListener('touchmove', handleTouchMove);
             panel.removeEventListener('touchend', handleTouchEnd);
         };
-    }, [isMobile, setIsBottomSheetExpanded]);
+    }, [isMobile, setIsBottomSheetExpanded, isBottomSheetExpanded]);
 
     const hasFilters = searchQuery !== "" || selectedBrands.length > 0 || selectedRegion !== 'all' || isPremiumOnly || isOneCareOnly;
     const showList = hasFilters || isShowAllActive;
@@ -112,13 +120,13 @@ export default function ListPanel() {
     return (
         <aside 
             ref={panelRef}
-            className={`absolute bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)] rounded-t-3xl z-[2000] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] h-[65vh] ${isBottomSheetExpanded ? 'translate-y-0' : 'translate-y-[calc(100%-3.5rem)]'}`}
+            className={`absolute bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)] rounded-t-3xl z-[2000] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform h-[65vh] ${isBottomSheetExpanded ? 'translate-y-0' : 'translate-y-[calc(100%-2rem)]'}`}
         >
             <div className="w-full h-8 flex items-center justify-center shrink-0 cursor-grab active:cursor-grabbing" onClick={() => setIsBottomSheetExpanded(!isBottomSheetExpanded)}>
                 <div className="w-12 h-1.5 bg-gray-300 rounded-full"></div>
             </div>
             
-            <div className={`flex-1 flex flex-col overflow-hidden transition-opacity duration-300 ${isBottomSheetExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+            <div className={`flex-1 flex flex-col overflow-hidden ${isBottomSheetExpanded ? '' : 'pointer-events-none'}`}>
                 <div className="flex-1 overflow-y-auto bg-gray-50 p-4 space-y-4 list-content-scroll">
                     {loading && <div className="text-center py-10 text-gray-500"><i className="fa-solid fa-spinner fa-spin fa-2x mb-4"></i><br/>데이터를 불러오는 중입니다...</div>}
                     {error && <div className="text-center py-10 text-red-500">데이터 로드 실패</div>}
