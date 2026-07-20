@@ -62,32 +62,44 @@ export default function BrandInfo() {
                 <i className="fa-solid fa-location-crosshairs"></i> {isLocationActive ? "내 위치 끄기" : "내 주변 매장 찾기"}
             </button>
 
+            {/* 2. 광고 영역 (가로 스와이프 피드) */}
+            <div className="w-full mb-6">
+                <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                    
+                    {/* 광고 1: 배너 이미지 */}
+                    <div 
+                        className="snap-center shrink-0 w-full sm:w-[85%] rounded-2xl overflow-hidden shadow-md cursor-pointer hover:shadow-lg transition-shadow relative" 
+                        onClick={() => window.open('https://buyxtron.com/', '_blank')}
+                    >
+                        <img 
+                            src={eventBannerImg} 
+                            alt="퀄리스포츠 X 엑스트론 이벤트" 
+                            className="w-full h-auto object-cover"
+                        />
+                    </div>
 
+                    {/* 광고 2: 유튜브 영상 */}
+                    <div className="snap-center shrink-0 w-full sm:w-[85%] rounded-2xl overflow-hidden shadow-md aspect-video relative">
+                        <iframe 
+                            className="absolute top-0 left-0 w-full h-full z-10 pointer-events-auto"
+                            src="https://www.youtube.com/embed/PaRQ9nw8VWw?rel=0&playsinline=1" 
+                            title="Quali Sports Video" 
+                            frameBorder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowFullScreen>
+                        </iframe>
+                    </div>
 
-            {/* Event Banner Space (Hidden by request)
-            <div 
-                className="w-full mb-6 relative rounded-2xl overflow-hidden shadow-md cursor-pointer hover:shadow-lg transition-shadow" 
-                onClick={() => window.open('https://buyxtron.com/', '_blank')}
-            >
-                <img 
-                    src={eventBannerImg} 
-                    alt="퀄리스포츠 X 엑스트론 무이자 24개월 이벤트" 
-                    className="w-full h-auto object-cover"
-                />
+                    {/* 광고 3: 프로모션 안내 (플레이스홀더) */}
+                    <div className="snap-center shrink-0 w-full sm:w-[85%] rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md flex flex-col items-center justify-center p-6 text-white text-center aspect-video">
+                        <h3 className="text-lg font-bold mb-2">특별 프로모션</h3>
+                        <p className="text-sm opacity-90">지정된 대리점을 방문하고<br/>특별한 혜택을 만나보세요!</p>
+                    </div>
+
+                </div>
             </div>
 
-            <div className="w-full mb-6 rounded-2xl overflow-hidden shadow-md aspect-video relative min-h-[250px] shrink-0">
-                <iframe 
-                    className="absolute top-0 left-0 w-full h-full z-10 pointer-events-auto"
-                    src="https://www.youtube.com/embed/PaRQ9nw8VWw?rel=0&playsinline=1" 
-                    title="Quali Sports Video" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen>
-                </iframe>
-            </div>
-            */}
-
+            {/* 3. 우수협력점 및 원케어 매장 설명 */}
             <div className="w-full bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-left space-y-4">
                 <div className="flex items-start gap-3">
                     <span className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0 mt-1">
