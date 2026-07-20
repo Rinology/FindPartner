@@ -6,6 +6,11 @@ import eventBannerImg from '../assets/event_banner.png';
 export default function BrandInfo() {
     const { allData, setUserLocation, setIsLocationActive, setSelectedRegion, isLocationActive } = useStoreContext();
 
+    const [currentAdIndex, setCurrentAdIndex] = React.useState(0);
+    const adsCount = 3;
+    const prevAd = () => setCurrentAdIndex((prev) => (prev === 0 ? adsCount - 1 : prev - 1));
+    const nextAd = () => setCurrentAdIndex((prev) => (prev === adsCount - 1 ? 0 : prev + 1));
+
     const handleRequestLocation = () => {
         if (isLocationActive) {
             setIsLocationActive(false);
@@ -62,40 +67,70 @@ export default function BrandInfo() {
                 <i className="fa-solid fa-location-crosshairs"></i> {isLocationActive ? "내 위치 끄기" : "내 주변 매장 찾기"}
             </button>
 
-            {/* 2. 광고 영역 (가로 스와이프 피드) */}
-            <div className="w-full mb-6">
-                <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                    
-                    {/* 광고 1: 배너 이미지 */}
+            {/* 2. 광고 영역 (Carousel) */}
+            <div className="w-full mb-6 relative group">
+                {/* Carousel Container */}
+                <div className="w-full overflow-hidden rounded-2xl relative shadow-md aspect-video bg-gray-100">
                     <div 
-                        className="snap-center shrink-0 w-full sm:w-[85%] rounded-2xl overflow-hidden shadow-md cursor-pointer hover:shadow-lg transition-shadow relative" 
-                        onClick={() => window.open('https://buyxtron.com/', '_blank')}
+                        className="flex w-full h-full transition-transform duration-500 ease-in-out"
+                        style={{ transform: `translateX(-${currentAdIndex * 100}%)` }}
                     >
-                        <img 
-                            src={eventBannerImg} 
-                            alt="퀄리스포츠 X 엑스트론 이벤트" 
-                            className="w-full h-auto object-cover"
+                        {/* 광고 1: 배너 이미지 */}
+                        <div 
+                            className="w-full h-full shrink-0 cursor-pointer relative" 
+                            onClick={() => window.open('https://buyxtron.com/', '_blank')}
+                        >
+                            <img 
+                                src={eventBannerImg} 
+                                alt="퀄리스포츠 X 엑스트론 이벤트" 
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+
+                        {/* 광고 2: 유튜브 영상 */}
+                        <div className="w-full h-full shrink-0 relative bg-black">
+                            <iframe 
+                                className="absolute top-0 left-0 w-full h-full pointer-events-auto"
+                                src="https://www.youtube.com/embed/PaRQ9nw8VWw?rel=0&playsinline=1" 
+                                title="Quali Sports Video" 
+                                frameBorder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowFullScreen>
+                            </iframe>
+                        </div>
+
+                        {/* 광고 3: 프로모션 안내 (플레이스홀더) */}
+                        <div className="w-full h-full shrink-0 bg-gradient-to-br from-blue-500 to-indigo-600 flex flex-col items-center justify-center p-6 text-white text-center">
+                            <h3 className="text-lg sm:text-xl font-bold mb-2">특별 프로모션</h3>
+                            <p className="text-sm sm:text-base opacity-90">지정된 대리점을 방문하고<br/>특별한 혜택을 만나보세요!</p>
+                        </div>
+                    </div>
+                    
+                    {/* Navigation Arrows */}
+                    <button 
+                        onClick={prevAd}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/70 hover:bg-white text-gray-800 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                        <i className="fa-solid fa-chevron-left text-sm"></i>
+                    </button>
+                    <button 
+                        onClick={nextAd}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/70 hover:bg-white text-gray-800 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                        <i className="fa-solid fa-chevron-right text-sm"></i>
+                    </button>
+                </div>
+
+                {/* Pagination Dots */}
+                <div className="flex justify-center gap-1.5 mt-3">
+                    {[0, 1, 2].map(idx => (
+                        <button 
+                            key={idx}
+                            onClick={() => setCurrentAdIndex(idx)}
+                            className={`w-2 h-2 rounded-full transition-colors ${currentAdIndex === idx ? 'bg-blue-600' : 'bg-gray-300 hover:bg-gray-400'}`}
+                            aria-label={`Go to slide ${idx + 1}`}
                         />
-                    </div>
-
-                    {/* 광고 2: 유튜브 영상 */}
-                    <div className="snap-center shrink-0 w-full sm:w-[85%] rounded-2xl overflow-hidden shadow-md aspect-video relative">
-                        <iframe 
-                            className="absolute top-0 left-0 w-full h-full z-10 pointer-events-auto"
-                            src="https://www.youtube.com/embed/PaRQ9nw8VWw?rel=0&playsinline=1" 
-                            title="Quali Sports Video" 
-                            frameBorder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowFullScreen>
-                        </iframe>
-                    </div>
-
-                    {/* 광고 3: 프로모션 안내 (플레이스홀더) */}
-                    <div className="snap-center shrink-0 w-full sm:w-[85%] rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md flex flex-col items-center justify-center p-6 text-white text-center aspect-video">
-                        <h3 className="text-lg font-bold mb-2">특별 프로모션</h3>
-                        <p className="text-sm opacity-90">지정된 대리점을 방문하고<br/>특별한 혜택을 만나보세요!</p>
-                    </div>
-
+                    ))}
                 </div>
             </div>
 
