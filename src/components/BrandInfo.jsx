@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStoreContext } from '../StoreContext';
-import { getClosestStoreRegion } from '../utils/mapUtils';
+import { getClosestStoreRegion, getBrandBadgeClass } from '../utils/mapUtils';
 import eventBannerImg from '../assets/event_banner.png';
 
 export default function BrandInfo() {
@@ -45,7 +45,7 @@ export default function BrandInfo() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-start min-h-full p-8 text-center text-gray-500 animate-in fade-in duration-500">
+        <div className="flex flex-col items-center justify-start min-h-full p-5 text-center text-gray-500 animate-in fade-in duration-500">
             <div className="mb-4">
                 <img src="https://cdn.xtron-guide.kr/common/logos/Xtron_x_Qualisports_Logo_Black.webp" alt="Qualisports x Xtron Logo" className="h-10 object-contain mx-auto" />
             </div>
@@ -56,10 +56,13 @@ export default function BrandInfo() {
 
             <button 
                 onClick={handleRequestLocation}
-                className={`mb-6 w-full py-3.5 rounded-xl font-bold shadow-md transition-all flex items-center justify-center gap-2 ${isLocationActive ? 'bg-white text-blue-600 border border-blue-600 hover:bg-gray-50' : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200'}`}
+                className={`mb-2 w-full py-3.5 rounded-xl font-bold shadow-md transition-all flex items-center justify-center gap-2 ${isLocationActive ? 'bg-white text-blue-600 border border-blue-600 hover:bg-gray-50' : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200'}`}
             >
                 <i className="fa-solid fa-location-crosshairs"></i> {isLocationActive ? "내 위치 끄기" : "내 주변 매장 찾기"}
             </button>
+            <p className="text-[11.5px] text-gray-400 font-medium mb-6 flex items-center justify-center gap-1">
+                <i className="fa-solid fa-circle-info text-[10px]"></i> 위치정보 동의가 필요합니다
+            </p>
 
 
 
@@ -87,55 +90,56 @@ export default function BrandInfo() {
             </div>
             */}
 
-            <div className="w-full bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-left space-y-5">
+            <div className="w-full bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-7">
                 {/* 브랜드 설명 */}
-                <div className="flex flex-col gap-1.5">
-                    <div className="flex items-center gap-2">
-                        <span className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 shrink-0">
-                            <i className="fa-solid fa-tags text-[11px]"></i>
-                        </span>
-                        <span className="font-bold text-gray-900 text-sm">취급 브랜드</span>
+                <div className="flex flex-col items-center gap-3 text-center">
+                    <div className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gray-100 rounded-full text-gray-700 text-sm font-extrabold">
+                        <img src="https://cdn.xtron-guide.kr/common/logos/X_logo_black_v2.webp" alt="Xtron Logo" className="w-3.5 h-3.5 object-contain" />
+                        <span>브랜드</span>
                     </div>
-                    <div className="pl-9">
+                    <div>
                         <p className="text-[12.5px] text-gray-600 font-medium break-keep leading-relaxed">
                             각 대리점에서 취급하는 브랜드 배지가 표시됩니다.<br/>
                             원하시는 브랜드의 제품을 취급하는지 확인해보세요.
                         </p>
                     </div>
+                    {/* 브랜드 카드 4개 */}
+                    <div className="flex flex-wrap justify-center gap-1.5 mt-1">
+                        {['퀄리스포츠', '엑스트론', '퀄리바이크', '케어엑스'].map((brand, i) => (
+                            <span key={i} className={`px-2 py-1 text-[11px] font-bold rounded-md shadow-sm whitespace-nowrap ${getBrandBadgeClass(brand)}`}>
+                                {brand}
+                            </span>
+                        ))}
+                    </div>
                 </div>
 
                 {/* 우수협력점 설명 */}
-                <div className="flex flex-col gap-1.5">
-                    <div className="flex items-center gap-2">
-                        <span className="w-7 h-7 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
-                            <i className="fa-solid fa-star text-[11px]"></i>
-                        </span>
-                        <span className="font-bold text-gray-900 text-sm">우수협력점</span>
+                <div className="flex flex-col items-center gap-3 text-center">
+                    <div className="flex items-center gap-1.5 px-3.5 py-1.5 bg-amber-100 rounded-full text-amber-700 text-sm font-extrabold">
+                        <i className="fa-solid fa-star"></i>
+                        <span>우수협력점</span>
                     </div>
-                    <div className="pl-9">
-                        <p className="text-[12.5px] text-gray-600 font-medium break-keep mb-1.5">
+                    <div>
+                        <p className="text-[12.5px] text-gray-600 font-bold break-keep mb-1.5">
                             본사가 인증한 최우수 서비스 매장
                         </p>
-                        <ul className="text-[11.5px] text-gray-500 space-y-0.5 list-disc list-outside pl-3.5 leading-relaxed tracking-tight break-keep">
+                        <ul className="text-[12px] text-gray-500 space-y-0.5 leading-relaxed tracking-tight break-keep">
                             <li>친절한 상담과 검증된 정비 실력</li>
-                            <li>다양한 시승차 및 재고 보유</li>
                         </ul>
                     </div>
                 </div>
 
                 {/* 원케어 매장 설명 */}
-                <div className="flex flex-col gap-1.5">
-                    <div className="flex items-center gap-2">
-                        <span className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
-                            <i className="fa-solid fa-screwdriver-wrench text-[11px]"></i>
-                        </span>
-                        <span className="font-bold text-gray-900 text-sm">원케어 매장</span>
+                <div className="flex flex-col items-center gap-3 text-center">
+                    <div className="flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-100 rounded-full text-blue-700 text-sm font-extrabold">
+                        <i className="fa-solid fa-screwdriver-wrench"></i>
+                        <span>원케어</span>
                     </div>
-                    <div className="pl-9">
-                        <p className="text-[12.5px] text-gray-600 font-medium break-keep mb-1.5">
+                    <div>
+                        <p className="text-[12.5px] text-gray-600 font-bold break-keep mb-1.5">
                             대리점이 책임지는 확실한 AS관리
                         </p>
-                        <ul className="text-[11.5px] text-gray-500 space-y-0.5 list-disc list-outside pl-3.5 leading-relaxed tracking-tight break-keep">
+                        <ul className="text-[12px] text-gray-500 space-y-0.5 leading-relaxed tracking-tight break-keep">
                             <li>퀄리스포츠 공식 스토어에서 안심구매 가능!</li>
                             <li>집에서 가까운 대리점에서 제품 수령!</li>
                             <li>수령 받은 대리점이 책임지는 AS관리까지!</li>

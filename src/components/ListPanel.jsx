@@ -84,7 +84,7 @@ export default function ListPanel() {
     if (!isMobile) {
         // Desktop View: Left Sidebar
         return (
-            <aside className="w-96 flex flex-col bg-white shadow-xl z-[1000] shrink-0 h-full border-r border-gray-200">
+            <aside className="w-[420px] flex flex-col bg-white shadow-xl z-[1000] shrink-0 h-full border-r border-gray-200">
                 {selectedStore ? (
                     <StoreDetail />
                 ) : (

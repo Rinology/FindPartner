@@ -285,9 +285,9 @@ export default function MapPanel() {
                 <div className="relative">
                     <button 
                         onClick={() => setIsBrandDropdownOpen(!isBrandDropdownOpen)}
-                        className={`flex items-center gap-1.5 px-3 py-2 bg-white rounded-full text-sm font-extrabold shadow-md transition-all ${selectedBrands.length > 0 ? 'text-blue-700 border-2 border-blue-500' : 'text-gray-800 border border-gray-200 hover:bg-gray-50'}`}
+                        className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-extrabold shadow-md transition-all ${selectedBrands.length > 0 ? 'bg-gray-100 text-gray-800 border-2 border-gray-400' : 'bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50'}`}
                     >
-                        <i className="fa-solid fa-bicycle"></i>
+                        <img src="https://cdn.xtron-guide.kr/common/logos/X_logo_black_v2.webp" alt="Xtron Logo" className="w-3.5 h-3.5 object-contain" />
                         <span className="whitespace-nowrap">{selectedBrands.length > 0 ? `브랜드 (${selectedBrands.length})` : '브랜드'}</span>
                         <i className={`fa-solid fa-chevron-down text-[10px] transition-transform ${isBrandDropdownOpen ? 'rotate-180' : ''}`}></i>
                     </button>
@@ -317,7 +317,7 @@ export default function MapPanel() {
                 {/* Premium Filter */}
                 <button 
                     onClick={() => setIsPremiumOnly(!isPremiumOnly)}
-                    className={`flex items-center gap-1.5 px-3 py-2 bg-white rounded-full text-sm font-extrabold shadow-md transition-all ${isPremiumOnly ? 'text-amber-600 border-2 border-amber-500' : 'text-gray-800 border border-gray-200 hover:bg-gray-50'}`}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-extrabold shadow-md transition-all ${isPremiumOnly ? 'bg-amber-100 text-amber-700 border-2 border-amber-500' : 'bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50'}`}
                 >
                     <i className="fa-solid fa-star"></i>
                     <span>우수협력점</span>
@@ -326,7 +326,7 @@ export default function MapPanel() {
                 {/* OneCare Filter */}
                 <button 
                     onClick={() => setIsOneCareOnly(!isOneCareOnly)}
-                    className={`flex items-center gap-1.5 px-3 py-2 bg-white rounded-full text-sm font-extrabold shadow-md transition-all ${isOneCareOnly ? 'text-blue-700 border-2 border-blue-500' : 'text-gray-800 border border-gray-200 hover:bg-gray-50'}`}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-extrabold shadow-md transition-all ${isOneCareOnly ? 'bg-blue-100 text-blue-700 border-2 border-blue-500' : 'bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50'}`}
                 >
                     <i className="fa-solid fa-screwdriver-wrench"></i>
                     <span>원케어</span>
