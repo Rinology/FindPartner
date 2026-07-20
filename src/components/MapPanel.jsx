@@ -31,7 +31,7 @@ export default function MapPanel() {
 
             const map = L.map(mapRef.current, {
                 center: [36.0, 127.5],
-                zoom: 7,
+                zoom: 8,
                 minZoom: 7,
                 maxBounds: bounds,
                 maxBoundsViscosity: 1.0,
