@@ -27,21 +27,32 @@ export default function ControlArea() {
     const REGIONS = ['서울', '경기', '인천', '강원', '충북', '충남', '대전', '세종', '경북', '경남', '대구', '울산', '부산', '전북', '전남', '광주', '제주'];
 
     return (
-        <div className="bg-white p-4 shrink-0 shadow-sm border-b border-gray-100 flex flex-col gap-3 relative z-50">
+        <div className="bg-white p-4 shrink-0 shadow-sm border-b border-gray-100 flex flex-col gap-3 relative z-[1500]">
             {/* Top row: Home Button + Region Selector + Search Bar */}
             <div className="flex gap-2 w-full">
                 {/* Home Button */}
-                <button
-                    onClick={handleHomeClick}
-                    className={`w-[42px] shrink-0 border text-gray-600 rounded-xl flex items-center justify-center transition-all shadow-sm ${(!hasFilters && !isShowAllActive) ? 'bg-blue-50 border-blue-400 text-blue-600 ring-2 ring-blue-100' : 'bg-gray-50 border-gray-200 hover:bg-gray-100 hover:text-blue-600'}`}
-                    title={!hasFilters && !isShowAllActive ? "전체 목록 보기" : "초기화 (홈)"}
-                >
-                    {!hasFilters && !isShowAllActive ? (
-                        <i className="fa-solid fa-list"></i>
-                    ) : (
-                        <i className="fa-solid fa-house"></i>
+                <div className="relative flex-shrink-0 flex">
+                    <button
+                        onClick={handleHomeClick}
+                        className={`w-[42px] h-full shrink-0 border text-gray-600 rounded-xl flex items-center justify-center transition-all shadow-sm ${(!hasFilters && !isShowAllActive) ? 'bg-blue-50 border-blue-400 text-blue-600 ring-2 ring-blue-100' : 'bg-gray-50 border-gray-200 hover:bg-gray-100 hover:text-blue-600'}`}
+                        title={!hasFilters && !isShowAllActive ? "전체 목록 보기" : "초기화 (홈)"}
+                    >
+                        {!hasFilters && !isShowAllActive ? (
+                            <i className="fa-solid fa-list"></i>
+                        ) : (
+                            <i className="fa-solid fa-house"></i>
+                        )}
+                    </button>
+                    
+                    {/* 말풍선 */}
+                    {(!hasFilters && !isShowAllActive) && (
+                        <div className="absolute top-[calc(100%+8px)] left-0 bg-blue-600 text-white text-xs whitespace-nowrap py-1.5 px-3 rounded-lg shadow-lg font-medium animate-bounce z-50">
+                            {/* 위쪽 화살표 */}
+                            <div className="absolute -top-1 left-4 w-2 h-2 bg-blue-600 rotate-45 rounded-sm"></div>
+                            여기서 대리점 리스트를 확인하세요.
+                        </div>
                     )}
-                </button>
+                </div>
 
                 {/* Region Dropdown */}
                 <div className="relative flex-shrink-0 w-28">
