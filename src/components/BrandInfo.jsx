@@ -49,9 +49,9 @@ export default function BrandInfo() {
             <div className="mb-4">
                 <img src="https://cdn.xtron-guide.kr/common/logos/Xtron_x_Qualisports_Logo_Black.webp" alt="Qualisports x Xtron Logo" className="h-10 object-contain mx-auto" />
             </div>
-            <p className="text-sm leading-relaxed mb-6 font-medium text-gray-600">
-                가까운 공식 대리점과 우수협력점을 찾아보세요.<br/>
-                <span className="text-blue-600 font-bold">상단의 지역을 선택</span>하시거나 <span className="text-blue-600 font-bold">내 주변 매장 찾기</span>를 통해<br/>
+            <p className="text-sm leading-relaxed mb-6 font-medium text-gray-600 break-keep px-2">
+                가까운 공식 대리점과 우수협력점을 찾아보세요. 
+                <span className="text-blue-600 font-bold"> 상단의 지역을 선택</span>하시거나 <span className="text-blue-600 font-bold">내 주변 매장 찾기</span>를 통해 
                 대리점 리스트를 바로 확인하실 수 있습니다.
             </p>
 
