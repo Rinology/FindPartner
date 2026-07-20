@@ -334,7 +334,7 @@ export default function MapPanel() {
             </div>
 
             {/* Map Controls (Zoom, Location, Cluster) */}
-            <div className={`absolute z-[1000] flex flex-col gap-2 transition-transform duration-300 ${isMobile ? 'top-4 right-4' : 'bottom-6 right-4'} ${isMobile && selectedStore ? '-translate-y-20 opacity-0 pointer-events-none' : ''}`}>
+            <div className={`absolute z-[1000] flex flex-col gap-2 transition-transform duration-300 ${isMobile ? 'top-4 right-4' : 'bottom-24 right-4'} ${isMobile && selectedStore ? '-translate-y-20 opacity-0 pointer-events-none' : ''}`}>
                 <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
                     <button onClick={() => mapInstance.current?.zoomIn()} className="w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-50 border-b border-gray-100" title="확대">
                         <i className="fa-solid fa-plus"></i>
