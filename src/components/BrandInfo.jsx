@@ -50,9 +50,8 @@ export default function BrandInfo() {
                 <img src="https://cdn.xtron-guide.kr/common/logos/Xtron_x_Qualisports_Logo_Black.webp" alt="Qualisports x Xtron Logo" className="h-10 object-contain mx-auto" />
             </div>
             <p className="text-sm leading-relaxed mb-6 font-medium text-gray-600 break-keep px-2">
-                가까운 공식 대리점과 우수협력점을 찾아보세요. 
-                <span className="text-blue-600 font-bold"> 상단의 지역을 선택</span>하시거나 <span className="text-blue-600 font-bold">내 주변 매장 찾기</span>를 통해 
-                대리점 리스트를 바로 확인하실 수 있습니다.
+                가까운 공식대리점을 찾아보세요.<br />
+                <span className="text-blue-600 font-bold">지역을 선택</span>하시거나 <span className="text-blue-600 font-bold">내 주변 매장 찾기</span>를 통해<br className="hidden sm:block" /> 대리점 리스트를 바로 확인하실 수 있습니다.
             </p>
 
             <button 
@@ -88,28 +87,55 @@ export default function BrandInfo() {
             </div>
             */}
 
-            <div className="w-full bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-left space-y-4">
-                <div className="flex items-start gap-3">
-                    <span className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0 mt-1">
-                        <i className="fa-solid fa-star text-xs"></i>
-                    </span>
-                    <div>
-                        <p className="text-[13px] text-gray-700 break-keep flex flex-wrap items-center gap-x-1.5 mt-0.5">
-                            <span className="font-bold text-gray-900 text-sm">우수협력점</span>
-                            <span className="text-[11.5px] text-gray-500">본사가 인증한 최우수 서비스 매장</span>
+            <div className="w-full bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-left space-y-5">
+                {/* 브랜드 설명 */}
+                <div className="flex flex-col gap-1.5">
+                    <div className="flex items-center gap-2">
+                        <span className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 shrink-0">
+                            <i className="fa-solid fa-tags text-[11px]"></i>
+                        </span>
+                        <span className="font-bold text-gray-900 text-sm">취급 브랜드</span>
+                    </div>
+                    <div className="pl-9">
+                        <p className="text-[12.5px] text-gray-600 font-medium break-keep leading-relaxed">
+                            각 대리점에서 취급하는 브랜드 배지가 표시됩니다.<br/>
+                            원하시는 브랜드의 제품을 취급하는지 확인해보세요.
                         </p>
                     </div>
                 </div>
-                <div className="flex items-start gap-3">
-                    <span className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0 mt-1">
-                        <i className="fa-solid fa-screwdriver-wrench text-xs"></i>
-                    </span>
-                    <div>
-                        <p className="text-[13px] text-gray-700 break-keep flex flex-wrap items-center gap-x-1.5 mt-0.5">
-                            <span className="font-bold text-gray-900 text-sm">원케어 매장</span>
-                            <span className="text-[11.5px] text-gray-500">대리점이 책임지는 확실한 AS관리</span>
+
+                {/* 우수협력점 설명 */}
+                <div className="flex flex-col gap-1.5">
+                    <div className="flex items-center gap-2">
+                        <span className="w-7 h-7 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+                            <i className="fa-solid fa-star text-[11px]"></i>
+                        </span>
+                        <span className="font-bold text-gray-900 text-sm">우수협력점</span>
+                    </div>
+                    <div className="pl-9">
+                        <p className="text-[12.5px] text-gray-600 font-medium break-keep mb-1.5">
+                            본사가 인증한 최우수 서비스 매장
                         </p>
-                        <ul className="text-[11.5px] text-gray-500 space-y-0.5 list-disc list-outside pl-3.5 mt-1.5 leading-relaxed font-medium tracking-tight break-keep">
+                        <ul className="text-[11.5px] text-gray-500 space-y-0.5 list-disc list-outside pl-3.5 leading-relaxed tracking-tight break-keep">
+                            <li>친절한 상담과 검증된 정비 실력</li>
+                            <li>다양한 시승차 및 재고 보유</li>
+                        </ul>
+                    </div>
+                </div>
+
+                {/* 원케어 매장 설명 */}
+                <div className="flex flex-col gap-1.5">
+                    <div className="flex items-center gap-2">
+                        <span className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
+                            <i className="fa-solid fa-screwdriver-wrench text-[11px]"></i>
+                        </span>
+                        <span className="font-bold text-gray-900 text-sm">원케어 매장</span>
+                    </div>
+                    <div className="pl-9">
+                        <p className="text-[12.5px] text-gray-600 font-medium break-keep mb-1.5">
+                            대리점이 책임지는 확실한 AS관리
+                        </p>
+                        <ul className="text-[11.5px] text-gray-500 space-y-0.5 list-disc list-outside pl-3.5 leading-relaxed tracking-tight break-keep">
                             <li>퀄리스포츠 공식 스토어에서 안심구매 가능!</li>
                             <li>집에서 가까운 대리점에서 제품 수령!</li>
                             <li>수령 받은 대리점이 책임지는 AS관리까지!</li>

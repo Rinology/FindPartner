@@ -10,7 +10,7 @@ export default function Layout() {
     const { isMobile, selectedStore } = useStoreContext();
 
     return (
-        <div className="flex flex-col h-screen w-full overflow-hidden bg-gray-50 text-slate-800 select-none font-sans">
+        <div className="flex flex-col h-[100dvh] w-full overflow-hidden bg-gray-50 text-slate-800 select-none font-sans">
             <Header />
             
             <div className="flex flex-1 relative min-h-0">

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useStoreContext } from '../StoreContext';
 
 export default function ControlArea() {
-    const { searchQuery, setSearchQuery, selectedRegion, setSelectedRegion, resetFilters, selectedBrands, setSelectedBrands, isPremiumOnly, isOneCareOnly, isLocationActive, isShowAllActive, setIsShowAllActive } = useStoreContext();
+    const { searchQuery, setSearchQuery, selectedRegion, setSelectedRegion, resetFilters, selectedBrands, setSelectedBrands, isPremiumOnly, isOneCareOnly, isLocationActive, isShowAllActive, setIsShowAllActive, setIsBottomSheetExpanded } = useStoreContext();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -14,6 +14,7 @@ export default function ControlArea() {
         } else {
             resetFilters();
         }
+        setIsBottomSheetExpanded(true);
     };
 
     const toggleBrand = (brand) => {

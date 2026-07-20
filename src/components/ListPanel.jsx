@@ -43,7 +43,7 @@ export default function ListPanel() {
             currentY.current = e.touches[0].clientY;
             const deltaY = currentY.current - startY.current;
             
-            const maxOffset = panel.offsetHeight - 32; // 2rem handle height
+            const maxOffset = panel.offsetHeight - 56; // 3.5rem handle height
             const baseOffset = isBottomSheetExpanded ? 0 : maxOffset;
             let targetY = baseOffset + deltaY;
             
@@ -55,7 +55,7 @@ export default function ListPanel() {
         };
 
         const handleTouchEnd = () => {
-            panel.style.transition = 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            panel.style.transition = '';
             panel.style.transform = '';
             const deltaY = currentY.current - startY.current;
             
@@ -120,9 +120,9 @@ export default function ListPanel() {
     return (
         <aside 
             ref={panelRef}
-            className={`absolute bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)] rounded-t-3xl z-[2000] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform h-[65vh] ${isBottomSheetExpanded ? 'translate-y-0' : 'translate-y-[calc(100%-2rem)]'}`}
+            className={`absolute bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)] rounded-t-3xl z-[2000] flex flex-col transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform h-[65vh] ${isBottomSheetExpanded ? 'translate-y-0' : 'translate-y-[calc(100%-3.5rem)]'}`}
         >
-            <div className="w-full h-8 flex items-center justify-center shrink-0 cursor-grab active:cursor-grabbing" onClick={() => setIsBottomSheetExpanded(!isBottomSheetExpanded)}>
+            <div className="w-full h-14 flex items-center justify-center shrink-0 cursor-grab active:cursor-grabbing" onClick={() => setIsBottomSheetExpanded(!isBottomSheetExpanded)}>
                 <div className="w-12 h-1.5 bg-gray-300 rounded-full"></div>
             </div>
             
