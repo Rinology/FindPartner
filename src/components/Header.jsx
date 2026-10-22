@@ -33,7 +33,7 @@ export default function Header() {
                 {/* Right Side: Logo Only */}
                 <div className="flex items-center">
                     <div className="h-6 md:h-7 w-auto">
-                        <img src="https://cdn.xtron-guide.kr/common/logos/Xtron_x_Qualisports_Logo_Black.webp" alt="Qualisports Logo" className="h-full object-contain" />
+                        <img src="https://cdn.xtron-guide.kr/Common-logo/Xtron_x_Qualisports_Logo_Black.webp" alt="Qualisports Logo" className="h-full object-contain" />
                     </div>
                 </div>
             </div>

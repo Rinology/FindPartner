@@ -287,7 +287,7 @@ export default function MapPanel() {
                         onClick={() => setIsBrandDropdownOpen(!isBrandDropdownOpen)}
                         className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-extrabold shadow-md transition-all ${selectedBrands.length > 0 ? 'bg-gray-100 text-gray-800 border-2 border-gray-400' : 'bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50'}`}
                     >
-                        <img src="https://cdn.xtron-guide.kr/common/logos/X_logo_black_v2.webp" alt="Xtron Logo" className="w-3.5 h-3.5 object-contain" />
+                        <img src="https://cdn.xtron-guide.kr/Common-logo/X_logo_black_v2.webp" alt="Xtron Logo" className="w-3.5 h-3.5 object-contain" />
                         <span className="whitespace-nowrap">{selectedBrands.length > 0 ? `브랜드 (${selectedBrands.length})` : '브랜드'}</span>
                         <i className={`fa-solid fa-chevron-down text-[10px] transition-transform ${isBrandDropdownOpen ? 'rotate-180' : ''}`}></i>
                     </button>

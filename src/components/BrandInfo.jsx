@@ -47,7 +47,7 @@ export default function BrandInfo() {
     return (
         <div className="flex flex-col items-center justify-start min-h-full p-5 text-center text-gray-500 animate-in fade-in duration-500">
             <div className="mb-4">
-                <img src="https://cdn.xtron-guide.kr/common/logos/Xtron_x_Qualisports_Logo_Black.webp" alt="Qualisports x Xtron Logo" className="h-10 object-contain mx-auto" />
+                <img src="https://cdn.xtron-guide.kr/Common-logo/Xtron_x_Qualisports_Logo_Black.webp" alt="Qualisports x Xtron Logo" className="h-10 object-contain mx-auto" />
             </div>
             <p className="text-sm leading-relaxed mb-6 font-medium text-gray-600 break-keep px-2">
                 가까운 공식대리점을 찾아보세요.<br />
@@ -94,7 +94,7 @@ export default function BrandInfo() {
                 {/* 브랜드 설명 */}
                 <div className="flex flex-col items-center gap-3 text-center">
                     <div className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gray-100 rounded-full text-gray-700 text-sm font-extrabold">
-                        <img src="https://cdn.xtron-guide.kr/common/logos/X_logo_black_v2.webp" alt="Xtron Logo" className="w-3.5 h-3.5 object-contain" />
+                        <img src="https://cdn.xtron-guide.kr/Common-logo/X_logo_black_v2.webp" alt="Xtron Logo" className="w-3.5 h-3.5 object-contain" />
                         <span>브랜드</span>
                     </div>
                     <div>
