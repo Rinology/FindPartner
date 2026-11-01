@@ -381,7 +381,7 @@ export default function MapPanel() {
                             <i className="fa-solid fa-file-signature"></i>
                         </a>
                         <a 
-                            href="about:blank"
+                            href={CONFIG.EXTERNAL_SERVICES.PRODUCT_GUIDE}
                             target="_blank"
                             rel="noreferrer"
                             className="w-10 h-10 bg-white text-gray-800 border border-gray-200 rounded-xl shadow-lg flex items-center justify-center transition-transform active:scale-95"

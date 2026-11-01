@@ -22,7 +22,7 @@ export default function Header() {
                                 <a href={CONFIG.EXTERNAL_SERVICES.REGIST_CENTER} target="_blank" rel="noreferrer" className="flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-full transition-colors shadow-sm">
                                     정품등록센터
                                 </a>
-                                <a href="about:blank" target="_blank" rel="noreferrer" className="flex items-center px-3 py-1 bg-white hover:bg-gray-100 text-black border border-gray-300 text-xs font-bold rounded-full transition-colors shadow-sm">
+                                <a href={CONFIG.EXTERNAL_SERVICES.PRODUCT_GUIDE} target="_blank" rel="noreferrer" className="flex items-center px-3 py-1 bg-white hover:bg-gray-100 text-black border border-gray-300 text-xs font-bold rounded-full transition-colors shadow-sm">
                                     제품가이드
                                 </a>
                             </div>
@@ -47,4 +47,3 @@ export default function Header() {
         </header>
     );
 }
-

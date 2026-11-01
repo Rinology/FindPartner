@@ -1,4 +1,4 @@
-﻿export const CONFIG = {
+export const CONFIG = {
     // API Data Source (GAS Proxy)
     GAS_URL: "/api/gas-proxy",
 
@@ -20,7 +20,7 @@
         NAVER_ROUTE: "https://map.naver.com/index.nhn",
         NAVER_SEARCH: "https://map.naver.com/v5/search/",
         KAKAO_CHANNEL: "http://pf.kakao.com/_xhxhRZxl/chat",
-        REGIST_CENTER: "https://xtroncare.kr"
+        REGIST_CENTER: "https://xtroncare.kr",
+        PRODUCT_GUIDE: "https://xtron-guide.kr"
     }
 };
-
